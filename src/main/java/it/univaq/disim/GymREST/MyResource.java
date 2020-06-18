@@ -1,4 +1,5 @@
-package GymREST.GymREST;
+package it.univaq.disim.GymREST;
+
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -20,6 +21,6 @@ public class MyResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getIt() {
-        return "Got it!";
+        return "Got it! ciao ciao";
     }
 }
