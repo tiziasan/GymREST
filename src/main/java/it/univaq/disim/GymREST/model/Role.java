@@ -1,15 +1,21 @@
 package it.univaq.disim.GymREST.model;
 
-
 import java.util.Objects;
 
 public class Role {
 
-
     private int id;
-
     private String role;
 
+    public Role() {
+        this.id = 0;
+        this.role = "";
+    }
+
+    public Role(int id, String role) {
+        this.id = id;
+        this.role = role;
+    }
     public int getId() {
         return id;
     }

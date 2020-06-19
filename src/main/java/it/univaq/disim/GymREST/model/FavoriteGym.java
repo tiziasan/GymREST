@@ -1,15 +1,24 @@
 package it.univaq.disim.GymREST.model;
 
-
 import java.util.Objects;
 
 public class FavoriteGym {
 
 	private Long id;
-	
 	private User user;
-	
 	private Gym gym;
+
+	public FavoriteGym() {
+		this.id = null;
+		this.user = null;
+		this.gym = null;
+	}
+
+	public FavoriteGym(Long id, User user, Gym gym) {
+		this.id = id;
+		this.user = user;
+		this.gym = gym;
+	}
 
 	public Long getId() {
 		return id;

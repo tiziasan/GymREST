@@ -1,45 +1,45 @@
 package it.univaq.disim.GymREST.model;
 
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-
 public class User {
 
-
 	private Long id;
-	
-
 	private String userName;
-	
-
 	private String email;
-	
-
 	private String password;
-	
-
 	private String name;
-	
-
 	private String lastName;
-	
 	private Boolean active;
 	
 	private List<FeedbackCourse> feedbackCourse;
-	
 	private List<FavoriteGym> favoriteGym;
-	
 	private List<FavoriteCourse> favoriteCourse;
-	
 	private List<FeedbackGym> feedbackGym;
-	
-
 	private Set<Role> roles;
-	
-	private List<Gym> gym;
+	private List<Gym> gyms;
+
+	public User() {
+		this.id = null;
+		this.userName = "";
+		this.email = "";
+		this.password = "";
+		this.name = "";
+		this.lastName = "";
+		this.active = null;
+	}
+
+	public User(Long id, String userName, String email, String password, String name, String lastName, Boolean active) {
+		this.id = id;
+		this.userName = userName;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.active = active;
+	}
 
 	public Long getId() {
 		return id;
@@ -137,12 +137,12 @@ public class User {
 		this.roles = roles;
 	}
 
-	public List<Gym> getGym() {
-		return gym;
+	public List<Gym> getGyms() {
+		return gyms;
 	}
 
-	public void setGym(List<Gym> gym) {
-		this.gym = gym;
+	public void setGym(List<Gym> gyms) {
+		this.gyms = gyms;
 	}
 
 	@Override

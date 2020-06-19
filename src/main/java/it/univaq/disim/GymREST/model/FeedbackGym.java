@@ -5,14 +5,26 @@ import java.util.Objects;
 public class FeedbackGym {
 
 	private Long id;
-
 	private String feed;
-
 	private int rating;
-	
 	private User user;
-	
 	private Gym gym;
+
+	public FeedbackGym() {
+		this.id = null;
+		this.feed = "";
+		this.rating = 0;
+		this.user = null;
+		this.gym = null;
+	}
+
+	public FeedbackGym(Long id, String feed, int rating, User user, Gym gym) {
+		this.id = id;
+		this.feed = feed;
+		this.rating = rating;
+		this.user = user;
+		this.gym = gym;
+	}
 
 	public Long getId() {
 		return id;

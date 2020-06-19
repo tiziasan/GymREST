@@ -3,14 +3,26 @@ package it.univaq.disim.GymREST.model;
 public class FeedbackCourse {
 
 	private Long id;
-
 	private String feed;
-
 	private int rating;
-	
 	private User user;
-	
 	private Course course;
+
+	public FeedbackCourse() {
+		this.id = null;
+		this.feed = "";
+		this.rating = 0;
+		this.user = null;
+		this.course = null;
+	}
+
+	public FeedbackCourse(Long id, String feed, int rating, User user, Course course) {
+		this.id = id;
+		this.feed = feed;
+		this.rating = rating;
+		this.user = user;
+		this.course = course;
+	}
 
 	public Long getId() {
 		return id;

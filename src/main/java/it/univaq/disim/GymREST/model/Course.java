@@ -11,10 +11,24 @@ public class Course {
 	private String code;
 
 	private List<FeedbackCourse> feedbackCourse;
-
 	private List<FavoriteCourse> favoriteCourse;
-
 	private Gym gym;
+
+	public Course() {
+		this.id = null;
+		this.name = "";
+		this.description = "";
+		this.code = "";
+		this.gym = null;
+	}
+
+	public Course(Long id, String name, String description, String code, Gym gym) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.code = code;
+		this.gym = gym;
+	}
 
 	public Long getId() {
 		return id;

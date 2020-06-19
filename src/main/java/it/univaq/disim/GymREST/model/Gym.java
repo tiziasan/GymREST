@@ -1,33 +1,38 @@
 package it.univaq.disim.GymREST.model;
 
-
 import java.util.List;
 import java.util.Objects;
 
 public class Gym {
-	
 
 	private Long id;
-	
-
 	private String name;
-	
-
 	private String address;
-	
-
 	private String province;
-	
-
 	private String region;
-	
-	private List<FeedbackGym> feedbackGym;
-	
-	private List<FavoriteGym> favoriteGym;
-	
-	private List<Course> course;
 
+	private List<FeedbackGym> feedbackGym;
+	private List<FavoriteGym> favoriteGym;
+	private List<Course> course;
 	private User user;
+
+	public Gym() {
+		this.id = null;
+		this.name = "";
+		this.address = "";
+		this.province = "";
+		this.region = "";
+		this.user = null;
+	}
+
+	public Gym(Long id, String name, String address, String province, String region, User user) {
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.province = province;
+		this.region = region;
+		this.user = user;
+	}
 
 	public Long getId() {
 		return id;
