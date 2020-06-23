@@ -1,5 +1,7 @@
 package it.univaq.disim.GymREST.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -10,8 +12,11 @@ public class Course {
 	private String description;
 	private String code;
 
+	@JsonIgnore
 	private List<FeedbackCourse> feedbackCourse;
+	@JsonIgnore
 	private List<FavoriteCourse> favoriteCourse;
+	@JsonIgnore
 	private Gym gym;
 
 	public Course() {
