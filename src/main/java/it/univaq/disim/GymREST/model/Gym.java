@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Gym {
 
-	private Long id;
+	private long id;
 	private String name;
 	private String address;
 	private String province;
@@ -23,7 +23,7 @@ public class Gym {
 	private User user;
 
 	public Gym() {
-		this.id = null;
+		this.id = 0;
 		this.name = "";
 		this.address = "";
 		this.province = "";
@@ -31,7 +31,7 @@ public class Gym {
 		this.user = null;
 	}
 
-	public Gym(Long id, String name, String address, String province, String region, User user) {
+	public Gym(long id, String name, String address, String province, String region, User user) {
 		this.id = id;
 		this.name = name;
 		this.address = address;

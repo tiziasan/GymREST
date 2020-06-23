@@ -8,7 +8,7 @@ public interface GymService {
 	
 	List<Gym> getAllGym();
 	List<Gym> getGymByRegion(String region);
-	List<Gym> getGymByName(String himt);
+	List<Gym> getGymByName(String hint);
 	Gym getGym(long id);
 	void insertGym(Gym gym);
 	void updateGym(Gym gym);
