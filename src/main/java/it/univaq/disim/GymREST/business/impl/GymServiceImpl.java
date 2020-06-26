@@ -4,12 +4,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.univaq.disim.GymREST.business.BusinessException;
 import it.univaq.disim.GymREST.business.GymService;
-import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.Gym;
 
-public class GymServiceImpl extends Service implements GymService {
+public class GymServiceImpl implements GymService {
 
 	private static final String GET_ALL_GYM = "SELECT * FROM gym";
 	private static final String GET_GYM_BY_REGION = "SELECT * FROM gym WHERE gym.region = ?";
@@ -19,11 +17,27 @@ public class GymServiceImpl extends Service implements GymService {
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE id=?";
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE id=?";
 
+	private Connection connection;
+
+	public GymServiceImpl(){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:8889/gymportal", "gymportal", "gymportal");
+			if (connection != null) {
+				System.out.println("Connected to the database!");
+			} else {
+				System.out.println("Failed to make connection!");
+			}
+		} catch (SQLException | ClassNotFoundException throwables) {
+			throwables.printStackTrace();
+		}
+	}
+
 	@Override
-	public List<Gym> getAllGym() throws BusinessException, SQLException {
+	public List<Gym> getAllGym() throws SQLException {
 		List<Gym> gyms = new ArrayList<>();
 		try {
-			Statement st = getConnection().createStatement();
+			Statement st = connection.createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				Gym gym = new Gym();
@@ -35,20 +49,20 @@ public class GymServiceImpl extends Service implements GymService {
 				gyms.add(gym);
 			}
 		} catch (SQLException e) {
-			throw new BusinessException("getAllGym", e);
+			e.printStackTrace();
 		} finally {
-			closeConnection();
+			connection.close();
+			System.out.println("Connection Closed");
 		}
-
 		return gyms;
 	}
 
 	@Override
-	public List<Gym> getGymByRegion(String region) throws BusinessException {
+	public List<Gym> getGymByRegion(String region) throws SQLException {
 		List<Gym> gyms = new ArrayList<>();
 		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_GYM_BY_REGION);
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				Gym gym = new Gym();
 				gym.setId(rs.getLong(1));
@@ -59,17 +73,19 @@ public class GymServiceImpl extends Service implements GymService {
 				gyms.add(gym);
 			}
 		} catch (SQLException e) {
-			throw new BusinessException("getGymByRegion", e);
+			e.printStackTrace();
+		} finally {
+			connection.close();
 		}
 		return gyms;
 	}
 
 	@Override
-	public List<Gym> getGymByName(String hint) throws BusinessException {
+	public List<Gym> getGymByName(String hint) throws SQLException {
 		List<Gym> gyms = new ArrayList<>();
 		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_GYM_BY_NAME);
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				Gym gym = new Gym();
 				gym.setId(rs.getLong(1));
@@ -80,72 +96,82 @@ public class GymServiceImpl extends Service implements GymService {
 				gyms.add(gym);
 			}
 		} catch (SQLException e) {
-			throw new BusinessException("getGymByName", e);
+			e.printStackTrace();
+		} finally {
+			connection.close();
 		}
 		return gyms;
 	}
 
 	@Override
-	public Gym getGym(long id) throws BusinessException {
+	public Gym getGym(long id) throws SQLException {
+		Gym gym = null;
 		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_GYM);
-			Gym gym = new Gym();
-			gym.setId(rs.getLong(1));
-			gym.setName(rs.getString(3));
-			gym.setRegion(rs.getString(5));
-			gym.setProvince(rs.getString(4));
-			gym.setAddress(rs.getString(2));
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 
-			return gym;
 		} catch (SQLException e) {
-			throw new BusinessException("getGym", e);
+			e.printStackTrace();
+		} finally {
+			connection.close();
+		}
+		return gym;
+	}
+
+	@Override
+	public void insertGym(Gym gym) throws SQLException {
+		try {
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(GET_ALL_GYM);
+			while (rs.next()){
+				gym.setId(rs.getLong(1));
+				gym.setName(rs.getString(3));
+				gym.setRegion(rs.getString(5));
+				gym.setProvince(rs.getString(4));
+				gym.setAddress(rs.getString(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			connection.close();
 		}
 	}
 
 	@Override
-	public void insertGym(Gym gym) throws BusinessException {
+	public void updateGym(Gym gym) throws SQLException {
 		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_GYM_BY_REGION);
-			gym.setId(rs.getLong(1));
-			gym.setName(rs.getString(3));
-			gym.setRegion(rs.getString(5));
-			gym.setProvince(rs.getString(4));
-			gym.setAddress(rs.getString(2));
-
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(GET_ALL_GYM);
+			while (rs.next()){
+				gym.setId(rs.getLong(1));
+				gym.setName(rs.getString(3));
+				gym.setRegion(rs.getString(5));
+				gym.setProvince(rs.getString(4));
+				gym.setAddress(rs.getString(2));
+			}
 		} catch (SQLException e) {
-			throw new BusinessException("getGymByRegion", e);
+			e.printStackTrace();
+		} finally {
+			connection.close();
 		}
 	}
 
 	@Override
-	public void updateGym(Gym gym) throws BusinessException {
+	public void deleteGym(Gym gym) throws SQLException {
 		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_GYM_BY_REGION);
-			gym.setId(rs.getLong(1));
-			gym.setName(rs.getString(3));
-			gym.setRegion(rs.getString(5));
-			gym.setProvince(rs.getString(4));
-			gym.setAddress(rs.getString(2));
+			Statement st = connection.createStatement();
+			ResultSet rs = st.executeQuery(GET_ALL_GYM);
+			while (rs.next()){
+				gym.setId(rs.getLong(1));
+				gym.setName(rs.getString(3));
+				gym.setRegion(rs.getString(5));
+				gym.setProvince(rs.getString(4));
+				gym.setAddress(rs.getString(2));
+			}
 		} catch (SQLException e) {
-			throw new BusinessException("getGymByRegion", e);
-		}
-	}
-
-	@Override
-	public void deleteGym(Gym gym) throws BusinessException {
-		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_GYM_BY_REGION);
-			gym.setId(rs.getLong(1));
-			gym.setName(rs.getString(3));
-			gym.setRegion(rs.getString(5));
-			gym.setProvince(rs.getString(4));
-			gym.setAddress(rs.getString(2));
-		} catch (SQLException e) {
-			throw new BusinessException("getGymByRegion", e);
+			e.printStackTrace();
+		} finally {
+			connection.close();
 		}
 	}
 

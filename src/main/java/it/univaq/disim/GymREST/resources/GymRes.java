@@ -6,7 +6,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import it.univaq.disim.GymREST.business.BusinessException;
 import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.model.Gym;
@@ -21,7 +20,7 @@ public class GymRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response GetAllGyms() throws BusinessException, SQLException {
+    public Response GetAllGyms() throws SQLException {
         List<Gym> gymList = gymService.getAllGym();
         return Response.ok(gymList).build();
     }
