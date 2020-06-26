@@ -40,11 +40,11 @@ public class Gym {
 		this.user = user;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -117,11 +117,12 @@ public class Gym {
 		if (this == o) return true;
 		if (!(o instanceof Gym)) return false;
 		Gym gym = (Gym) o;
-		return getId().equals(gym.getId());
+		return getId() == gym.getId();
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(getId());
 	}
+
 }
