@@ -1,12 +1,13 @@
 package it.univaq.disim.GymREST.business;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import it.univaq.disim.GymREST.model.Gym;
 
 public interface GymService {
 	
-	List<Gym> getAllGym() throws BusinessException;
+	List<Gym> getAllGym() throws BusinessException, SQLException;
 	List<Gym> getGymByRegion(String region) throws BusinessException;
 	List<Gym> getGymByName(String hint) throws BusinessException;
 	Gym getGym(long id) throws BusinessException;

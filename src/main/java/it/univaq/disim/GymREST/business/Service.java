@@ -25,4 +25,6 @@ public class Service {
     public Connection getConnection() {
         return connection;
     }
+
+    public void closeConnection() throws SQLException { connection.close(); }
 }

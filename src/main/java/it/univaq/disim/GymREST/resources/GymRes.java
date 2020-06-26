@@ -11,6 +11,7 @@ import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.model.Gym;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Path("gyms")
@@ -20,7 +21,7 @@ public class GymRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response GetAllGyms() throws BusinessException {
+    public Response GetAllGyms() throws BusinessException, SQLException {
         List<Gym> gymList = gymService.getAllGym();
         return Response.ok(gymList).build();
     }

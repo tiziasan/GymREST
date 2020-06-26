@@ -20,7 +20,7 @@ public class GymServiceImpl extends Service implements GymService {
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE id=?";
 
 	@Override
-	public List<Gym> getAllGym() throws BusinessException {
+	public List<Gym> getAllGym() throws BusinessException, SQLException {
 		List<Gym> gyms = new ArrayList<>();
 		try {
 			Statement st = getConnection().createStatement();
@@ -36,7 +36,10 @@ public class GymServiceImpl extends Service implements GymService {
 			}
 		} catch (SQLException e) {
 			throw new BusinessException("getAllGym", e);
+		} finally {
+			closeConnection();
 		}
+
 		return gyms;
 	}
 
