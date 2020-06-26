@@ -6,16 +6,12 @@ import it.univaq.disim.GymREST.model.Gym;
 
 public interface GymService {
 	
-	List<Gym> getAllGym();
-	List<Gym> getGymByRegion(String region);
-	List<Gym> getGymByName(String hint);
-	Gym getGym(long id);
-	void insertGym(Gym gym);
-	void updateGym(Gym gym);
-	void deleteGym(Gym gym);
-	
-	
-
-	
+	List<Gym> getAllGym() throws BusinessException;
+	List<Gym> getGymByRegion(String region) throws BusinessException;
+	List<Gym> getGymByName(String hint) throws BusinessException;
+	Gym getGym(long id) throws BusinessException;
+	void insertGym(Gym gym) throws BusinessException;
+	void updateGym(Gym gym) throws BusinessException;
+	void deleteGym(Gym gym) throws BusinessException;
 
 }
