@@ -40,12 +40,13 @@ public class GymServiceImpl implements GymService {
 			Statement st = connection.createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
-				Gym gym = new Gym();
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
+				Gym gym = new Gym( rs.getLong(1),
+						rs.getString(3),
+						rs.getString(2),
+						rs.getString(4),
+						rs.getString(5),
+						null
+				);
 				gyms.add(gym);
 			}
 		} catch (SQLException e) {
