@@ -12,7 +12,7 @@ public class GymServiceImpl extends Service implements GymService {
 
 	private static final String GET_ALL_GYMS = "SELECT * FROM gym";
 	private static final String GET_GYMS_BY_REGION = "SELECT * FROM gym WHERE gym.region = ?";
-	private static final String GET_GYMS_BY_NAME = "SELECT * FROM `gym` WHERE gym.name LIKE '%'?'%'";
+	private static final String GET_GYMS_BY_NAME = "SELECT * FROM `gym` WHERE gym.name LIKE ?";
 	private static final String GET_GYM = "SELECT * FROM gym WHERE gym.id = ?";
 	private static final String INSERT_GYM = "INSERT INTO gym (address,name,province,region,user_user_id) VALUES (?,?,?,?,?)";
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE id=?";
