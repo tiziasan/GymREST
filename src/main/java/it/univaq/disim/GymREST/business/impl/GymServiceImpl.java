@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.univaq.disim.GymREST.business.GymService;
+import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.Gym;
 
-public class GymServiceImpl implements GymService {
+public class GymServiceImpl extends Service implements GymService {
 
 	private static final String GET_ALL_GYM = "SELECT * FROM gym";
 	private static final String GET_GYM_BY_REGION = "SELECT * FROM gym WHERE gym.region = ?";
@@ -17,27 +18,11 @@ public class GymServiceImpl implements GymService {
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE id=?";
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE id=?";
 
-	private Connection connection;
-
-	public GymServiceImpl(){
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:8889/gymportal", "gymportal", "gymportal");
-			if (connection != null) {
-				System.out.println("Connected to the database!");
-			} else {
-				System.out.println("Failed to make connection!");
-			}
-		} catch (SQLException | ClassNotFoundException throwables) {
-			throwables.printStackTrace();
-		}
-	}
-
 	@Override
-	public List<Gym> getAllGym() throws SQLException {
+	public List<Gym> getAllGyms() throws SQLException {
 		List<Gym> gyms = new ArrayList<>();
 		try {
-			Statement st = connection.createStatement();
+			Statement st = getConnection().createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				Gym gym = new Gym( rs.getLong(1),
@@ -52,17 +37,16 @@ public class GymServiceImpl implements GymService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.close();
-			System.out.println("Connection Closed");
+			closeConnetion();
 		}
 		return gyms;
 	}
 
 	@Override
-	public List<Gym> getGymByRegion(String region) throws SQLException {
+	public List<Gym> getGymsByRegion(String region) throws SQLException {
 		List<Gym> gyms = new ArrayList<>();
 		try {
-			Statement st = connection.createStatement();
+			Statement st = getConnection().createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				Gym gym = new Gym();
@@ -76,16 +60,16 @@ public class GymServiceImpl implements GymService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.close();
+			closeConnetion();
 		}
 		return gyms;
 	}
 
 	@Override
-	public List<Gym> getGymByName(String hint) throws SQLException {
+	public List<Gym> getGymsByName(String hint) throws SQLException {
 		List<Gym> gyms = new ArrayList<>();
 		try {
-			Statement st = connection.createStatement();
+			Statement st = getConnection().createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				Gym gym = new Gym();
@@ -99,7 +83,7 @@ public class GymServiceImpl implements GymService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.close();
+			closeConnetion();
 		}
 		return gyms;
 	}
@@ -108,21 +92,21 @@ public class GymServiceImpl implements GymService {
 	public Gym getGym(long id) throws SQLException {
 		Gym gym = null;
 		try {
-			Statement st = connection.createStatement();
+			Statement st = getConnection().createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.close();
+			closeConnetion();
 		}
 		return gym;
 	}
 
 	@Override
-	public void insertGym(Gym gym) throws SQLException {
+	public void createGym(Gym gym) throws SQLException {
 		try {
-			Statement st = connection.createStatement();
+			Statement st = getConnection().createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				gym.setId(rs.getLong(1));
@@ -134,14 +118,14 @@ public class GymServiceImpl implements GymService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.close();
+			closeConnetion();
 		}
 	}
 
 	@Override
 	public void updateGym(Gym gym) throws SQLException {
 		try {
-			Statement st = connection.createStatement();
+			Statement st = getConnection().createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				gym.setId(rs.getLong(1));
@@ -153,14 +137,14 @@ public class GymServiceImpl implements GymService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.close();
+			closeConnetion();
 		}
 	}
 
 	@Override
 	public void deleteGym(Gym gym) throws SQLException {
 		try {
-			Statement st = connection.createStatement();
+			Statement st = getConnection().createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYM);
 			while (rs.next()){
 				gym.setId(rs.getLong(1));
@@ -172,7 +156,7 @@ public class GymServiceImpl implements GymService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			connection.close();
+			closeConnetion();
 		}
 	}
 
