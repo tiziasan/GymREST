@@ -99,11 +99,21 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public Gym getGym(long id) throws SQLException {
-		Gym gym = null;
+	public Gym getGym(long idGym) throws SQLException {
+		System.out.println("getGym");
+
+		Gym gym = new Gym();
 		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_ALL_GYM);
+			PreparedStatement st = getConnection().prepareStatement(GET_GYM);
+			st.setLong(1,idGym);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				gym.setId(rs.getLong(1));
+				gym.setName(rs.getString(3));
+				gym.setAddress(rs.getString(2));
+				gym.setRegion(rs.getString(5));
+				gym.setProvince(rs.getString(4));
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
