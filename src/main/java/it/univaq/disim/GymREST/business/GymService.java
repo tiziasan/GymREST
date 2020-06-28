@@ -11,7 +11,7 @@ public interface GymService {
 	List<Gym> getGymsByRegion(String region) throws SQLException;
 	List<Gym> getGymsByName(String hint) throws SQLException;
 	Gym getGym(long id) throws SQLException;
-	void createGym(Gym gym) throws SQLException;
+	long createGym(Gym gym) throws SQLException;
 	void updateGym(Gym gym) throws SQLException;
 	void deleteGym(Gym gym) throws SQLException;
 

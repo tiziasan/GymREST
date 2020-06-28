@@ -1,15 +1,16 @@
 package it.univaq.disim.GymREST.resources;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.model.Gym;
 
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("gyms")
 public class GymRes {
@@ -39,6 +40,13 @@ public class GymRes {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGym(@PathParam("idGym") long idGym) throws SQLException {
         return Response.ok(gymService.getGym(idGym)).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addGym(@Context UriInfo uriinfo, Gym gym) throws SQLException {
+        long idGym = gymService.createGym(gym);
+        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
     }
 
 }
