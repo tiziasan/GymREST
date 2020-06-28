@@ -23,8 +23,18 @@ public class GymRes {
     //Passing Collection in Query Parameters -- https://memorynotfound.com/jaxrs-queryparam-example/
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGymsByRegion() throws SQLException {
-        return Response.ok(gymService.getAllGyms()).build();
+    public Response getGyms(@QueryParam("name") String name, @QueryParam("region") String region) throws SQLException {
+        if ( region==null && name==null ) {
+            return Response.ok(gymService.getAllGyms()).build();
+
+        } if ( region!=null && name==null ){
+            return Response.ok(gymService.getGymsByRegion(region)).build();
+
+        } if ( region==null && name!=null ){
+            return Response.ok(gymService.getGymsByName(name)).build();
+
+        }
+        return Response.serverError().entity("Chiamata errata").build();
     }
 
 
