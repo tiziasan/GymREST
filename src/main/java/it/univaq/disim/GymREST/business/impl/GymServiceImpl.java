@@ -10,7 +10,7 @@ import it.univaq.disim.GymREST.model.Gym;
 
 public class GymServiceImpl extends Service implements GymService {
 
-	private static final String GET_ALL_GYM = "SELECT * FROM gym";
+	private static final String GET_ALL_GYMS = "SELECT * FROM gym";
 	private static final String GET_GYM_BY_REGION = "SELECT * FROM gym WHERE gym.region = ?";
 	private static final String GET_GYM_BY_NAME = "SELECT * FROM `gym` WHERE gym.name LIKE '%'?'%'";
 	private static final String GET_GYM = "SELECT * FROM gym WHERE gym.id = ?";
@@ -20,10 +20,12 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public List<Gym> getAllGyms() throws SQLException {
+		System.out.println("getAllGyms");
+
 		List<Gym> gyms = new ArrayList<>();
 		try {
 			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_ALL_GYM);
+			ResultSet rs = st.executeQuery(GET_ALL_GYMS);
 			while (rs.next()){
 				Gym gym = new Gym( rs.getLong(1),
 						rs.getString(3),
