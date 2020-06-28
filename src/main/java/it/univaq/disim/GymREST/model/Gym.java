@@ -13,14 +13,15 @@ public class Gym {
 	private String province;
 	private String region;
 
+	private User user;
+
 	@JsonIgnore
 	private List<FeedbackGym> feedbackGym;
 	@JsonIgnore
 	private List<FavoriteGym> favoriteGym;
 	@JsonIgnore
 	private List<Course> course;
-	@JsonIgnore
-	private User user;
+
 
 	public Gym() {
 		this.id = 0;
@@ -125,4 +126,14 @@ public class Gym {
 		return Objects.hash(getId());
 	}
 
+	@Override
+	public String toString() {
+		return "Gym{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", address='" + address + '\'' +
+				", province='" + province + '\'' +
+				", region='" + region + '\'' +
+				'}';
+	}
 }

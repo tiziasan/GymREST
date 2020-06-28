@@ -7,11 +7,11 @@ import it.univaq.disim.GymREST.model.Gym;
 
 public interface GymService {
 	
-	List<Gym> getAllGym() throws SQLException;
-	List<Gym> getGymByRegion(String region) throws SQLException;
-	List<Gym> getGymByName(String hint) throws SQLException;
+	List<Gym> getAllGyms() throws SQLException;
+	List<Gym> getGymsByRegion(String region) throws SQLException;
+	List<Gym> getGymsByName(String hint) throws SQLException;
 	Gym getGym(long id) throws SQLException;
-	void insertGym(Gym gym) throws SQLException;
+	void createGym(Gym gym) throws SQLException;
 	void updateGym(Gym gym) throws SQLException;
 	void deleteGym(Gym gym) throws SQLException;
 
