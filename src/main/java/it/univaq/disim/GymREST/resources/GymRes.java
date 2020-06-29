@@ -58,4 +58,11 @@ public class GymRes {
         return Response.noContent().build();
     }
 
+    @DELETE
+    @Path("{idGym: [0-9]+}")
+    public Response deleteGym(@PathParam("idGym") long idGym) throws SQLException {
+        gymService.deleteGym(idGym);
+        return Response.noContent().build();
+    }
+
 }

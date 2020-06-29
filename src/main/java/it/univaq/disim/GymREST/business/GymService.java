@@ -13,6 +13,6 @@ public interface GymService {
 	Gym getGym(long id) throws SQLException;
 	long createGym(Gym gym) throws SQLException;
 	void updateGym(Gym gym) throws SQLException;
-	void deleteGym(Gym gym) throws SQLException;
+	void deleteGym(long idGym) throws SQLException;
 
 }

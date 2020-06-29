@@ -16,7 +16,7 @@ public class GymServiceImpl extends Service implements GymService {
 	private static final String GET_GYM = "SELECT * FROM gym WHERE gym.id = ?";
 	private static final String INSERT_GYM = "INSERT INTO gym (address,name,province,region,user_user_id) VALUES (?,?,?,?,?)";
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE gym_id=?";
-	private static final String DELETE_GYM = "DELETE FROM gym WHERE id=?";
+	private static final String DELETE_GYM = "DELETE FROM gym WHERE gym_id=?";
 
 	@Override
 	public List<Gym> getAllGyms() throws SQLException {
@@ -169,17 +169,14 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public void deleteGym(Gym gym) throws SQLException {
+	public void deleteGym(long idGym) throws SQLException {
+		System.out.println("deleteGym");
+
 		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_ALL_GYMS);
-			while (rs.next()){
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
-			}
+			PreparedStatement st = getConnection().prepareStatement(DELETE_GYM);
+			st.setLong(1,idGym);
+			st.execute();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
