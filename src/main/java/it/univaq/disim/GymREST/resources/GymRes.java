@@ -49,4 +49,13 @@ public class GymRes {
         return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
     }
 
+    @PUT
+    @Path("{idGym: [0-9]+}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateGym(@PathParam("idGym") long idGym, Gym gym) throws SQLException {
+        gym.setId(idGym);
+        gymService.updateGym(gym);
+        return Response.noContent().build();
+    }
+
 }

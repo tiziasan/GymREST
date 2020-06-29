@@ -15,7 +15,7 @@ public class GymServiceImpl extends Service implements GymService {
 	private static final String GET_GYMS_BY_NAME = "SELECT * FROM `gym` WHERE gym.name LIKE ?";
 	private static final String GET_GYM = "SELECT * FROM gym WHERE gym.id = ?";
 	private static final String INSERT_GYM = "INSERT INTO gym (address,name,province,region,user_user_id) VALUES (?,?,?,?,?)";
-	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE id=?";
+	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE gym_id=?";
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE id=?";
 
 	@Override
@@ -150,16 +150,17 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public void updateGym(Gym gym) throws SQLException {
+		System.out.println("updateGym");
+
 		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_ALL_GYMS);
-			while (rs.next()){
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
-			}
+			PreparedStatement st = getConnection().prepareStatement(UPDATE_GYM);
+			st.setString(1,gym.getAddress());
+			st.setString(2,gym.getName());
+			st.setString(3,gym.getProvince());
+			st.setString(4,gym.getRegion());
+			st.setLong(5,gym.getId());
+			st.execute();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
