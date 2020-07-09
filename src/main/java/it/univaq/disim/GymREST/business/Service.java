@@ -11,7 +11,7 @@ public class Service {
     public Service(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:8889/gymportal", "gymportal", "gymportal");
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "gymportal", "gymportal");
             if (connection != null) {
                 System.out.println("Connected to the database!");
             } else {
