@@ -23,7 +23,30 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public List<Course> getCoursesByGym(long courseId) throws SQLException {
-        return null;
+        System.out.println("getCoursesByGym");
+
+        List<Course> courses = new ArrayList<>();
+        try {
+            PreparedStatement st = getConnection().prepareStatement(GET_ALL_COURSES_BY_GYMS);
+            st.setLong(1,courseId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()){
+                Course course = new Course();
+                course.setId(rs.getLong(1));
+                course.setCode(rs.getString(2));
+                course.setName(rs.getString(4));
+                course.setDescription(rs.getString(3));
+
+                courses.add(course);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnetion();
+        }
+        return courses;
+
     }
 
     @Override
