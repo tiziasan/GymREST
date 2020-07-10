@@ -31,5 +31,10 @@ build/
 .vscode/
 
 
-/.idea/*
-/target/*
+*.class
+*.jar
+*.war
+*.ear
+*.logs
+.idea/
+.eclipse
