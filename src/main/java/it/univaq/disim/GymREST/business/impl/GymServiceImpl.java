@@ -12,8 +12,8 @@ public class GymServiceImpl extends Service implements GymService {
 
 	private static final String GET_ALL_GYMS = "SELECT * FROM gym";
 	private static final String GET_GYMS_BY_REGION = "SELECT * FROM gym WHERE gym.region = ?";
-	private static final String GET_GYMS_BY_NAME = "SELECT * FROM `gym` WHERE gym.name LIKE ?";
-	private static final String GET_GYM = "SELECT * FROM gym WHERE gym.id = ?";
+	private static final String GET_GYMS_BY_NAME = "SELECT * FROM gym WHERE gym.name LIKE ?";
+	private static final String GET_GYM = "SELECT * FROM gym WHERE gym_id = ?";
 	private static final String INSERT_GYM = "INSERT INTO gym (address,name,province,region,user_user_id) VALUES (?,?,?,?,?)";
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE gym_id=?";
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE gym_id=?";
@@ -27,13 +27,13 @@ public class GymServiceImpl extends Service implements GymService {
 			Statement st = getConnection().createStatement();
 			ResultSet rs = st.executeQuery(GET_ALL_GYMS);
 			while (rs.next()){
-				Gym gym = new Gym( rs.getLong(1),
-						rs.getString(3),
-						rs.getString(2),
-						rs.getString(4),
-						rs.getString(5),
-						null
-				);
+				Gym gym = new Gym();
+				gym.setId(rs.getLong(1));
+				gym.setName(rs.getString(3));
+				gym.setRegion(rs.getString(5));
+				gym.setProvince(rs.getString(4));
+				gym.setAddress(rs.getString(2));
+
 				gyms.add(gym);
 			}
 		} catch (SQLException e) {
@@ -54,13 +54,13 @@ public class GymServiceImpl extends Service implements GymService {
 			st.setString(1,region);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()){
-				Gym gym = new Gym( rs.getLong(1),
-						rs.getString(3),
-						rs.getString(2),
-						rs.getString(4),
-						rs.getString(5),
-						null
-				);
+				Gym gym = new Gym();
+				gym.setId(rs.getLong(1));
+				gym.setName(rs.getString(3));
+				gym.setRegion(rs.getString(5));
+				gym.setProvince(rs.getString(4));
+				gym.setAddress(rs.getString(2));
+
 				gyms.add(gym);
 			}
 		} catch (SQLException e) {
@@ -81,13 +81,13 @@ public class GymServiceImpl extends Service implements GymService {
 			st.setString(1, "%" + name + "%");
 			ResultSet rs = st.executeQuery();
 			while (rs.next()){
-				Gym gym = new Gym( rs.getLong(1),
-						rs.getString(3),
-						rs.getString(2),
-						rs.getString(4),
-						rs.getString(5),
-						null
-				);
+				Gym gym = new Gym();
+				gym.setId(rs.getLong(1));
+				gym.setName(rs.getString(3));
+				gym.setRegion(rs.getString(5));
+				gym.setProvince(rs.getString(4));
+				gym.setAddress(rs.getString(2));
+
 				gyms.add(gym);
 			}
 		} catch (SQLException e) {
@@ -110,9 +110,9 @@ public class GymServiceImpl extends Service implements GymService {
 			if (rs.next()) {
 				gym.setId(rs.getLong(1));
 				gym.setName(rs.getString(3));
-				gym.setAddress(rs.getString(2));
 				gym.setRegion(rs.getString(5));
 				gym.setProvince(rs.getString(4));
+				gym.setAddress(rs.getString(2));
 			}
 
 		} catch (SQLException e) {
@@ -129,11 +129,13 @@ public class GymServiceImpl extends Service implements GymService {
 
 		try {
 			PreparedStatement st = getConnection().prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);
-			st.setString(1,gym.getAddress());
-			st.setString(2,gym.getName());
-			st.setString(3,gym.getProvince());
-			st.setString(4,gym.getRegion());
+			st.setString(2, gym.getName());
+			st.setString(4, gym.getRegion());
+			st.setString(3, gym.getProvince());
+			st.setString(1, gym.getAddress());
+			// da ultimare dopo utenteRes
 			st.setString(5,"14");
+
 			st.execute();
 
 			ResultSet result = st.getGeneratedKeys();
@@ -154,11 +156,11 @@ public class GymServiceImpl extends Service implements GymService {
 
 		try {
 			PreparedStatement st = getConnection().prepareStatement(UPDATE_GYM);
-			st.setString(1,gym.getAddress());
-			st.setString(2,gym.getName());
-			st.setString(3,gym.getProvince());
-			st.setString(4,gym.getRegion());
-			st.setLong(5,gym.getId());
+			st.setString(2, gym.getName());
+			st.setString(4, gym.getRegion());
+			st.setString(3, gym.getProvince());
+			st.setString(1, gym.getAddress());
+			st.setLong(5, gym.getId());
 			st.execute();
 
 		} catch (SQLException e) {

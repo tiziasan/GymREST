@@ -32,6 +32,7 @@ public class GymRes {
             return Response.ok(gymService.getGymsByName(name)).build();
 
         }
+        //non chiude la connessione
         return Response.serverError().entity("Chiamata errata").build();
     }
 
