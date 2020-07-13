@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+import it.univaq.disim.GymREST.resources.FavoriteRes;
 import it.univaq.disim.GymREST.resources.GymRes;
 
 import javax.ws.rs.ApplicationPath;
@@ -24,6 +25,7 @@ public class RESTApp extends Application {
         //aggiungiamo tutte le *root resurces* (cioè quelle
         //con l'annotazione Path) che vogliamo pubblicare
         c.add(GymRes.class);
+        c.add(FavoriteRes.class);
         //aggiungiamo il provider Jackson per poter
         //usare i suoi servizi di serializzazione e 
         //deserializzazione JSON
