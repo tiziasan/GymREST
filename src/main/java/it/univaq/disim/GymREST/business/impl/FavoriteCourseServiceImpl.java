@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.FavoriteCourseService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
 
 import java.sql.PreparedStatement;
@@ -42,16 +43,15 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     @Override
     public List<FavoriteCourse> getAllFavoriteCourse(long id) throws SQLException {
         System.out.println("getAllFavoriteCourse");
+
         List<FavoriteCourse> favoriteCourses = new ArrayList<>();
         try {
             PreparedStatement st = getConnection().prepareStatement(GET_FAVORITE_BY_USER);
             st.setLong(1,id);
             ResultSet rs = st.executeQuery();
             while (rs.next()){
-                FavoriteCourse favoriteCourse = new FavoriteCourse( rs.getLong(1),
-                        null,
-                        null
-                );
+                FavoriteCourse favoriteCourse = new FavoriteCourse();
+                favoriteCourse.setId(rs.getLong(1));
                 favoriteCourses.add(favoriteCourse);
             }
         } catch (SQLException e) {
@@ -64,7 +64,7 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
 
     @Override
     public void deleteFavoriteCourse(long id) throws SQLException {
-        System.out.println("deleteFavorite");
+        System.out.println("deleteFavoriteCourse");
 
         try {
             PreparedStatement st = getConnection().prepareStatement(DELETE_FAVORITE_COURSE);

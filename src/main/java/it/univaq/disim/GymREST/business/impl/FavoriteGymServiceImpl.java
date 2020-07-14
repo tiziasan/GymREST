@@ -17,8 +17,6 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     private static final String GET_FAVORITE_BY_USER = "SELECT * FROM favoritegym WHERE user_user_id=?";
     private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE id=?";
 
-
-
     @Override
     public long createFavoriteGym(FavoriteGym favoriteGym) throws SQLException {
         System.out.println("createFavoriteGym");
@@ -44,7 +42,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
 
     @Override
     public List<FavoriteGym> getAllFavoriteGym(long id) throws SQLException {
-        System.out.println("getAllFavoriteGymBYUser");
+        System.out.println("getAllFavoriteGym");
 
         List<FavoriteGym> favoriteGyms = new ArrayList<>();
         try {
@@ -52,10 +50,8 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
             st.setLong(1,id);
             ResultSet rs = st.executeQuery();
             while (rs.next()){
-                FavoriteGym favoriteGym = new FavoriteGym( rs.getLong(1),
-                        null,
-                        null
-                );
+                FavoriteGym favoriteGym = new FavoriteGym();
+                favoriteGym.setId(rs.getLong(1));
                 favoriteGyms.add(favoriteGym);
             }
         } catch (SQLException e) {
@@ -68,7 +64,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
 
     @Override
     public void deleteFavoriteGym(long id) throws SQLException {
-        System.out.println("deleteFavorite");
+        System.out.println("deleteFavoriteGym");
 
         try {
             PreparedStatement st = getConnection().prepareStatement(DELETE_FAVORITE_GYM);
