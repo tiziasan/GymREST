@@ -66,4 +66,8 @@ public class GymRes {
         return Response.noContent().build();
     }
 
+    @Path("{idGym: [0-9]+}/courses")
+    public CourseRes getCourses(@PathParam("idGym") long idGym) {
+        return new CourseRes(idGym);
+    }
 }
