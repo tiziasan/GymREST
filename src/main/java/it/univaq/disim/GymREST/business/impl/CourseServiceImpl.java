@@ -76,8 +76,27 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public Course getCourse(long id) throws SQLException {
-        return null;
+    public Course getCourse(long idCourse) throws SQLException {
+        System.out.println("getCourse");
+
+        Course course = new Course();
+        try {
+            PreparedStatement st = getConnection().prepareStatement(GET_COURSE);
+            st.setLong(1,idCourse);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                course.setId(rs.getLong(1));
+                course.setCode(rs.getString(2));
+                course.setName(rs.getString(4));
+                course.setDescription(rs.getString(3));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnetion();
+        }
+        return course;
     }
 
     @Override

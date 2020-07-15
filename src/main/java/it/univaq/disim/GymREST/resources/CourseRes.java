@@ -29,5 +29,11 @@ public class CourseRes {
         return Response.ok(courseService.getCoursesByGym(idGym)).build();
     }
 
+    @GET
+    @Path("{idCourse: [0-9]+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getGym(@PathParam("idCourse") long idCourse) throws SQLException {
+        return Response.ok(courseService.getCourse(idCourse)).build();
+    }
 
 }
