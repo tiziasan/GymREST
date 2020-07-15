@@ -47,4 +47,13 @@ public class CourseRes {
         return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getCourse").build(idCourse)).build();
     }
 
+    @PUT
+    @Path("{idCourse: [0-9]+}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateGym(@PathParam("idCourse") long idCourse, Course course) throws SQLException {
+        course.setId(idCourse);
+        courseService.updateCourse(course);
+        return Response.noContent().build();
+    }
+
 }

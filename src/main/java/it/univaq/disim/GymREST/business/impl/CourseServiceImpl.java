@@ -17,8 +17,8 @@ public class CourseServiceImpl extends Service implements CourseService {
     private static final String GET_ALL_COURSES_BY_GYMS = "SELECT * FROM course WHERE gym_gym_id=?";
     private static final String GET_COURSES_BY_NAME = "SELECT * FROM course WHERE course.name LIKE ?";
     private static final String GET_COURSE = "SELECT * FROM course WHERE course.id = ?";
-    private static final String INSERT_COURSE = "INSERT INTO course (code,description,name,gym_gym_id) VALUES (?,?,?,?)";
-    private static final String UPDATE_COURSE = "UPDATE course SET address=?, name=?, province=?, region= ? WHERE gym_id=?";
+    private static final String INSERT_COURSE = "INSERT INTO course (code,name,description,gym_gym_id) VALUES (?,?,?,?)";
+    private static final String UPDATE_COURSE = "UPDATE course SET code=?, name=?, description=? WHERE id=?";
     private static final String DELETE_COURSE = "DELETE FROM course WHERE gym_id=?";
 
     @Override
@@ -106,8 +106,8 @@ public class CourseServiceImpl extends Service implements CourseService {
         try {
             PreparedStatement st = getConnection().prepareStatement(INSERT_COURSE, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, course.getCode());
-            st.setString(3, course.getName());
-            st.setString(2, course.getDescription());
+            st.setString(2, course.getName());
+            st.setString(3, course.getDescription());
             // da ultimare
             st.setString(4,"8");
 
@@ -127,7 +127,21 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public void updateCourse(Course course) throws SQLException {
+        System.out.println("updateCourse");
 
+        try {
+            PreparedStatement st = getConnection().prepareStatement(UPDATE_COURSE);
+            st.setString(1, course.getCode());
+            st.setString(2, course.getName());
+            st.setString(3, course.getDescription());
+            st.setLong(4, course.getId());
+            st.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnetion();
+        }
     }
 
     @Override
