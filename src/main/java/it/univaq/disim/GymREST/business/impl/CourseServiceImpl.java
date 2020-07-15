@@ -17,7 +17,7 @@ public class CourseServiceImpl extends Service implements CourseService {
     private static final String GET_ALL_COURSES_BY_GYMS = "SELECT * FROM course WHERE gym_gym_id=?";
     private static final String GET_COURSES_BY_NAME = "SELECT * FROM course WHERE course.name LIKE ?";
     private static final String GET_COURSE = "SELECT * FROM course WHERE course.id = ?";
-    private static final String INSERT_COURSE = "INSERT INTO course (address,name,province,region,user_user_id) VALUES (?,?,?,?,?)";
+    private static final String INSERT_COURSE = "INSERT INTO course (code,description,name,gym_gym_id) VALUES (?,?,?,?)";
     private static final String UPDATE_COURSE = "UPDATE course SET address=?, name=?, province=?, region= ? WHERE gym_id=?";
     private static final String DELETE_COURSE = "DELETE FROM course WHERE gym_id=?";
 
@@ -101,6 +101,27 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public long createCourse(Course course) throws SQLException {
+        System.out.println("createCourse");
+
+        try {
+            PreparedStatement st = getConnection().prepareStatement(INSERT_COURSE, Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, course.getCode());
+            st.setString(3, course.getName());
+            st.setString(2, course.getDescription());
+            // da ultimare
+            st.setString(4,"8");
+
+            st.execute();
+
+            ResultSet result = st.getGeneratedKeys();
+            if (result.next()) {
+                return result.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnetion();
+        }
         return 0;
     }
 
