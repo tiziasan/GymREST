@@ -1,7 +1,9 @@
 package it.univaq.disim.GymREST.resources;
 
 import it.univaq.disim.GymREST.business.CourseService;
+import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.impl.CourseServiceImpl;
+import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.Gym;
 
@@ -21,7 +23,7 @@ public class CourseRes {
     }
 
     private CourseService courseService = new CourseServiceImpl();
-
+    private GymService gymService = new GymServiceImpl();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -43,7 +45,9 @@ public class CourseRes {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCourse(@Context UriInfo uriinfo, Course course) throws SQLException {
+        course.setGym(gymService.getGym(idGym));
         long idCourse = courseService.createCourse(course);
+        
         return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getCourse").build(idCourse)).build();
     }
 

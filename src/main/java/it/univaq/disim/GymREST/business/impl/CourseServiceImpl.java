@@ -3,7 +3,6 @@ package it.univaq.disim.GymREST.business.impl;
 import it.univaq.disim.GymREST.business.CourseService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.Course;
-import it.univaq.disim.GymREST.model.Gym;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -108,9 +107,7 @@ public class CourseServiceImpl extends Service implements CourseService {
             st.setString(1, course.getCode());
             st.setString(2, course.getName());
             st.setString(3, course.getDescription());
-            // da ultimare
-            st.setString(4,"8");
-
+            st.setLong(4,course.getGym().getId());
             st.execute();
 
             ResultSet result = st.getGeneratedKeys();
