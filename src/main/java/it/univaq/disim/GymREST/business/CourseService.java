@@ -11,6 +11,6 @@ public interface CourseService {
 	Course getCourse(long id) throws SQLException;
 	long createCourse(Course course) throws SQLException;
 	void updateCourse(Course course) throws SQLException;
-	void deleteCourse(Course course) throws SQLException;
+	void deleteCourse(long id) throws SQLException;
 
 }

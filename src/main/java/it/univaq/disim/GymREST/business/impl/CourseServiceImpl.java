@@ -19,7 +19,7 @@ public class CourseServiceImpl extends Service implements CourseService {
     private static final String GET_COURSE = "SELECT * FROM course WHERE course.id = ?";
     private static final String INSERT_COURSE = "INSERT INTO course (code,name,description,gym_gym_id) VALUES (?,?,?,?)";
     private static final String UPDATE_COURSE = "UPDATE course SET code=?, name=?, description=? WHERE id=?";
-    private static final String DELETE_COURSE = "DELETE FROM course WHERE gym_id=?";
+    private static final String DELETE_COURSE = "DELETE FROM course WHERE id=?";
 
     @Override
     public List<Course> getCoursesByGym(long courseId) throws SQLException {
@@ -145,7 +145,18 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public void deleteCourse(Course course) throws SQLException {
+    public void deleteCourse(long idCourse) throws SQLException {
+        System.out.println("deleteCourse");
 
+        try {
+            PreparedStatement st = getConnection().prepareStatement(DELETE_COURSE);
+            st.setLong(1,idCourse);
+            st.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnetion();
+        }
     }
 }

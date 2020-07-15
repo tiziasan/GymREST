@@ -56,4 +56,11 @@ public class CourseRes {
         return Response.noContent().build();
     }
 
+    @DELETE
+    @Path("{idCourse: [0-9]+}")
+    public Response deleteGym(@PathParam("idCourse") long idCourse) throws SQLException {
+        courseService.deleteCourse(idCourse);
+        return Response.noContent().build();
+    }
+
 }
