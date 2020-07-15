@@ -21,7 +21,11 @@ public class CourseRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCourses() throws SQLException {
+    public Response getCourses(@QueryParam("name") String name) throws SQLException {
+        if ( name != null ){
+            return Response.ok(courseService.getCoursesByName(name)).build();
+
+        }
         return Response.ok(courseService.getCoursesByGym(idGym)).build();
     }
 

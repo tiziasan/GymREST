@@ -51,7 +51,28 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public List<Course> getCoursesByName(String hint) throws SQLException {
-        return null;
+        System.out.println("getGymsByRegion");
+
+        List<Course> courses = new ArrayList<>();
+        try {
+            PreparedStatement st = getConnection().prepareStatement(GET_COURSES_BY_NAME);
+            st.setString(1, "%" + hint + "%");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()){
+                Course course = new Course();
+                course.setId(rs.getLong(1));
+                course.setCode(rs.getString(2));
+                course.setName(rs.getString(4));
+                course.setDescription(rs.getString(3));
+
+                courses.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnetion();
+        }
+        return courses;
     }
 
     @Override
