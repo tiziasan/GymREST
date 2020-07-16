@@ -32,4 +32,14 @@ public class Service {
             System.out.println("Connection Closed");
         }
     }
+
+    protected static void loadDriver() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
 }

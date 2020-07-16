@@ -8,7 +8,7 @@ import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.Gym;
 
-public class GymServiceImpl implements GymService {
+public class GymServiceImpl extends Service implements GymService {
 
 	private static final String GET_ALL_GYMS = "SELECT * FROM gym";
 	private static final String GET_GYMS_BY_REGION = "SELECT * FROM gym WHERE gym.region = ?";
@@ -29,27 +29,16 @@ public class GymServiceImpl implements GymService {
 		this.psw = psw;
 	}
 
-	private static void loadDriver() {
-		try {
-			// The newInstance() call is a work around for some
-			// broken Java implementations
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
 	@Override
 	public List<Gym> getAllGyms() throws SQLException {
 		System.out.println("getAllGyms");
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try (	Connection connection = DriverManager.getConnection(url,user,psw);
-				Statement st = connection.createStatement();
-				ResultSet rs = st.executeQuery(GET_ALL_GYMS);
-				){
+		try (Connection connection = DriverManager.getConnection(url,user,psw);
+			 Statement st = connection.createStatement();
+			 ResultSet rs = st.executeQuery(GET_ALL_GYMS);) {
+
 			while (rs.next()){
 				Gym gym = new Gym();
 				gym.setId(rs.getLong(1));
@@ -72,20 +61,21 @@ public class GymServiceImpl implements GymService {
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try {
-			Connection connection = DriverManager.getConnection(url,user,psw);
-			PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_REGION);
+		try (Connection connection = DriverManager.getConnection(url,user,psw);
+			 PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_REGION);) {
 			st.setString(1,region);
-			ResultSet rs = st.executeQuery();
-			while (rs.next()){
-				Gym gym = new Gym();
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
 
-				gyms.add(gym);
+			try (ResultSet rs = st.executeQuery();) {
+				while (rs.next()){
+					Gym gym = new Gym();
+					gym.setId(rs.getLong(1));
+					gym.setName(rs.getString(3));
+					gym.setRegion(rs.getString(5));
+					gym.setProvince(rs.getString(4));
+					gym.setAddress(rs.getString(2));
+
+					gyms.add(gym);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -99,20 +89,21 @@ public class GymServiceImpl implements GymService {
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try {
-			Connection connection = DriverManager.getConnection(url,user,psw);
-			PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_NAME);
-			st.setString(1, "%" + name + "%");
-			ResultSet rs = st.executeQuery();
-			while (rs.next()){
-				Gym gym = new Gym();
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
+		try (Connection connection = DriverManager.getConnection(url,user,psw);
+			 PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_NAME);) {
 
-				gyms.add(gym);
+			st.setString(1, "%" + name + "%");
+			try (ResultSet rs = st.executeQuery();) {
+				while (rs.next()){
+					Gym gym = new Gym();
+					gym.setId(rs.getLong(1));
+					gym.setName(rs.getString(3));
+					gym.setRegion(rs.getString(5));
+					gym.setProvince(rs.getString(4));
+					gym.setAddress(rs.getString(2));
+
+					gyms.add(gym);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -126,17 +117,18 @@ public class GymServiceImpl implements GymService {
 		loadDriver();
 
 		Gym gym = new Gym();
-		try {
-			Connection connection = DriverManager.getConnection(url,user,psw);
-			PreparedStatement st = connection.prepareStatement(GET_GYM);
+		try (Connection connection = DriverManager.getConnection(url,user,psw);
+			 PreparedStatement st = connection.prepareStatement(GET_GYM);) {
+
 			st.setLong(1,idGym);
-			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
+			try (ResultSet rs = st.executeQuery();) {
+				if (rs.next()) {
+					gym.setId(rs.getLong(1));
+					gym.setName(rs.getString(3));
+					gym.setRegion(rs.getString(5));
+					gym.setProvince(rs.getString(4));
+					gym.setAddress(rs.getString(2));
+				}
 			}
 
 		} catch (SQLException e) {
@@ -150,9 +142,9 @@ public class GymServiceImpl implements GymService {
 		System.out.println("createGym");
 		loadDriver();
 
-		try {
-			Connection connection = DriverManager.getConnection(url,user,psw);
-			PreparedStatement st = connection.prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);
+		try (Connection connection = DriverManager.getConnection(url,user,psw);
+			 PreparedStatement st = connection.prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);) {
+
 			st.setString(2, gym.getName());
 			st.setString(4, gym.getRegion());
 			st.setString(3, gym.getProvince());
@@ -162,9 +154,10 @@ public class GymServiceImpl implements GymService {
 
 			st.execute();
 
-			ResultSet result = st.getGeneratedKeys();
-			if (result.next()) {
-				return result.getLong(1);
+			try (ResultSet result = st.getGeneratedKeys();) {
+				if (result.next()) {
+					return result.getLong(1);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -177,9 +170,9 @@ public class GymServiceImpl implements GymService {
 		System.out.println("updateGym");
 		loadDriver();
 
-		try {
-			Connection connection = DriverManager.getConnection(url,user,psw);
-			PreparedStatement st = connection.prepareStatement(UPDATE_GYM);
+		try (Connection connection = DriverManager.getConnection(url,user,psw);
+			 PreparedStatement st = connection.prepareStatement(UPDATE_GYM);) {
+
 			st.setString(2, gym.getName());
 			st.setString(4, gym.getRegion());
 			st.setString(3, gym.getProvince());
@@ -197,9 +190,9 @@ public class GymServiceImpl implements GymService {
 		System.out.println("deleteGym");
 		loadDriver();
 
-		try {
-			Connection connection = DriverManager.getConnection(url,user,psw);
-			PreparedStatement st = connection.prepareStatement(DELETE_GYM);
+		try (Connection connection = DriverManager.getConnection(url,user,psw);
+			 PreparedStatement st = connection.prepareStatement(DELETE_GYM);) {
+
 			st.setLong(1,idGym);
 			st.execute();
 
@@ -207,7 +200,5 @@ public class GymServiceImpl implements GymService {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }
