@@ -16,6 +16,10 @@ import java.sql.SQLException;
 
 public class CourseRes {
 
+    private static final String url = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static final String user = "gymportal";
+    private static final String psw = "gymportal";
+
     private final long idGym;
 
     CourseRes(long idGym) {
@@ -44,7 +48,7 @@ public class CourseRes {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCourse(@Context UriInfo uriinfo, Course course) throws SQLException {
-        GymService gymService = new GymServiceImpl();
+        GymService gymService = new GymServiceImpl(url,user,psw);
         course.setGym(gymService.getGym(idGym));
         
         CourseService courseService = new CourseServiceImpl();

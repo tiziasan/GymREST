@@ -8,7 +8,7 @@ import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.Gym;
 
-public class GymServiceImpl extends Service implements GymService {
+public class GymServiceImpl implements GymService {
 
 	private static final String GET_ALL_GYMS = "SELECT * FROM gym";
 	private static final String GET_GYMS_BY_REGION = "SELECT * FROM gym WHERE gym.region = ?";
@@ -18,14 +18,38 @@ public class GymServiceImpl extends Service implements GymService {
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE gym_id=?";
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE gym_id=?";
 
+	private String url;
+	private String user;
+	private String psw;
+
+	public GymServiceImpl(String url, String user, String psw) {
+		super();
+		this.url = url;
+		this.user = user;
+		this.psw = psw;
+	}
+
+	private static void loadDriver() {
+		try {
+			// The newInstance() call is a work around for some
+			// broken Java implementations
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
 	@Override
 	public List<Gym> getAllGyms() throws SQLException {
 		System.out.println("getAllGyms");
+		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_ALL_GYMS);
+		try (	Connection connection = DriverManager.getConnection(url,user,psw);
+				Statement st = connection.createStatement();
+				ResultSet rs = st.executeQuery(GET_ALL_GYMS);
+				){
 			while (rs.next()){
 				Gym gym = new Gym();
 				gym.setId(rs.getLong(1));
@@ -38,8 +62,6 @@ public class GymServiceImpl extends Service implements GymService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return gyms;
 	}
@@ -47,10 +69,12 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public List<Gym> getGymsByRegion(String region) throws SQLException {
 		System.out.println("getGymsByRegion");
+		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
 		try {
-			PreparedStatement st = getConnection().prepareStatement(GET_GYMS_BY_REGION);
+			Connection connection = DriverManager.getConnection(url,user,psw);
+			PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_REGION);
 			st.setString(1,region);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()){
@@ -65,8 +89,6 @@ public class GymServiceImpl extends Service implements GymService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return gyms;
 	}
@@ -74,10 +96,12 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public List<Gym> getGymsByName(String name) throws SQLException {
 		System.out.println("getGymsByName");
+		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
 		try {
-			PreparedStatement st = getConnection().prepareStatement(GET_GYMS_BY_NAME);
+			Connection connection = DriverManager.getConnection(url,user,psw);
+			PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_NAME);
 			st.setString(1, "%" + name + "%");
 			ResultSet rs = st.executeQuery();
 			while (rs.next()){
@@ -92,8 +116,6 @@ public class GymServiceImpl extends Service implements GymService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return gyms;
 	}
@@ -101,10 +123,12 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public Gym getGym(long idGym) throws SQLException {
 		System.out.println("getGym");
+		loadDriver();
 
 		Gym gym = new Gym();
 		try {
-			PreparedStatement st = getConnection().prepareStatement(GET_GYM);
+			Connection connection = DriverManager.getConnection(url,user,psw);
+			PreparedStatement st = connection.prepareStatement(GET_GYM);
 			st.setLong(1,idGym);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
@@ -117,8 +141,6 @@ public class GymServiceImpl extends Service implements GymService {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return gym;
 	}
@@ -126,9 +148,11 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public long createGym(Gym gym) throws SQLException {
 		System.out.println("createGym");
+		loadDriver();
 
 		try {
-			PreparedStatement st = getConnection().prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);
+			Connection connection = DriverManager.getConnection(url,user,psw);
+			PreparedStatement st = connection.prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);
 			st.setString(2, gym.getName());
 			st.setString(4, gym.getRegion());
 			st.setString(3, gym.getProvince());
@@ -144,8 +168,6 @@ public class GymServiceImpl extends Service implements GymService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return 0;
 	}
@@ -153,9 +175,11 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public void updateGym(Gym gym) throws SQLException {
 		System.out.println("updateGym");
+		loadDriver();
 
 		try {
-			PreparedStatement st = getConnection().prepareStatement(UPDATE_GYM);
+			Connection connection = DriverManager.getConnection(url,user,psw);
+			PreparedStatement st = connection.prepareStatement(UPDATE_GYM);
 			st.setString(2, gym.getName());
 			st.setString(4, gym.getRegion());
 			st.setString(3, gym.getProvince());
@@ -165,24 +189,22 @@ public class GymServiceImpl extends Service implements GymService {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 	}
 
 	@Override
 	public void deleteGym(long idGym) throws SQLException {
 		System.out.println("deleteGym");
+		loadDriver();
 
 		try {
-			PreparedStatement st = getConnection().prepareStatement(DELETE_GYM);
+			Connection connection = DriverManager.getConnection(url,user,psw);
+			PreparedStatement st = connection.prepareStatement(DELETE_GYM);
 			st.setLong(1,idGym);
 			st.execute();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 	}
 
