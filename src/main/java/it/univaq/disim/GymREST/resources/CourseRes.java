@@ -5,8 +5,6 @@ import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.impl.CourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.model.Course;
-import it.univaq.disim.GymREST.model.Gym;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -70,5 +68,8 @@ public class CourseRes {
         courseService.deleteCourse(idCourse);
         return Response.noContent().build();
     }
+
+    @Path("{idCourse: [0-9]+}/feedbacks")
+    public FeedbackCourseRes getFeedbacksCourse(@PathParam("idCourse") long idCourse) { return new FeedbackCourseRes(idCourse); }
 
 }

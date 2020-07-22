@@ -15,7 +15,7 @@ import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
 
 @Path("prova")
-public class FavoriteRes {
+public class FavoriteCourseRes {
 
     private FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
 

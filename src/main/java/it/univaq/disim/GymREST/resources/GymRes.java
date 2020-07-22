@@ -73,4 +73,32 @@ public class GymRes {
     public CourseRes getCourses(@PathParam("idGym") long idGym) {
         return new CourseRes(idGym);
     }
+
+    @Path("{idGym: [0-9]+}/feedbacks")
+    public FeedbackCourseRes getFeedbacksGym(@PathParam("idGym") long idGym) { return new FeedbackCourseRes(idGym); }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

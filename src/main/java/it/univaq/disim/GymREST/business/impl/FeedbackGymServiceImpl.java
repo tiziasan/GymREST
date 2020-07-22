@@ -55,8 +55,8 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
             while (rs.next()){
                 FeedbackGym feedbackGym = new FeedbackGym();
                 feedbackGym.setId(rs.getLong(1));
-                feedbackGym.setRating(rs.getInt(2));
-                feedbackGym.setFeed(rs.getString(3));
+                feedbackGym.setRating(rs.getInt(3));
+                feedbackGym.setFeed(rs.getString(2));
 
                 feedbackGyms.add(feedbackGym);
             }
@@ -80,8 +80,8 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
             while (rs.next()){
                 FeedbackGym feedbackGym = new FeedbackGym();
                 feedbackGym.setId(rs.getLong(1));
-                feedbackGym.setRating(rs.getInt(2));
-                feedbackGym.setFeed(rs.getString(3));
+                feedbackGym.setRating(rs.getInt(3));
+                feedbackGym.setFeed(rs.getString(2));
 
                 feedbackGyms.add(feedbackGym);
             }
