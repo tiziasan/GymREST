@@ -5,16 +5,18 @@ import io.jsonwebtoken.security.SignatureException;
 import it.univaq.disim.GymREST.JWTHelpers;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-/**
- *
- * @author didattica
- */
 @Path("auth")
 public class SecurityRes {
 
@@ -28,30 +30,24 @@ public class SecurityRes {
 
             String authToken = issueToken(uriinfo, username);
 
-            //return Response.ok(authToken).build();
-            //return Response.ok().cookie(new NewCookie("token", authToken)).build();
-            //return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
-            //Restituiamolo in tutte le modalità, giusto per fare un esempio..
-            return Response.ok(authToken)
-                    .cookie(new NewCookie("token", authToken))
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
+            return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
+
         } catch (Exception e) {
             return Response.status(UNAUTHORIZED).build();
         }
     }
 
     private String issueToken(UriInfo context, String username) {
-        String token = username + "skfjsdkj";
 
 //        JWT
-//        Key key = JWTHelpers.getInstance().getJwtKey();
-//        String token = Jwts.builder()
-//                .setSubject(username)
-//                .setIssuer(context.getAbsolutePath().toString())
-//                .setIssuedAt(new Date())
-//                .setExpiration(Date.from(LocalDateTime.now().plusMinutes(15L).atZone(ZoneId.systemDefault()).toInstant()))
-//                .signWith(key)
-//                .compact();
+        Key key = JWTHelpers.getInstance().getJwtKey();
+        String token = Jwts.builder()
+                .setSubject(username)
+                .setIssuer(context.getAbsolutePath().toString())
+                .setIssuedAt(new Date())
+                .setExpiration(Date.from(LocalDateTime.now().plusMinutes(15L).atZone(ZoneId.systemDefault()).toInstant()))
+                .signWith(key)
+                .compact();
         return token;
     }
 
