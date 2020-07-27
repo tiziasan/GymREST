@@ -50,6 +50,11 @@ public class UserRes {
         return Response.noContent().build();
     }
 
+    @Path("{user: [0-9]+}/favorites")
+    public FavoriteGymRes getFavorites(@PathParam("user") long user) {
+        return new FavoriteGymRes(user);
+    }
+
 
 
 

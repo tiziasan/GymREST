@@ -17,12 +17,11 @@ import java.sql.SQLException;
 @Path("prova")
 public class FavoriteCourseRes {
 
-    private FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void createFavoriteGym(@Context UriInfo uriinfo, FavoriteGym favoriteGym) throws SQLException {
         System.out.println(favoriteGym);
+        FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
         long id = favoriteGymService.createFavoriteGym(favoriteGym);
     }
 
