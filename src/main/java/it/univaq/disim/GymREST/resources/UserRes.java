@@ -51,8 +51,8 @@ public class UserRes {
     }
 
     @Path("{user: [0-9]+}/favorites")
-    public FavoriteGymRes getFavorites(@PathParam("user") long user) {
-        return new FavoriteGymRes(user);
+    public FavoriteRes getFavorites(@PathParam("user") long user) {
+        return new FavoriteRes(user);
     }
 
 

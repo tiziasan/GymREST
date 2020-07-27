@@ -14,11 +14,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
 
-public class FavoriteGymRes {
+public class FavoriteRes {
 
     private final long user;
 
-    public FavoriteGymRes(long user) {
+    public FavoriteRes(long user) {
         this.user = user;
     }
 
