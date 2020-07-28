@@ -3,6 +3,7 @@ package it.univaq.disim.GymREST.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import it.univaq.disim.GymREST.JWTHelpers;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -32,7 +33,7 @@ public class SecurityFilter implements ContainerRequestFilter {
         if (token != null && !token.isEmpty()) {
             try {
                 //validiamo il token JWT
-                Key key = AppGlobal.getInstance().getJwtKey();
+                Key key = JWTHelpers.getInstance().getJwtKey();
                 Jws<Claims> jwsc = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
 
             } catch (Exception e) {
