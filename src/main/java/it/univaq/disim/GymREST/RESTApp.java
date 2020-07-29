@@ -3,6 +3,7 @@ package it.univaq.disim.GymREST;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import it.univaq.disim.GymREST.resources.*;
+import it.univaq.disim.GymREST.security.SecurityFilter;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -30,6 +31,7 @@ public class RESTApp extends Application {
         c.add(FavoriteGymRes.class);
         c.add(FeedbackCourseRes.class);
         c.add(FeedbackGymRes.class);
+        c.add(SecurityRes.class);
 
         //aggiungiamo il provider Jackson per poter
         //usare i suoi servizi di serializzazione e 
@@ -41,6 +43,7 @@ public class RESTApp extends Application {
 
         //esempio di autoenticazione con JWT
         //c.add(AuthLevel1Filter.class);
+        c.add(SecurityFilter.class);
         classes = Collections.unmodifiableSet(c);
     }
 
