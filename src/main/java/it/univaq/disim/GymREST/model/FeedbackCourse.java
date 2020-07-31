@@ -67,5 +67,16 @@ public class FeedbackCourse {
 		this.course = course;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof FeedbackCourse)) return false;
+		FeedbackCourse that = (FeedbackCourse) o;
+		return id == that.id;
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 }
