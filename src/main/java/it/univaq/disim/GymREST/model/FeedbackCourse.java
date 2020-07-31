@@ -1,22 +1,24 @@
 package it.univaq.disim.GymREST.model;
 
+import java.util.Objects;
+
 public class FeedbackCourse {
 
-	private Long id;
+	private long id;
 	private String feed;
 	private int rating;
 	private User user;
 	private Course course;
 
 	public FeedbackCourse() {
-		this.id = null;
+		this.id = 0;
 		this.feed = "";
 		this.rating = 0;
 		this.user = null;
 		this.course = null;
 	}
 
-	public FeedbackCourse(Long id, String feed, int rating, User user, Course course) {
+	public FeedbackCourse(long id, String feed, int rating, User user, Course course) {
 		this.id = id;
 		this.feed = feed;
 		this.rating = rating;
@@ -24,11 +26,11 @@ public class FeedbackCourse {
 		this.course = course;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -64,5 +66,16 @@ public class FeedbackCourse {
 		this.course = course;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof FeedbackCourse)) return false;
+		FeedbackCourse that = (FeedbackCourse) o;
+		return getId() == that.getId();
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId());
+	}
 }
