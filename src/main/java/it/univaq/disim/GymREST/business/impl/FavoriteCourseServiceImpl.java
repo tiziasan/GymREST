@@ -26,8 +26,8 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
 
         try {
             PreparedStatement st = getConnection().prepareStatement(INSERT_FAVORITE_COURSE, Statement.RETURN_GENERATED_KEYS);
-            st.setLong(1,favoriteCourse.getCourse().getId());
-            st.setLong(2,favoriteCourse.getUser().getId());
+            st.setLong(1,favoriteCourse.getCourse());
+            st.setLong(2,favoriteCourse.getUser());
             st.execute();
 
             ResultSet result = st.getGeneratedKeys();
@@ -54,6 +54,9 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
             while (rs.next()){
                 FavoriteCourse favoriteCourse = new FavoriteCourse();
                 favoriteCourse.setId(rs.getLong(1));
+                favoriteCourse.setCourse(rs.getLong(2));
+                favoriteCourse.setUser(rs.getLong(3));
+
                 favoriteCourses.add(favoriteCourse);
             }
         } catch (SQLException e) {
