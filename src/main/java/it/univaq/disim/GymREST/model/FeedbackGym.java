@@ -7,18 +7,18 @@ public class FeedbackGym {
 	private long id;
 	private String feed;
 	private int rating;
-	private User user;
-	private Gym gym;
+	private long user;
+	private long gym;
 
 	public FeedbackGym() {
 		this.id = 0;
 		this.feed = "";
 		this.rating = 0;
-		this.user = null;
-		this.gym = null;
+		this.user = 0;
+		this.gym = 0;
 	}
 
-	public FeedbackGym(long id, String feed, int rating, User user, Gym gym) {
+	public FeedbackGym(long id, String feed, int rating, long user, long gym) {
 		this.id = id;
 		this.feed = feed;
 		this.rating = rating;
@@ -50,19 +50,19 @@ public class FeedbackGym {
 		this.rating = rating;
 	}
 
-	public User getUser() {
+	public long getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(long user) {
 		this.user = user;
 	}
 
-	public Gym getGym() {
+	public long getGym() {
 		return gym;
 	}
 
-	public void setGym(Gym gym) {
+	public void setGym(long gym) {
 		this.gym = gym;
 	}
 
