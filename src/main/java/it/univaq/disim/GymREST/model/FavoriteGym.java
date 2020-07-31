@@ -5,16 +5,16 @@ import java.util.Objects;
 public class FavoriteGym {
 
 	private long id;
-	private User user;
-	private Gym gym;
+	private long user;
+	private long gym;
 
 	public FavoriteGym() {
 		this.id = 0;
-		this.user = null;
-		this.gym = null;
+		this.user = 0;
+		this.gym = 0;
 	}
 
-	public FavoriteGym(long id, User user, Gym gym) {
+	public FavoriteGym(long id, long user, long gym) {
 		this.id = id;
 		this.user = user;
 		this.gym = gym;
@@ -28,19 +28,19 @@ public class FavoriteGym {
 		this.id = id;
 	}
 
-	public User getUser() {
+	public long getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(long user) {
 		this.user = user;
 	}
 
-	public Gym getGym() {
+	public long getGym() {
 		return gym;
 	}
 
-	public void setGym(Gym gym) {
+	public void setGym(long gym) {
 		this.gym = gym;
 	}
 
