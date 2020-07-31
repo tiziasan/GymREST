@@ -4,27 +4,27 @@ import java.util.Objects;
 
 public class FavoriteCourse {
 
-	private Long id;
+	private long id;
 	private User user;
 	private Course course;
 
 	public FavoriteCourse() {
-		this.id = null;
+		this.id = 0;
 		this.user = null;
 		this.course = null;
 	}
 
-	public FavoriteCourse(Long id, User user, Course course) {
+	public FavoriteCourse(long id, User user, Course course) {
 		this.id = id;
 		this.user = user;
 		this.course = course;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -49,9 +49,7 @@ public class FavoriteCourse {
 		if (this == o) return true;
 		if (!(o instanceof FavoriteCourse)) return false;
 		FavoriteCourse that = (FavoriteCourse) o;
-		return getId().equals(that.getId()) &&
-				getUser().equals(that.getUser()) &&
-				getCourse().equals(that.getCourse());
+		return getId() == that.getId();
 	}
 
 	@Override

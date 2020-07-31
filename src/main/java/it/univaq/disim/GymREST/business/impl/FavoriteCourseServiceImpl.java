@@ -2,8 +2,10 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.FavoriteCourseService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
+import it.univaq.disim.GymREST.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

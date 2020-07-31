@@ -4,27 +4,27 @@ import java.util.Objects;
 
 public class FavoriteGym {
 
-	private Long id;
+	private long id;
 	private User user;
 	private Gym gym;
 
 	public FavoriteGym() {
-		this.id = null;
+		this.id = 0;
 		this.user = null;
 		this.gym = null;
 	}
 
-	public FavoriteGym(Long id, User user, Gym gym) {
+	public FavoriteGym(long id, User user, Gym gym) {
 		this.id = id;
 		this.user = user;
 		this.gym = gym;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -44,14 +44,13 @@ public class FavoriteGym {
 		this.gym = gym;
 	}
 
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof FavoriteGym)) return false;
 		FavoriteGym that = (FavoriteGym) o;
-		return getId().equals(that.getId()) &&
-				getUser().equals(that.getUser()) &&
-				getGym().equals(that.getGym());
+		return getId() == that.getId();
 	}
 
 	@Override
