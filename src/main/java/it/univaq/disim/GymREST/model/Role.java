@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Role {
 
-    private int id;
+    private long id;
     private String role;
 
     public Role() {
@@ -12,11 +12,11 @@ public class Role {
         this.role = "";
     }
 
-    public Role(int id, String role) {
+    public Role(long id, String role) {
         this.id = id;
         this.role = role;
     }
-    public int getId() {
+    public long getId() {
         return id;
     }
 

@@ -4,21 +4,21 @@ import java.util.Objects;
 
 public class FeedbackGym {
 
-	private Long id;
+	private long id;
 	private String feed;
 	private int rating;
 	private User user;
 	private Gym gym;
 
 	public FeedbackGym() {
-		this.id = null;
+		this.id = 0;
 		this.feed = "";
 		this.rating = 0;
 		this.user = null;
 		this.gym = null;
 	}
 
-	public FeedbackGym(Long id, String feed, int rating, User user, Gym gym) {
+	public FeedbackGym(long id, String feed, int rating, User user, Gym gym) {
 		this.id = id;
 		this.feed = feed;
 		this.rating = rating;
@@ -26,7 +26,7 @@ public class FeedbackGym {
 		this.gym = gym;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -71,9 +71,7 @@ public class FeedbackGym {
 		if (this == o) return true;
 		if (!(o instanceof FeedbackGym)) return false;
 		FeedbackGym that = (FeedbackGym) o;
-		return getId().equals(that.getId()) &&
-				getUser().equals(that.getUser()) &&
-				getGym().equals(that.getGym());
+		return id == that.id;
 	}
 
 	@Override
