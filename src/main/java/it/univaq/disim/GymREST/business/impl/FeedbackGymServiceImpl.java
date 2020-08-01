@@ -4,10 +4,7 @@ import it.univaq.disim.GymREST.business.FeedbackGymService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.FeedbackGym;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +16,25 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     private static final String DELETE_FEEDBACK__GYM = "DELETE FROM feedbackgym WHERE id=?";
     private static final String UPDATE_FEEDBACK_GYM = "UPDATE feedbackgym SET feed=?, rating=?";
 
-    @Override
-    public long createFeedbackGym(FeedbackGym feedbackGym) throws SQLException {
-        System.out.println("createFeedbackGym");
+    private String urlDB;
+    private String userDB;
+    private String pswDB;
 
-        try {
-            PreparedStatement st = getConnection().prepareStatement(INSERT_FEEDBACK_GYM, Statement.RETURN_GENERATED_KEYS);
+    public FeedbackGymServiceImpl(String url, String user, String psw) {
+        super();
+        this.urlDB = url;
+        this.userDB = user;
+        this.pswDB = psw;
+    }
+
+    @Override
+    public long createFeedbackGym(FeedbackGym feedbackGym) {
+        System.out.println("createFeedbackGym");
+        loadDriver();
+
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+             PreparedStatement st = connection.prepareStatement(INSERT_FEEDBACK_GYM, Statement.RETURN_GENERATED_KEYS);) {
+
             st.setString(1,feedbackGym.getFeed());
             st.setInt(2,feedbackGym.getRating());
             st.setLong(3,feedbackGym.getGym());
@@ -37,95 +47,93 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnetion();
         }
         return 0;
-
     }
 
 
     @Override
-    public List<FeedbackGym> getAllFeedbackByGym(long id) throws SQLException {
+    public List<FeedbackGym> getAllFeedbackByGym(long id) {
         System.out.println("getAllFeedbackByGym");
+        loadDriver();
 
         List<FeedbackGym> feedbackGyms = new ArrayList<>();
-        try {
-            PreparedStatement st = getConnection().prepareStatement(GET_ALL_FEEDBACK_BY_GYM);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+             PreparedStatement st = connection.prepareStatement(GET_ALL_FEEDBACK_BY_GYM);) {
             st.setLong(1,id);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()){
-                FeedbackGym feedbackGym = new FeedbackGym();
-                feedbackGym.setId(rs.getLong(1));
-                feedbackGym.setRating(rs.getInt(3));
-                feedbackGym.setFeed(rs.getString(2));
 
-                feedbackGyms.add(feedbackGym);
+            try (ResultSet rs = st.executeQuery();) {
+                while (rs.next()){
+                    FeedbackGym feedbackGym = new FeedbackGym();
+                    feedbackGym.setId(rs.getLong(1));
+                    feedbackGym.setRating(rs.getInt(3));
+                    feedbackGym.setFeed(rs.getString(2));
+
+                    feedbackGyms.add(feedbackGym);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnetion();
         }
         return feedbackGyms;
     }
 
     @Override
-    public List<FeedbackGym> getAllFeedbackByUser(long id) throws SQLException {
+    public List<FeedbackGym> getAllFeedbackByUser(long id) {
         System.out.println("getAllFeedbackByUser");
+        loadDriver();
 
         List<FeedbackGym> feedbackGyms = new ArrayList<>();
-        try {
-            PreparedStatement st = getConnection().prepareStatement(GET_ALL_FEEDBACK_BY_USER);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+             PreparedStatement st = connection.prepareStatement(GET_ALL_FEEDBACK_BY_USER);) {
             st.setLong(1,id);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()){
-                FeedbackGym feedbackGym = new FeedbackGym();
-                feedbackGym.setId(rs.getLong(1));
-                feedbackGym.setRating(rs.getInt(2));
-                feedbackGym.setFeed(rs.getString(3));
 
-                feedbackGyms.add(feedbackGym);
+            try (ResultSet rs = st.executeQuery();) {
+                while (rs.next()) {
+                    FeedbackGym feedbackGym = new FeedbackGym();
+                    feedbackGym.setId(rs.getLong(1));
+                    feedbackGym.setRating(rs.getInt(2));
+                    feedbackGym.setFeed(rs.getString(3));
+
+                    feedbackGyms.add(feedbackGym);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnetion();
         }
         return feedbackGyms;       }
 
     @Override
-    public void deleteFeedbackGym(long id) throws SQLException {
+    public void deleteFeedbackGym(long id) {
         System.out.println("deleteFeedbackGym");
+        loadDriver();
 
-        try {
-            PreparedStatement st = getConnection().prepareStatement(DELETE_FEEDBACK__GYM);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+             PreparedStatement st = connection.prepareStatement(DELETE_FEEDBACK__GYM);) {
+
             st.setLong(1,id);
             st.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnetion();
         }
-
     }
 
     @Override
     public void updateFeedbackGym(FeedbackGym feedbackGym) throws SQLException {
         System.out.println("updateFeedbackGym");
+        loadDriver();
 
-        try {
-            PreparedStatement st = getConnection().prepareStatement(UPDATE_FEEDBACK_GYM);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+             PreparedStatement st = connection.prepareStatement(UPDATE_FEEDBACK_GYM);) {
+
             st.setString(1, feedbackGym.getFeed());
             st.setInt(2, feedbackGym.getRating());
+
             st.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnetion();
         }
-
     }
 }

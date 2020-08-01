@@ -18,24 +18,24 @@ public class GymServiceImpl extends Service implements GymService {
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE gym_id=?";
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE gym_id=?";
 
-	private String url;
-	private String user;
-	private String psw;
+	private String urlDB;
+	private String userDB;
+	private String pswDB;
 
 	public GymServiceImpl(String url, String user, String psw) {
 		super();
-		this.url = url;
-		this.user = user;
-		this.psw = psw;
+		this.urlDB = url;
+		this.userDB = user;
+		this.pswDB = psw;
 	}
 
 	@Override
-	public List<Gym> getAllGyms() throws SQLException {
+	public List<Gym> getAllGyms() {
 		System.out.println("getAllGyms");
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try (Connection connection = DriverManager.getConnection(url,user,psw);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 Statement st = connection.createStatement();
 			 ResultSet rs = st.executeQuery(GET_ALL_GYMS);) {
 
@@ -56,12 +56,12 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public List<Gym> getGymsByRegion(String region) throws SQLException {
+	public List<Gym> getGymsByRegion(String region) {
 		System.out.println("getGymsByRegion");
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try (Connection connection = DriverManager.getConnection(url,user,psw);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_REGION);) {
 			st.setString(1,region);
 
@@ -84,12 +84,12 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public List<Gym> getGymsByName(String name) throws SQLException {
+	public List<Gym> getGymsByName(String name) {
 		System.out.println("getGymsByName");
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try (Connection connection = DriverManager.getConnection(url,user,psw);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_NAME);) {
 
 			st.setString(1, "%" + name + "%");
@@ -112,15 +112,15 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public Gym getGym(long idGym) throws SQLException {
+	public Gym getGym(long id) {
 		System.out.println("getGym");
 		loadDriver();
 
 		Gym gym = new Gym();
-		try (Connection connection = DriverManager.getConnection(url,user,psw);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(GET_GYM);) {
+			st.setLong(1,id);
 
-			st.setLong(1,idGym);
 			try (ResultSet rs = st.executeQuery();) {
 				if (rs.next()) {
 					gym.setId(rs.getLong(1));
@@ -138,18 +138,18 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public long createGym(Gym gym) throws SQLException {
+	public long createGym(Gym gym) {
 		System.out.println("createGym");
 		loadDriver();
 
-		try (Connection connection = DriverManager.getConnection(url,user,psw);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);) {
 
 			st.setString(2, gym.getName());
 			st.setString(4, gym.getRegion());
 			st.setString(3, gym.getProvince());
 			st.setString(1, gym.getAddress());
-			// da ultimare dopo utenteRes
+			// da ultimare dopo utenteRes //ritornare utente loggato
 			st.setString(5,"14");
 
 			st.execute();
@@ -166,11 +166,11 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public void updateGym(Gym gym) throws SQLException {
+	public void updateGym(Gym gym) {
 		System.out.println("updateGym");
 		loadDriver();
 
-		try (Connection connection = DriverManager.getConnection(url,user,psw);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(UPDATE_GYM);) {
 
 			st.setString(2, gym.getName());
@@ -178,6 +178,7 @@ public class GymServiceImpl extends Service implements GymService {
 			st.setString(3, gym.getProvince());
 			st.setString(1, gym.getAddress());
 			st.setLong(5, gym.getId());
+
 			st.execute();
 
 		} catch (SQLException e) {
@@ -186,14 +187,14 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public void deleteGym(long idGym) throws SQLException {
+	public void deleteGym(long id) {
 		System.out.println("deleteGym");
 		loadDriver();
 
-		try (Connection connection = DriverManager.getConnection(url,user,psw);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(DELETE_GYM);) {
 
-			st.setLong(1,idGym);
+			st.setLong(1,id);
 			st.execute();
 
 		} catch (SQLException e) {

@@ -21,6 +21,10 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 @Path("auth")
 public class SecurityRes {
 
+    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static final String userDB = "gymportal";
+    private static final String pswDB = "gymportal";
+
     @POST
     @Path("/login")
     @Consumes(APPLICATION_FORM_URLENCODED)
@@ -28,7 +32,7 @@ public class SecurityRes {
                                      @FormParam("username") String username, @FormParam("password") String password) {
         try {
             //if (authenticate(username, password))
-            UserService userService = new UserServiceImpl();
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             if (userService.checkUser(username, password)){
                 String authToken = issueToken(uriinfo, username);
                 return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
@@ -64,6 +68,7 @@ public class SecurityRes {
             Key key = JWTHelpers.getInstance().getJwtKey();
             Claims jwsc = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
             String newtoken = issueToken(uriinfo, jwsc.getSubject());
+
             return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + newtoken).build();
         } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | IllegalArgumentException e) {
             return Response.status(UNAUTHORIZED).build();

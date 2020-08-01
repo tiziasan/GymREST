@@ -17,23 +17,23 @@ public class CourseServiceImpl extends Service implements CourseService {
     private static final String UPDATE_COURSE = "UPDATE course SET code=?, name=?, description=? WHERE id=?";
     private static final String DELETE_COURSE = "DELETE FROM course WHERE id=?";
 
-    private String url;
-    private String user;
-    private String psw;
+    private String urlDB;
+    private String userDB;
+    private String pswDB;
 
     public CourseServiceImpl(String url, String user, String psw) {
         super();
-        this.url = url;
-        this.user = user;
-        this.psw = psw;
+        this.urlDB = url;
+        this.userDB = user;
+        this.pswDB = psw;
     }
 
     @Override
-    public List<Course> getCoursesByGym(long courseId) throws SQLException {
+    public List<Course> getCoursesByGym(long courseId) {
         System.out.println("getCoursesByGym");
 
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(url,user,psw);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_ALL_COURSES_BY_GYMS);) {
 
             st.setLong(1,courseId);
@@ -57,11 +57,11 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public List<Course> getCoursesByName(String hint) throws SQLException {
+    public List<Course> getCoursesByName(String hint) {
         System.out.println("getGymsByRegion");
 
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(url,user,psw);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_COURSES_BY_NAME);) {
 
             st.setString(1, "%" + hint + "%");
@@ -84,11 +84,11 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public Course getCourse(long idCourse) throws SQLException {
+    public Course getCourse(long idCourse) {
         System.out.println("getCourse");
 
         Course course = new Course();
-        try (Connection connection = DriverManager.getConnection(url,user,psw);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_COURSE);) {
 
             st.setLong(1,idCourse);
@@ -108,10 +108,10 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public long createCourse(Course course) throws SQLException {
+    public long createCourse(Course course) {
         System.out.println("createCourse");
 
-        try (Connection connection = DriverManager.getConnection(url,user,psw);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(INSERT_COURSE, Statement.RETURN_GENERATED_KEYS);) {
 
             st.setString(1, course.getCode());
@@ -133,10 +133,10 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public void updateCourse(Course course) throws SQLException {
+    public void updateCourse(Course course) {
         System.out.println("updateCourse");
 
-        try (Connection connection = DriverManager.getConnection(url,user,psw);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(UPDATE_COURSE);) {
 
             st.setString(1, course.getCode());
@@ -151,10 +151,10 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public void deleteCourse(long idCourse) throws SQLException {
+    public void deleteCourse(long idCourse) {
         System.out.println("deleteCourse");
 
-        try (Connection connection = DriverManager.getConnection(url,user,psw);
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_COURSE);) {
 
             st.setLong(1,idCourse);
