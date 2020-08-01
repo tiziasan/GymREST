@@ -27,8 +27,8 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
             PreparedStatement st = getConnection().prepareStatement(INSERT_FEEDBACK_GYM, Statement.RETURN_GENERATED_KEYS);
             st.setString(1,feedbackGym.getFeed());
             st.setInt(2,feedbackGym.getRating());
-            st.setLong(3,feedbackGym.getGym().getId());
-            st.setLong(4,feedbackGym.getUser().getId());
+            st.setLong(3,feedbackGym.getGym());
+            st.setLong(4,feedbackGym.getUser());
             st.execute();
 
             ResultSet result = st.getGeneratedKeys();

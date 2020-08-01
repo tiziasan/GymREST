@@ -29,8 +29,8 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
 
             st.setString(1,feedbackCourse.getFeed());
             st.setInt(2,feedbackCourse.getRating());
-            st.setLong(3,feedbackCourse.getCourse().getId());
-            st.setLong(4,feedbackCourse.getUser().getId());
+            st.setLong(3,feedbackCourse.getCourse());
+            st.setLong(4,feedbackCourse.getUser());
             st.execute();
 
             ResultSet result = st.getGeneratedKeys();
