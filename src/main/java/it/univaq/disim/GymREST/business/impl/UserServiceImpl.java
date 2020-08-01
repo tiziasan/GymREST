@@ -11,10 +11,10 @@ import java.sql.Statement;
 
 public class UserServiceImpl extends Service implements UserService {
 
-    private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE user_id=?";
-    private static final String UPDATE_USER = "UPDATE users SET email=?, last_name=?, name=?, password=?, user_name=?";
-    private static final String DELETE_USER = "DELETE FROM users WHERE user_id=?";
-    private static final String CREATE_USER = "INSERT INTO users (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
+    private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE user_id=?";
+    private static final String UPDATE_USER = "UPDATE user SET email=?, last_name=?, name=?, password=?, user_name=?";
+    private static final String DELETE_USER = "DELETE FROM user WHERE user_id=?";
+    private static final String CREATE_USER = "INSERT INTO user (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
 
 
     @Override
