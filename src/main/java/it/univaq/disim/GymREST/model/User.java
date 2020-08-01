@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class User {
 
-	private Long id;
+	private long id;
 	private String userName;
 	private String email;
 	private String password;
@@ -30,7 +30,7 @@ public class User {
 	private List<Gym> gyms;
 
 	public User() {
-		this.id = null;
+		this.id = 0;
 		this.userName = "";
 		this.email = "";
 		this.password = "";
@@ -39,7 +39,7 @@ public class User {
 		this.active = null;
 	}
 
-	public User(Long id, String userName, String email, String password, String name, String lastName, Boolean active) {
+	public User(long id, String userName, String email, String password, String name, String lastName, Boolean active) {
 		this.id = id;
 		this.userName = userName;
 		this.email = email;
@@ -49,7 +49,7 @@ public class User {
 		this.active = active;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -158,8 +158,7 @@ public class User {
 		if (this == o) return true;
 		if (!(o instanceof User)) return false;
 		User user = (User) o;
-		return getId().equals(user.getId()) &&
-				getUserName().equals(user.getUserName());
+		return id == user.id;
 	}
 
 	@Override
