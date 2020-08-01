@@ -27,7 +27,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public boolean checkUser(String username, String password) throws SQLException {
+    public boolean checkUser(String username, String password) {
         System.out.println("checkUser");
         loadDriver();
 
@@ -52,7 +52,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public long createUser(User user) throws SQLException {
+    public long createUser(User user) {
         System.out.println("createUser");
         loadDriver();
 
@@ -79,7 +79,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public void deleteUser(long id) throws SQLException {
+    public void deleteUser(long id) {
         System.out.println("deleteUser");
         loadDriver();
 
@@ -95,7 +95,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public void updateUser(User user) throws SQLException {
+    public void updateUser(User user) {
         System.out.println("updateUser");
         loadDriver();
 
@@ -116,7 +116,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public User getUser(long id) throws SQLException {
+    public User getUser(long id) {
         System.out.println("getUser");
         loadDriver();
 
@@ -132,7 +132,7 @@ public class UserServiceImpl extends Service implements UserService {
                     user.setLastName(rs.getString(4));
                     user.setName(rs.getString(5));
                     user.setPassword(rs.getString(6));
-                    user.setUserName(rs.getString(2));
+                    user.setUserName(rs.getString(7));
                 }
             }
 
