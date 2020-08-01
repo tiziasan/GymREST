@@ -18,14 +18,27 @@ public class GymServiceImpl extends Service implements GymService {
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE gym_id=?";
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE gym_id=?";
 
+	private String urlDB;
+	private String userDB;
+	private String pswDB;
+
+	public GymServiceImpl(String url, String user, String psw) {
+		super();
+		this.urlDB = url;
+		this.userDB = user;
+		this.pswDB = psw;
+	}
+
 	@Override
-	public List<Gym> getAllGyms() throws SQLException {
+	public List<Gym> getAllGyms() {
 		System.out.println("getAllGyms");
+		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try {
-			Statement st = getConnection().createStatement();
-			ResultSet rs = st.executeQuery(GET_ALL_GYMS);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+			 Statement st = connection.createStatement();
+			 ResultSet rs = st.executeQuery(GET_ALL_GYMS);) {
+
 			while (rs.next()){
 				Gym gym = new Gym();
 				gym.setId(rs.getLong(1));
@@ -38,154 +51,155 @@ public class GymServiceImpl extends Service implements GymService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return gyms;
 	}
 
 	@Override
-	public List<Gym> getGymsByRegion(String region) throws SQLException {
+	public List<Gym> getGymsByRegion(String region) {
 		System.out.println("getGymsByRegion");
+		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try {
-			PreparedStatement st = getConnection().prepareStatement(GET_GYMS_BY_REGION);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+			 PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_REGION);) {
 			st.setString(1,region);
-			ResultSet rs = st.executeQuery();
-			while (rs.next()){
-				Gym gym = new Gym();
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
 
-				gyms.add(gym);
+			try (ResultSet rs = st.executeQuery();) {
+				while (rs.next()){
+					Gym gym = new Gym();
+					gym.setId(rs.getLong(1));
+					gym.setName(rs.getString(3));
+					gym.setRegion(rs.getString(5));
+					gym.setProvince(rs.getString(4));
+					gym.setAddress(rs.getString(2));
+
+					gyms.add(gym);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return gyms;
 	}
 
 	@Override
-	public List<Gym> getGymsByName(String name) throws SQLException {
+	public List<Gym> getGymsByName(String name) {
 		System.out.println("getGymsByName");
+		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
-		try {
-			PreparedStatement st = getConnection().prepareStatement(GET_GYMS_BY_NAME);
-			st.setString(1, "%" + name + "%");
-			ResultSet rs = st.executeQuery();
-			while (rs.next()){
-				Gym gym = new Gym();
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+			 PreparedStatement st = connection.prepareStatement(GET_GYMS_BY_NAME);) {
 
-				gyms.add(gym);
+			st.setString(1, "%" + name + "%");
+			try (ResultSet rs = st.executeQuery();) {
+				while (rs.next()){
+					Gym gym = new Gym();
+					gym.setId(rs.getLong(1));
+					gym.setName(rs.getString(3));
+					gym.setRegion(rs.getString(5));
+					gym.setProvince(rs.getString(4));
+					gym.setAddress(rs.getString(2));
+
+					gyms.add(gym);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return gyms;
 	}
 
 	@Override
-	public Gym getGym(long idGym) throws SQLException {
+	public Gym getGym(long id) {
 		System.out.println("getGym");
+		loadDriver();
 
 		Gym gym = new Gym();
-		try {
-			PreparedStatement st = getConnection().prepareStatement(GET_GYM);
-			st.setLong(1,idGym);
-			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				gym.setId(rs.getLong(1));
-				gym.setName(rs.getString(3));
-				gym.setRegion(rs.getString(5));
-				gym.setProvince(rs.getString(4));
-				gym.setAddress(rs.getString(2));
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+			 PreparedStatement st = connection.prepareStatement(GET_GYM);) {
+			st.setLong(1,id);
+
+			try (ResultSet rs = st.executeQuery();) {
+				if (rs.next()) {
+					gym.setId(rs.getLong(1));
+					gym.setName(rs.getString(3));
+					gym.setRegion(rs.getString(5));
+					gym.setProvince(rs.getString(4));
+					gym.setAddress(rs.getString(2));
+				}
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return gym;
 	}
 
 	@Override
-	public long createGym(Gym gym) throws SQLException {
+	public long createGym(Gym gym) {
 		System.out.println("createGym");
+		loadDriver();
 
-		try {
-			PreparedStatement st = getConnection().prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+			 PreparedStatement st = connection.prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);) {
+
 			st.setString(2, gym.getName());
 			st.setString(4, gym.getRegion());
 			st.setString(3, gym.getProvince());
 			st.setString(1, gym.getAddress());
-			// da ultimare dopo utenteRes
+			// da ultimare dopo utenteRes //ritornare utente loggato
 			st.setString(5,"14");
 
 			st.execute();
 
-			ResultSet result = st.getGeneratedKeys();
-			if (result.next()) {
-				return result.getLong(1);
+			try (ResultSet result = st.getGeneratedKeys();) {
+				if (result.next()) {
+					return result.getLong(1);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 		return 0;
 	}
 
 	@Override
-	public void updateGym(Gym gym) throws SQLException {
+	public void updateGym(Gym gym) {
 		System.out.println("updateGym");
+		loadDriver();
 
-		try {
-			PreparedStatement st = getConnection().prepareStatement(UPDATE_GYM);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+			 PreparedStatement st = connection.prepareStatement(UPDATE_GYM);) {
+
 			st.setString(2, gym.getName());
 			st.setString(4, gym.getRegion());
 			st.setString(3, gym.getProvince());
 			st.setString(1, gym.getAddress());
 			st.setLong(5, gym.getId());
+
 			st.execute();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 	}
 
 	@Override
-	public void deleteGym(long idGym) throws SQLException {
+	public void deleteGym(long id) {
 		System.out.println("deleteGym");
+		loadDriver();
 
-		try {
-			PreparedStatement st = getConnection().prepareStatement(DELETE_GYM);
-			st.setLong(1,idGym);
+		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+			 PreparedStatement st = connection.prepareStatement(DELETE_GYM);) {
+
+			st.setLong(1,id);
 			st.execute();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnetion();
 		}
 	}
-
-
 
 }
