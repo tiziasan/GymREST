@@ -3,13 +3,14 @@ package it.univaq.disim.GymREST.resources;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import it.univaq.disim.GymREST.JWTHelpers;
+import it.univaq.disim.GymREST.business.UserService;
+import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.model.User;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.security.Key;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -27,10 +28,12 @@ public class SecurityRes {
                                      @FormParam("username") String username, @FormParam("password") String password) {
         try {
             //if (authenticate(username, password))
-
-            String authToken = issueToken(uriinfo, username);
-
-            return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
+            UserService userService = new UserServiceImpl();
+            if (userService.checkUser(username, password)){
+                String authToken = issueToken(uriinfo, username);
+                return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
+            }
+            return Response.status(UNAUTHORIZED).build();
 
         } catch (Exception e) {
             return Response.status(UNAUTHORIZED).build();

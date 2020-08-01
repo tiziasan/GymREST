@@ -25,8 +25,9 @@ public class UserRes {
     }
 
     @POST
+    @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addUser(@Context UriInfo uriInfo, User user) throws SQLException{
+    public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException {
         UserService userService = new UserServiceImpl();
         long id = userService.createUser(user);
         return Response.created(uriInfo.getAbsolutePathBuilder().path(this.getClass(),"getUser").build(id)).build();

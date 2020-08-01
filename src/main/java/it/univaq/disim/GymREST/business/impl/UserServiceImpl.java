@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.business.UserService;
+import it.univaq.disim.GymREST.model.Gym;
 import it.univaq.disim.GymREST.model.User;
 
 import java.sql.PreparedStatement;
@@ -11,11 +12,36 @@ import java.sql.Statement;
 
 public class UserServiceImpl extends Service implements UserService {
 
+    private static final String CHECK_USER = "SELECT COUNT(1) FROM users WHERE user_name=? AND password=?";
     private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE user_id=?";
     private static final String UPDATE_USER = "UPDATE users SET email=?, last_name=?, name=?, password=?, user_name=?";
     private static final String DELETE_USER = "DELETE FROM users WHERE user_id=?";
     private static final String CREATE_USER = "INSERT INTO users (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
 
+
+    @Override
+    public boolean checkUser(String username, String password) throws SQLException {
+        System.out.println("checkUser");
+
+        try {
+            PreparedStatement st = getConnection().prepareStatement(CHECK_USER);
+            st.setString(1,username);
+            st.setString(2,password);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()){
+                if (rs.getInt(1) == 1){
+                    System.out.println("user exists");
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnetion();
+        }
+        System.out.println("user doesn't exist");
+        return false;
+    }
 
     @Override
     public long createUser(User user) throws SQLException {
