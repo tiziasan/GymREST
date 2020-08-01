@@ -4,54 +4,53 @@ import java.util.Objects;
 
 public class FavoriteGym {
 
-	private Long id;
-	private User user;
-	private Gym gym;
+	private long id;
+	private long user;
+	private long gym;
 
 	public FavoriteGym() {
-		this.id = null;
-		this.user = null;
-		this.gym = null;
+		this.id = 0;
+		this.user = 0;
+		this.gym = 0;
 	}
 
-	public FavoriteGym(Long id, User user, Gym gym) {
+	public FavoriteGym(long id, long user, long gym) {
 		this.id = id;
 		this.user = user;
 		this.gym = gym;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public User getUser() {
+	public long getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(long user) {
 		this.user = user;
 	}
 
-	public Gym getGym() {
+	public long getGym() {
 		return gym;
 	}
 
-	public void setGym(Gym gym) {
+	public void setGym(long gym) {
 		this.gym = gym;
 	}
+
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof FavoriteGym)) return false;
 		FavoriteGym that = (FavoriteGym) o;
-		return getId().equals(that.getId()) &&
-				getUser().equals(that.getUser()) &&
-				getGym().equals(that.getGym());
+		return getId() == that.getId();
 	}
 
 	@Override

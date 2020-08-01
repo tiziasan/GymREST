@@ -3,6 +3,7 @@ package it.univaq.disim.GymREST.business.impl;
 import it.univaq.disim.GymREST.business.FavoriteGymService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.FavoriteGym;
+import it.univaq.disim.GymREST.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,8 +24,8 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
 
         try {
             PreparedStatement st = getConnection().prepareStatement(INSERT_FAVORITE_GYM, Statement.RETURN_GENERATED_KEYS);
-            st.setLong(1,favoriteGym.getGym().getId());
-            st.setLong(2,favoriteGym.getUser().getId());
+            st.setLong(1,favoriteGym.getGym());
+            st.setLong(2,favoriteGym.getUser());
             st.execute();
 
             ResultSet result = st.getGeneratedKeys();
@@ -52,6 +53,9 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
             while (rs.next()){
                 FavoriteGym favoriteGym = new FavoriteGym();
                 favoriteGym.setId(rs.getLong(1));
+                favoriteGym.setGym(rs.getLong(2));
+                favoriteGym.setUser(rs.getLong(3));
+
                 favoriteGyms.add(favoriteGym);
             }
         } catch (SQLException e) {

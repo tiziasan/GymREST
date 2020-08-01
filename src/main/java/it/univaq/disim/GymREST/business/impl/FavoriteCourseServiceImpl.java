@@ -2,8 +2,10 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.FavoriteCourseService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
+import it.univaq.disim.GymREST.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,8 +26,8 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
 
         try {
             PreparedStatement st = getConnection().prepareStatement(INSERT_FAVORITE_COURSE, Statement.RETURN_GENERATED_KEYS);
-            st.setLong(1,favoriteCourse.getCourse().getId());
-            st.setLong(2,favoriteCourse.getUser().getId());
+            st.setLong(1,favoriteCourse.getCourse());
+            st.setLong(2,favoriteCourse.getUser());
             st.execute();
 
             ResultSet result = st.getGeneratedKeys();
@@ -52,6 +54,9 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
             while (rs.next()){
                 FavoriteCourse favoriteCourse = new FavoriteCourse();
                 favoriteCourse.setId(rs.getLong(1));
+                favoriteCourse.setCourse(rs.getLong(2));
+                favoriteCourse.setUser(rs.getLong(3));
+
                 favoriteCourses.add(favoriteCourse);
             }
         } catch (SQLException e) {

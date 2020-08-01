@@ -26,9 +26,8 @@ public class RESTApp extends Application {
         //con l'annotazione Path) che vogliamo pubblicare
         c.add(GymRes.class);
 		c.add(CourseRes.class);
-        c.add(FavoriteCourseRes.class);
         c.add(UserRes.class);
-        c.add(FavoriteGymRes.class);
+        c.add(FavoriteRes.class);
         c.add(FeedbackCourseRes.class);
         c.add(FeedbackGymRes.class);
         c.add(SecurityRes.class);

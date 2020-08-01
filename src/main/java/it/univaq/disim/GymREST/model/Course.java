@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Course {
 
-	private Long id;
+	private long id;
 	private String name;
 	private String description;
 	private String code;
@@ -20,14 +20,14 @@ public class Course {
 	private Gym gym;
 
 	public Course() {
-		this.id = null;
+		this.id = 0;
 		this.name = "";
 		this.description = "";
 		this.code = "";
 		this.gym = null;
 	}
 
-	public Course(Long id, String name, String description, String code, Gym gym) {
+	public Course(long id, String name, String description, String code, Gym gym) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -35,11 +35,11 @@ public class Course {
 		this.gym = gym;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -96,8 +96,7 @@ public class Course {
 		if (this == o) return true;
 		if (!(o instanceof Course)) return false;
 		Course course = (Course) o;
-		return getId().equals(course.getId()) &&
-				getCode().equals(course.getCode());
+		return getId() == course.getId();
 	}
 
 	@Override
