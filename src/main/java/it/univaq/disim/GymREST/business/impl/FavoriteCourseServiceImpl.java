@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.FavoriteCourseService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
 
 import java.sql.*;
@@ -11,7 +12,7 @@ import java.util.List;
 public class FavoriteCourseServiceImpl extends Service implements FavoriteCourseService {
 
     private static final String INSERT_FAVORITE_COURSE = "INSERT INTO favoritecourse (course_id,user_user_id) VALUES (?,?)";
-    private static final String GET_FAVORITE_BY_USER = "SELECT * FROM favoritecourse WHERE user_user_id=?";
+    private static final String GET_FAVORITE_BY_USER = "SELECT * FROM course LEFT JOIN favoritecourse ON favoritecourse.course_id = course.id WHERE favoritecourse.user_user_id=?";
     private static final String DELETE_FAVORITE_COURSE = "DELETE FROM favoritecourse WHERE id=?";
 
     private String urlDB;
@@ -48,23 +49,25 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     }
 
     @Override
-    public List<FavoriteCourse> getAllFavoriteCourse(long id) {
+    public List<Course> getAllFavoriteCourse(long id) {
         System.out.println("getAllFavoriteCourse");
         loadDriver();
 
-        List<FavoriteCourse> favoriteCourses = new ArrayList<>();
+        List<Course> favoriteCourses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_FAVORITE_BY_USER);) {
             st.setLong(1,id);
 
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()) {
-                    FavoriteCourse favoriteCourse = new FavoriteCourse();
-                    favoriteCourse.setId(rs.getLong(1));
-                    favoriteCourse.setCourse(rs.getLong(2));
-                    favoriteCourse.setUser(rs.getLong(3));
+                    Course course = new Course();
+                    course.setId(rs.getLong(1));
+                    course.setCode(rs.getString(2));
+                    course.setName(rs.getString(4));
+                    course.setDescription(rs.getString(3));
+                    //restituire gym di appartenenza per far visualizzare info gym?
 
-                    favoriteCourses.add(favoriteCourse);
+                    favoriteCourses.add(course);
                 }
             }
         } catch (SQLException e) {
