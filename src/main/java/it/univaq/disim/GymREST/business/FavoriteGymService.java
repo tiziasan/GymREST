@@ -9,11 +9,7 @@ import it.univaq.disim.GymREST.model.Gym;
 public interface FavoriteGymService {
 
     long createFavoriteGym (FavoriteGym favoriteGym) throws SQLException;
-    List<Gym> getAllFavoriteGym(long id) throws SQLException;
-    void deleteFavoriteGym(long id) throws SQLException;
-
-
-
-
+    List<Gym> getAllFavoriteGym(long idUser) throws SQLException;
+    void deleteFavoriteGym(long idUser, long idGym) throws SQLException;
 
 }
