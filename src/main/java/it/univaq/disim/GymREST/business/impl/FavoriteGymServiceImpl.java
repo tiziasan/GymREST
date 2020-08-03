@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FavoriteGymServiceImpl extends Service implements FavoriteGymService {
 
-    private static final String INSERT_FAVORITE_GYM = "INSERT INTO favoritegym (gym_id,user_user_id) VALUES (?,?)";
+    private static final String INSERT_FAVORITE_GYM = "INSERT INTO favoritegym (gym_gym_id,user_user_id) VALUES (?,?)";
     private static final String GET_FAVORITE_BY_USER = "SELECT * FROM favoritegym WHERE user_user_id=?";
     private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE id=?";
 
@@ -26,7 +26,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public long createFavoriteGym(FavoriteGym favoriteGym) throws SQLException {
+    public long createFavoriteGym(FavoriteGym favoriteGym){
         System.out.println("createFavoriteGym");
         loadDriver();
 
@@ -49,7 +49,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public List<FavoriteGym> getAllFavoriteGym(long id) throws SQLException {
+    public List<FavoriteGym> getAllFavoriteGym(long id){
         System.out.println("getAllFavoriteGym");
         loadDriver();
 
@@ -75,7 +75,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public void deleteFavoriteGym(long id) throws SQLException {
+    public void deleteFavoriteGym(long id){
         System.out.println("deleteFavoriteGym");
         loadDriver();
 

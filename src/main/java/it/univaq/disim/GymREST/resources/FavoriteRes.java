@@ -29,10 +29,15 @@ public class FavoriteRes {
     @Path("gyms")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createFavoriteGym(@Context UriInfo uriinfo, FavoriteGym favoriteGym) throws SQLException {
+    public Response createFavoriteGym(@Context UriInfo uriinfo, long idGym) throws SQLException {
         FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
-        long id = favoriteGymService.createFavoriteGym(favoriteGym);
-//        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(),"getUser").build(id)).build();
+
+        FavoriteGym favoriteGym = new FavoriteGym();
+        favoriteGym.setGym(idGym);
+        favoriteGym.setUser(idUser);
+        favoriteGymService.createFavoriteGym(favoriteGym);
+
+        return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
     }
 
     @Path("courses")
