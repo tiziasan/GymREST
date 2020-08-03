@@ -1,6 +1,6 @@
 package it.univaq.disim.GymREST;
 
-import it.univaq.disim.GymREST.resources.SecurityRes;
+import it.univaq.disim.GymREST.resources.AuthRes;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -19,7 +19,7 @@ public class JWTHelpers {
             keyGenerator = KeyGenerator.getInstance("HmacSha256");
             jwtKey = keyGenerator.generateKey();
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(SecurityRes.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AuthRes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
