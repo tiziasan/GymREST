@@ -73,17 +73,18 @@ public class FavoriteRes {
     }
 
     @DELETE
-    @Path("gyms/{idFavorite: [0-9]+}")
-    public Response deleteFavoriteGym(@PathParam("idFavorite") long idFavorite) throws SQLException {
+    @Path("gyms/{idGym: [0-9]+}")
+    public Response deleteFavoriteGym(@PathParam("idGym") long idGym) throws SQLException {
         FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
-        favoriteGymService.deleteFavoriteGym(idFavorite);
+        favoriteGymService.deleteFavoriteGym(idUser, idGym);
         return Response.noContent().build();
     }
+
     @DELETE
-    @Path("courses/{idFavorite: [0-9]+}")
-    public Response deleteFavoriteCourse(@PathParam("idFavorite") long idFavorite) throws SQLException {
+    @Path("courses/{idCourse: [0-9]+}")
+    public Response deleteFavoriteCourse(@PathParam("idCourse") long idCourse) throws SQLException {
         FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
-        favoriteCourseService.deleteFavoriteCourse(idFavorite);
+        favoriteCourseService.deleteFavoriteCourse(idUser, idCourse);
         return Response.noContent().build();
     }
 

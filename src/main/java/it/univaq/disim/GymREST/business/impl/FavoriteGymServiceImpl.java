@@ -13,7 +13,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
 
     private static final String INSERT_FAVORITE_GYM = "INSERT INTO favoritegym (gym_gym_id,user_user_id) VALUES (?,?)";
     private static final String GET_FAVORITE_BY_USER = "SELECT gym.gym_id, gym.address, gym.name, gym.province, gym.region FROM gym LEFT JOIN favoritegym ON favoritegym.gym_gym_id = gym.gym_id WHERE favoritegym.user_user_id=?";
-    private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE id=?";
+    private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE user_user_id=? AND gym_gym_id=?";
 
     private String urlDB;
     private String userDB;
@@ -78,17 +78,20 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public void deleteFavoriteGym(long id){
+    public void deleteFavoriteGym(long idUser, long idGym){
         System.out.println("deleteFavoriteGym");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_FAVORITE_GYM);) {
-            st.setLong(1,id);
+
+            st.setLong(1,idUser);
+            st.setLong(2,idGym);
             st.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 }
