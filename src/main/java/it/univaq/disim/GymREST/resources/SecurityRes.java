@@ -26,6 +26,15 @@ public class SecurityRes {
     private static final String pswDB = "gymportal";
 
     @POST
+    @Path("/registration")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException {
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        long idUser = userService.createUser(user);
+        return Response.created(uriInfo.getAbsolutePathBuilder().path(this.getClass(),"getUser").build(idUser)).build();
+    }
+
+    @POST
     @Path("/login")
     @Consumes(APPLICATION_FORM_URLENCODED)
     public Response authenticateUser(@Context UriInfo uriinfo,

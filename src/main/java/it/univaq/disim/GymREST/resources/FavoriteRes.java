@@ -16,30 +16,29 @@ import java.sql.SQLException;
 
 public class FavoriteRes {
 
-    private final long user;
-
-    public FavoriteRes(long user) {
-        this.user = user;
-    }
-
     private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private static final String userDB = "gymportal";
     private static final String pswDB = "gymportal";
+
+    private final long idUser;
+
+    public FavoriteRes(long idUser) {
+        this.idUser = idUser;
+    }
 
     @Path("gyms")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void createFavoriteGym(@Context UriInfo uriinfo, FavoriteGym favoriteGym) throws SQLException {
-        System.out.println(favoriteGym);
         FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
         long id = favoriteGymService.createFavoriteGym(favoriteGym);
+//        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(),"getUser").build(id)).build();
     }
 
     @Path("courses")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void createFavoriteCourse(@Context UriInfo uriinfo, FavoriteCourse favoriteCourse) throws SQLException {
-        System.out.println(favoriteCourse);
         FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
         long id = favoriteCourseService.createFavoriteCourse(favoriteCourse);
     }
@@ -49,7 +48,7 @@ public class FavoriteRes {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFavoritesGym() throws SQLException {
         FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(favoriteGymService.getAllFavoriteGym(user)).build();
+        return Response.ok(favoriteGymService.getAllFavoriteGym(idUser)).build();
     }
 
     @Path("courses")
@@ -57,7 +56,7 @@ public class FavoriteRes {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFavoritesCourse() throws SQLException {
         FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(favoriteCourseService.getAllFavoriteCourse(user)).build();
+        return Response.ok(favoriteCourseService.getAllFavoriteCourse(idUser)).build();
     }
 
     @DELETE
