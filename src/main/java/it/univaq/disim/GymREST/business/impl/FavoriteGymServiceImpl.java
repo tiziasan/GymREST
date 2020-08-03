@@ -50,14 +50,14 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public List<Gym> getAllFavoriteGym(long id){
+    public List<Gym> getAllFavoriteGym(long idUser){
         System.out.println("getAllFavoriteGym");
         loadDriver();
 
         List<Gym> favoriteGyms = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_FAVORITE_BY_USER);) {
-            st.setLong(1,id);
+            st.setLong(1,idUser);
 
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()){
