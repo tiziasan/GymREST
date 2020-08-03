@@ -4,10 +4,13 @@ import it.univaq.disim.GymREST.business.FavoriteCourseService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
+import it.univaq.disim.GymREST.model.Gym;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FavoriteCourseServiceImpl extends Service implements FavoriteCourseService {
 
@@ -49,25 +52,28 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     }
 
     @Override
-    public List<Course> getAllFavoriteCourse(long idUser) {
+    public Map<Long, Course> getAllFavoriteCourse(long idUser) {
         System.out.println("getAllFavoriteCourse");
         loadDriver();
 
-        List<Course> favoriteCourses = new ArrayList<>();
+        Map<Long, Course> favoriteCourses = new HashMap<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_FAVORITE_BY_USER);) {
             st.setLong(1,idUser);
 
             try (ResultSet rs = st.executeQuery();) {
+                Course course;
+                long key;
                 while (rs.next()) {
-                    Course course = new Course();
+                    course = new Course();
                     course.setId(rs.getLong(1));
                     course.setCode(rs.getString(2));
                     course.setName(rs.getString(4));
                     course.setDescription(rs.getString(3));
                     //restituire gym di appartenenza per far visualizzare info gym?
 
-                    favoriteCourses.add(course);
+                    key = rs.getLong(5);
+                    favoriteCourses.put(key, course);
                 }
             }
         } catch (SQLException e) {
