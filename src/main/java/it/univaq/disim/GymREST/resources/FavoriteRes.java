@@ -6,6 +6,7 @@ import it.univaq.disim.GymREST.business.impl.FavoriteCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.FavoriteGymServiceImpl;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
 import it.univaq.disim.GymREST.model.FavoriteGym;
+import it.univaq.disim.GymREST.model.FeedbackCourse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -43,10 +44,17 @@ public class FavoriteRes {
     @Path("courses")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createFavoriteCourse(@Context UriInfo uriinfo, FavoriteCourse favoriteCourse) throws SQLException {
+    public Response createFavoriteCourse(@Context UriInfo uriinfo, long idCourse) throws SQLException {
         FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
-        long id = favoriteCourseService.createFavoriteCourse(favoriteCourse);
+
+        FavoriteCourse favoriteCourse = new FavoriteCourse();
+        favoriteCourse.setCourse(idCourse);
+        favoriteCourse.setUser(idUser);
+        favoriteCourseService.createFavoriteCourse(favoriteCourse);
+
+        return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
     }
+
 
     @Path("gyms")
     @GET
