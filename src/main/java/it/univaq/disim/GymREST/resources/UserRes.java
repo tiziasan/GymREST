@@ -44,8 +44,9 @@ public class UserRes {
         return Response.noContent().build();
     }
 
-    @Path("{user: [0-9]+}/favorites")
-    public FavoriteRes getFavorites(@PathParam("user") long idUser) {
+    @Path("{idUser: [0-9]+}/favorites")
+    public FavoriteRes getFavorites(@PathParam("idUser") long idUser) {
+        System.out.println("From UserRes to FavoriteRes");
         return new FavoriteRes(idUser);
     }
 
