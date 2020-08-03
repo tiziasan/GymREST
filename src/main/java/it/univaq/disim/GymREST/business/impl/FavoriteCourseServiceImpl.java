@@ -13,7 +13,7 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
 
     private static final String INSERT_FAVORITE_COURSE = "INSERT INTO favoritecourse (course_id,user_user_id) VALUES (?,?)";
     private static final String GET_FAVORITE_BY_USER = "SELECT * FROM course LEFT JOIN favoritecourse ON favoritecourse.course_id = course.id WHERE favoritecourse.user_user_id=?";
-    private static final String DELETE_FAVORITE_COURSE = "DELETE FROM favoritecourse WHERE user_user_id=? AND course_id=?";
+    private static final String DELETE_FAVORITE_COURSE = "DELETE FROM favoritecourse WHERE id=?";
 
     private String urlDB;
     private String userDB;
@@ -77,20 +77,19 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     }
 
     @Override
-    public void deleteFavoriteCourse(long idUser, long idCourse) {
+    public void deleteFavoriteCourse(long id) {
         System.out.println("deleteFavoriteCourse");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_FAVORITE_COURSE);) {
 
-            st.setLong(1,idUser);
-            st.setLong(2,idCourse);
+            st.setLong(1,id);
             st.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
 
+    }
 }
