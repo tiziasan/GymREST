@@ -30,7 +30,7 @@ public class RESTApp extends Application {
         c.add(FavoriteRes.class);
         c.add(FeedbackCourseRes.class);
         c.add(FeedbackGymRes.class);
-        c.add(SecurityRes.class);
+        c.add(AuthRes.class);
 
         //aggiungiamo il provider Jackson per poter
         //usare i suoi servizi di serializzazione e 

@@ -3,6 +3,7 @@ package it.univaq.disim.GymREST.business.impl;
 import it.univaq.disim.GymREST.business.FavoriteGymService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.FavoriteGym;
+import it.univaq.disim.GymREST.model.Gym;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,9 +11,9 @@ import java.util.List;
 
 public class FavoriteGymServiceImpl extends Service implements FavoriteGymService {
 
-    private static final String INSERT_FAVORITE_GYM = "INSERT INTO favoritegym (gym_id,user_user_id) VALUES (?,?)";
-    private static final String GET_FAVORITE_BY_USER = "SELECT * FROM favoritegym WHERE user_user_id=?";
-    private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE id=?";
+    private static final String INSERT_FAVORITE_GYM = "INSERT INTO favoritegym (gym_gym_id,user_user_id) VALUES (?,?)";
+    private static final String GET_FAVORITE_BY_USER = "SELECT gym.gym_id, gym.address, gym.name, gym.province, gym.region FROM gym LEFT JOIN favoritegym ON favoritegym.gym_gym_id = gym.gym_id WHERE favoritegym.user_user_id=?";
+    private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE user_user_id=? AND gym_gym_id=?";
 
     private String urlDB;
     private String userDB;
@@ -26,7 +27,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public long createFavoriteGym(FavoriteGym favoriteGym) throws SQLException {
+    public long createFavoriteGym(FavoriteGym favoriteGym){
         System.out.println("createFavoriteGym");
         loadDriver();
 
@@ -49,23 +50,25 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public List<FavoriteGym> getAllFavoriteGym(long id) throws SQLException {
+    public List<Gym> getAllFavoriteGym(long idUser){
         System.out.println("getAllFavoriteGym");
         loadDriver();
 
-        List<FavoriteGym> favoriteGyms = new ArrayList<>();
+        List<Gym> favoriteGyms = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_FAVORITE_BY_USER);) {
-            st.setLong(1,id);
+            st.setLong(1,idUser);
 
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()){
-                    FavoriteGym favoriteGym = new FavoriteGym();
-                    favoriteGym.setId(rs.getLong(1));
-                    favoriteGym.setGym(rs.getLong(2));
-                    favoriteGym.setUser(rs.getLong(3));
+                    Gym gym = new Gym();
+                    gym.setId(rs.getLong(1));
+                    gym.setName(rs.getString(3));
+                    gym.setRegion(rs.getString(5));
+                    gym.setProvince(rs.getString(4));
+                    gym.setAddress(rs.getString(2));
 
-                    favoriteGyms.add(favoriteGym);
+                    favoriteGyms.add(gym);
                 }
             }
         } catch (SQLException e) {
@@ -75,17 +78,20 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public void deleteFavoriteGym(long id) throws SQLException {
+    public void deleteFavoriteGym(long idUser, long idGym){
         System.out.println("deleteFavoriteGym");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_FAVORITE_GYM);) {
-            st.setLong(1,id);
+
+            st.setLong(1,idUser);
+            st.setLong(2,idGym);
             st.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 }

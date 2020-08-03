@@ -19,11 +19,20 @@ import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path("auth")
-public class SecurityRes {
+public class AuthRes {
 
     private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private static final String userDB = "gymportal";
     private static final String pswDB = "gymportal";
+
+    @POST
+    @Path("/registration")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException {
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        long idUser = userService.createUser(user);
+        return Response.created(uriInfo.getBaseUriBuilder().path("users").path(UserRes.class,"getUser").build(idUser)).build();
+    }
 
     @POST
     @Path("/login")

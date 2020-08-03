@@ -12,7 +12,6 @@ import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
 
 @Path("users")
-
 public class UserRes {
 
     private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -20,43 +19,35 @@ public class UserRes {
     private static final String pswDB = "gymportal";
 
     @GET
-    @Path("{user: [0-9]+}")
+    @Path("{idUser: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam("user") long id) throws SQLException{
+    public Response getUser(@PathParam("idUser") long idUser) throws SQLException{
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(userService.getUser(id)).build();
-    }
-
-    @POST
-    @Path("/registration")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        long id = userService.createUser(user);
-        return Response.created(uriInfo.getAbsolutePathBuilder().path(this.getClass(),"getUser").build(id)).build();
+        return Response.ok(userService.getUser(idUser)).build();
     }
 
     @DELETE
-    @Path("{user: [0-9]+}")
-    public Response deleteUser(@PathParam("user") long id) throws SQLException {
+    @Path("{idUser: [0-9]+}")
+    public Response deleteUser(@PathParam("idUser") long idUser) throws SQLException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        userService.deleteUser(id);
+        userService.deleteUser(idUser);
         return Response.noContent().build();
     }
 
     @PUT
-    @Path("{user: [0-9]+}")
+    @Path("{idUser: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(@PathParam("user") long id, User user) throws SQLException {
+    public Response updateUser(@PathParam("idUser") long idUser, User user) throws SQLException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        user.setId(id);
+        user.setId(idUser);
         userService.updateUser(user);
         return Response.noContent().build();
     }
 
-    @Path("{user: [0-9]+}/favorites")
-    public FavoriteRes getFavorites(@PathParam("user") long user) {
-        return new FavoriteRes(user);
+    @Path("{idUser: [0-9]+}/favorites")
+    public FavoriteRes getFavorites(@PathParam("idUser") long idUser) {
+        System.out.println("From UserRes to FavoriteRes");
+        return new FavoriteRes(idUser);
     }
 
 }
