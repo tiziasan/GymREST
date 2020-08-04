@@ -14,7 +14,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     private static final String GET_ALL_FEEDBACK_BY_GYM = "SELECT * FROM feedbackgym WHERE gym_gym_id=?";
     private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackgym WHERE user_user_id=?";
     private static final String DELETE_FEEDBACK__GYM = "DELETE FROM feedbackgym WHERE id=?";
-    private static final String UPDATE_FEEDBACK_GYM = "UPDATE feedbackgym SET feed=?, rating=?";
+    private static final String UPDATE_FEEDBACK_GYM = "UPDATE feedbackgym SET feed=?, rating=? WHERE id=?";
 
     private String urlDB;
     private String userDB;
@@ -68,6 +68,8 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
                     feedbackGym.setId(rs.getLong(1));
                     feedbackGym.setRating(rs.getInt(3));
                     feedbackGym.setFeed(rs.getString(2));
+                    feedbackGym.setUser(rs.getLong(5));
+                    feedbackGym.setGym(rs.getLong(4));
 
                     feedbackGyms.add(feedbackGym);
                 }
@@ -129,6 +131,8 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
 
             st.setString(1, feedbackGym.getFeed());
             st.setInt(2, feedbackGym.getRating());
+
+            st.setLong(3, feedbackGym.getId());
 
             st.execute();
 
