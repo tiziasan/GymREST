@@ -56,7 +56,7 @@ public class FeedbackGymRes {
 
         long idFeedback = feedbackGymService.createFeedbackGym(feedbackGym);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbacksGym").build(idFeedback)).build();
+        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackGym").build(idFeedback)).build();
     }
 
     @PUT
