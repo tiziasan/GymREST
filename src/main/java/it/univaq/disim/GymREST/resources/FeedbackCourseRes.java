@@ -38,9 +38,14 @@ public class FeedbackCourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackCourse(@Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws SQLException {
         FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+        feedbackCourse.setCourse(idCourse);
+
+        //recupera id da utente connesso
+        feedbackCourse.setUser(1);
+
         long idFeedback = feedbackCourseService.createFeedbackCourse(feedbackCourse);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedback").build(idFeedback)).build();
+        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbacksCourse").build(idFeedback)).build();
     }
 
     @PUT

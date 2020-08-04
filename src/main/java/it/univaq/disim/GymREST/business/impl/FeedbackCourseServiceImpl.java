@@ -14,7 +14,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     private static final String GET_ALL_FEEDBACK_BY_COURSE = "SELECT * FROM feedbackcourse WHERE course_id=?";
     private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackcourse WHERE user_user_id=?";
     private static final String DELETE_FEEDBACK_COURSE = "DELETE FROM feedbackcourse WHERE id=?";
-    private static final String UPDATE_FEEDBACK_COURSE = "UPDATE feedbackcourse SET feed=?, rating=?";
+    private static final String UPDATE_FEEDBACK_COURSE = "UPDATE feedbackcourse SET feed=?, rating=? WHERE id=?";
 
     private String urlDB;
     private String userDB;
@@ -69,8 +69,11 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                 while (rs.next()){
                     FeedbackCourse feedbackCourse = new FeedbackCourse();
                     feedbackCourse.setId(rs.getLong(1));
-                    feedbackCourse.setRating(rs.getInt(2));
-                    feedbackCourse.setFeed(rs.getString(3));
+                    feedbackCourse.setRating(rs.getInt(3));
+                    feedbackCourse.setFeed(rs.getString(2));
+
+                    feedbackCourse.setUser(rs.getLong(5));
+                    feedbackCourse.setCourse(rs.getLong(4));
 
                     feedbackCourses.add(feedbackCourse);
                 }
@@ -82,14 +85,14 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     }
 
     @Override
-    public List<FeedbackCourse> getAllFeedbackByUser(long id) {
+    public List<FeedbackCourse> getAllFeedbackByUser(long idUser) {
         System.out.println("getAllFeedbackByUser");
         loadDriver();
 
         List<FeedbackCourse> feedbackCourses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_ALL_FEEDBACK_BY_USER);) {
-            st.setLong(1,id);
+            st.setLong(1,idUser);
 
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()){
@@ -133,6 +136,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
 
             st.setString(1, feedbackCourse.getFeed());
             st.setInt(2, feedbackCourse.getRating());
+            st.setLong(3, feedbackCourse.getId());
 
             st.execute();
 
