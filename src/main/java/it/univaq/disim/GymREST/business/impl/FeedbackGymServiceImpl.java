@@ -11,6 +11,7 @@ import java.util.List;
 public class FeedbackGymServiceImpl extends Service implements FeedbackGymService {
 
     private static final String INSERT_FEEDBACK_GYM = "INSERT INTO feedbackgym (feed,rating,gym_gym_id,user_user_id) VALUES (?,?,?,?)";
+    private static final String GET_FEEDBACK_BY_ID = "SELECT * FROM feedbackgym WHERE id=?";
     private static final String GET_ALL_FEEDBACK_BY_GYM = "SELECT * FROM feedbackgym WHERE gym_gym_id=?";
     private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackgym WHERE user_user_id=?";
     private static final String DELETE_FEEDBACK__GYM = "DELETE FROM feedbackgym WHERE id=?";
@@ -52,7 +53,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
         return 0;
     }
 
-
     @Override
     public List<FeedbackGym> getAllFeedbackByGym(long id) {
         System.out.println("getAllFeedbackByGym");
@@ -82,6 +82,31 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     }
 
     @Override
+    public FeedbackGym getFeedback(long id) {
+        System.out.println("getFeedbackGym");
+        loadDriver();
+
+        FeedbackGym feedbackGym = new FeedbackGym() ;
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+             PreparedStatement st = connection.prepareStatement(GET_FEEDBACK_BY_ID);) {
+            st.setLong(1,id);
+
+            try (ResultSet rs = st.executeQuery();) {
+                if (rs.next()){
+                    feedbackGym.setId(rs.getLong(1));
+                    feedbackGym.setRating(rs.getInt(3));
+                    feedbackGym.setFeed(rs.getString(2));
+                    feedbackGym.setUser(rs.getLong(5));
+                    feedbackGym.setGym(rs.getLong(4));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return feedbackGym;
+    }
+
+    @Override
     public List<FeedbackGym> getAllFeedbackByUser(long idUser) {
         System.out.println("getAllFeedbackByUser");
         loadDriver();
@@ -104,7 +129,8 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return feedbackGyms;       }
+        return feedbackGyms;
+    }
 
     @Override
     public void deleteFeedbackGym(long id) {

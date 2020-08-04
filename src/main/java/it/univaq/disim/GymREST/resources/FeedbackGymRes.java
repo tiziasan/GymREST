@@ -36,6 +36,15 @@ public class FeedbackGymRes {
         return Response.ok(feedbackGymService.getAllFeedbackByGym(idGym)).build();
     }
 
+    @GET
+    @Path("{idFeedback: [0-9]+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFeedbackGym(@PathParam("idFeedback") long idFeedback) throws SQLException {
+        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+
+        return Response.ok(feedbackGymService.getFeedback(idFeedback)).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackGym(@Context UriInfo uriinfo, FeedbackGym feedbackGym) throws SQLException {
