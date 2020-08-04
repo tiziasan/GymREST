@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface FeedbackGymService {
 
-        long createFeedbackGym (FeedbackGym feedbackGym) throws SQLException;
-        FeedbackGym getFeedback(long id) throws SQLException;
-        List<FeedbackGym> getAllFeedbackByGym(long id) throws SQLException;
-        List<FeedbackGym> getAllFeedbackByUser(long id) throws SQLException;
-        void deleteFeedbackGym(long id) throws SQLException;
-        void updateFeedbackGym(FeedbackGym feedbackGym) throws SQLException;
+    long createFeedbackGym (FeedbackGym feedbackGym) throws SQLException;
+    FeedbackGym getFeedback(long id) throws SQLException;
+    List<FeedbackGym> getAllFeedbackByGym(long id) throws SQLException;
+    List<FeedbackGym> getAllFeedbackByUser(long id) throws SQLException;
+    void deleteFeedbackGym(long id) throws SQLException;
+    void updateFeedbackGym(FeedbackGym feedbackGym) throws SQLException;
 }
