@@ -56,7 +56,7 @@ public class FeedbackCourseRes {
 
         long idFeedback = feedbackCourseService.createFeedbackCourse(feedbackCourse);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbacksCourse").build(idFeedback)).build();
+        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackCourse").build(idFeedback)).build();
     }
 
     @PUT
