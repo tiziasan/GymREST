@@ -39,6 +39,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
             st.setInt(2,feedbackGym.getRating());
             st.setLong(3,feedbackGym.getGym());
             st.setLong(4,feedbackGym.getUser());
+
             st.execute();
 
             ResultSet result = st.getGeneratedKeys();
@@ -81,14 +82,14 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     }
 
     @Override
-    public List<FeedbackGym> getAllFeedbackByUser(long id) {
+    public List<FeedbackGym> getAllFeedbackByUser(long idUser) {
         System.out.println("getAllFeedbackByUser");
         loadDriver();
 
         List<FeedbackGym> feedbackGyms = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_ALL_FEEDBACK_BY_USER);) {
-            st.setLong(1,id);
+            st.setLong(1,idUser);
 
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()) {
@@ -122,7 +123,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     }
 
     @Override
-    public void updateFeedbackGym(FeedbackGym feedbackGym) throws SQLException {
+    public void updateFeedbackGym(FeedbackGym feedbackGym) {
         System.out.println("updateFeedbackGym");
         loadDriver();
 
@@ -131,7 +132,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
 
             st.setString(1, feedbackGym.getFeed());
             st.setInt(2, feedbackGym.getRating());
-
             st.setLong(3, feedbackGym.getId());
 
             st.execute();
