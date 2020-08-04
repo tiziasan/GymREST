@@ -1,7 +1,9 @@
 package it.univaq.disim.GymREST.resources;
 
 import it.univaq.disim.GymREST.business.FeedbackGymService;
+import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
+import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackGym;
 
 import javax.ws.rs.*;
@@ -38,9 +40,14 @@ public class FeedbackGymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackGym(@Context UriInfo uriinfo, FeedbackGym feedbackGym) throws SQLException {
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+        feedbackGym.setGym(idGym);
+
+        //recupera id da utente connesso
+        feedbackGym.setUser(1);
+
         long idFeedback = feedbackGymService.createFeedbackGym(feedbackGym);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedback").build(idFeedback)).build();
+        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbacksGym").build(idFeedback)).build();
     }
 
     @PUT
@@ -53,9 +60,6 @@ public class FeedbackGymRes {
 
         return Response.noContent().build();
     }
-
-
-
 
     @DELETE
     @Path("{idFeedback: [0-9]+}")
