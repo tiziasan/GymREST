@@ -3,6 +3,7 @@ package it.univaq.disim.GymREST.business.impl;
 import it.univaq.disim.GymREST.business.FeedbackCourseService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
+import it.univaq.disim.GymREST.model.FeedbackGym;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 public class FeedbackCourseServiceImpl extends Service implements FeedbackCourseService {
 
     private static final String INSERT_FEEDBACK_COURSE = "INSERT INTO feedbackcourse (feed,rating,course_id,user_user_id) VALUES (?,?,?,?)";
+    private static final String GET_FEEDBACK_BY_ID = "SELECT * FROM feedbackcourse WHERE id=?";
     private static final String GET_ALL_FEEDBACK_BY_COURSE = "SELECT * FROM feedbackcourse WHERE course_id=?";
     private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackcourse WHERE user_user_id=?";
     private static final String DELETE_FEEDBACK_COURSE = "DELETE FROM feedbackcourse WHERE id=?";
@@ -53,8 +55,6 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
         return 0;
     }
 
-
-
     @Override
     public List<FeedbackCourse> getAllFeedbackByCourse(long id) {
         System.out.println("getAllFeedbackByCourse");
@@ -71,7 +71,6 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                     feedbackCourse.setId(rs.getLong(1));
                     feedbackCourse.setRating(rs.getInt(3));
                     feedbackCourse.setFeed(rs.getString(2));
-
                     feedbackCourse.setUser(rs.getLong(5));
                     feedbackCourse.setCourse(rs.getLong(4));
 
@@ -82,6 +81,31 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
             e.printStackTrace();
         }
         return feedbackCourses;
+    }
+
+    @Override
+    public FeedbackCourse getFeedback(long id) {
+        System.out.println("getFeedbackCourse");
+        loadDriver();
+
+        FeedbackCourse feedbackCourse = new FeedbackCourse() ;
+        try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
+             PreparedStatement st = connection.prepareStatement(GET_FEEDBACK_BY_ID);) {
+            st.setLong(1,id);
+
+            try (ResultSet rs = st.executeQuery();) {
+                if (rs.next()){
+                    feedbackCourse.setId(rs.getLong(1));
+                    feedbackCourse.setRating(rs.getInt(3));
+                    feedbackCourse.setFeed(rs.getString(2));
+                    feedbackCourse.setUser(rs.getLong(5));
+                    feedbackCourse.setCourse(rs.getLong(4));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return feedbackCourse;
     }
 
     @Override

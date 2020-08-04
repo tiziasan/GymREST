@@ -1,7 +1,9 @@
 package it.univaq.disim.GymREST.resources;
 
 import it.univaq.disim.GymREST.business.FeedbackCourseService;
+import it.univaq.disim.GymREST.business.FeedbackGymService;
 import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
+import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
 
 import javax.ws.rs.*;
@@ -32,6 +34,15 @@ public class FeedbackCourseRes {
         }
 
         return Response.ok(feedbackCourseService.getAllFeedbackByCourse(idCourse)).build();
+    }
+
+    @GET
+    @Path("{idFeedback: [0-9]+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFeedbackCourse(@PathParam("idFeedback") long idFeedback) throws SQLException {
+        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+
+        return Response.ok(feedbackCourseService.getFeedback(idFeedback)).build();
     }
 
     @POST
