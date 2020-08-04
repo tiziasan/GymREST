@@ -4,19 +4,16 @@ import it.univaq.disim.GymREST.business.FavoriteCourseService;
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
-import it.univaq.disim.GymREST.model.Gym;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FavoriteCourseServiceImpl extends Service implements FavoriteCourseService {
 
-    private static final String INSERT_FAVORITE_COURSE = "INSERT INTO favoritecourse (course_id,user_user_id) VALUES (?,?)";
-    private static final String GET_FAVORITE_BY_USER = "SELECT * FROM course LEFT JOIN favoritecourse ON favoritecourse.course_id = course.id WHERE favoritecourse.user_user_id=?";
-    private static final String DELETE_FAVORITE_COURSE = "DELETE FROM favoritecourse WHERE user_user_id=? AND course_id=?";
+    private static final String INSERT_FAVORITE_COURSE = "INSERT INTO favoritecourse (course_id,user_id) VALUES (?,?)";
+    private static final String GET_FAVORITE_BY_USER = "SELECT * FROM course LEFT JOIN favoritecourse ON favoritecourse.course_id = course.id WHERE favoritecourse.user_id=?";
+    private static final String DELETE_FAVORITE_COURSE = "DELETE FROM favoritecourse WHERE user_id=? AND course_id=?";
 
     private String urlDB;
     private String userDB;

@@ -11,10 +11,10 @@ import java.util.List;
 
 public class FeedbackCourseServiceImpl extends Service implements FeedbackCourseService {
 
-    private static final String INSERT_FEEDBACK_COURSE = "INSERT INTO feedbackcourse (feed,rating,course_id,user_user_id) VALUES (?,?,?,?)";
+    private static final String INSERT_FEEDBACK_COURSE = "INSERT INTO feedbackcourse (feed,rating,course_id,user_id) VALUES (?,?,?,?)";
     private static final String GET_FEEDBACK_BY_ID = "SELECT * FROM feedbackcourse WHERE id=?";
     private static final String GET_ALL_FEEDBACK_BY_COURSE = "SELECT * FROM feedbackcourse WHERE course_id=?";
-    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackcourse WHERE user_user_id=?";
+    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackcourse WHERE user_id=?";
     private static final String DELETE_FEEDBACK_COURSE = "DELETE FROM feedbackcourse WHERE id=?";
     private static final String UPDATE_FEEDBACK_COURSE = "UPDATE feedbackcourse SET feed=?, rating=? WHERE id=?";
 

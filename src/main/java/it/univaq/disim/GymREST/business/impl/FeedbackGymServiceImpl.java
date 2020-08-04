@@ -10,10 +10,10 @@ import java.util.List;
 
 public class FeedbackGymServiceImpl extends Service implements FeedbackGymService {
 
-    private static final String INSERT_FEEDBACK_GYM = "INSERT INTO feedbackgym (feed,rating,gym_gym_id,user_user_id) VALUES (?,?,?,?)";
+    private static final String INSERT_FEEDBACK_GYM = "INSERT INTO feedbackgym (feed,rating,gym_id,user_id) VALUES (?,?,?,?)";
     private static final String GET_FEEDBACK_BY_ID = "SELECT * FROM feedbackgym WHERE id=?";
-    private static final String GET_ALL_FEEDBACK_BY_GYM = "SELECT * FROM feedbackgym WHERE gym_gym_id=?";
-    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackgym WHERE user_user_id=?";
+    private static final String GET_ALL_FEEDBACK_BY_GYM = "SELECT * FROM feedbackgym WHERE gym_id=?";
+    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackgym WHERE user_id=?";
     private static final String DELETE_FEEDBACK__GYM = "DELETE FROM feedbackgym WHERE id=?";
     private static final String UPDATE_FEEDBACK_GYM = "UPDATE feedbackgym SET feed=?, rating=? WHERE id=?";
 

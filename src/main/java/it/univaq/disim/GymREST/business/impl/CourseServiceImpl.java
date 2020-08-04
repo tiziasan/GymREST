@@ -10,10 +10,10 @@ import java.util.List;
 
 public class CourseServiceImpl extends Service implements CourseService {
 
-    private static final String GET_ALL_COURSES_BY_GYMS = "SELECT * FROM course WHERE gym_gym_id=?";
+    private static final String GET_ALL_COURSES_BY_GYMS = "SELECT * FROM course WHERE gym_id=?";
     private static final String GET_COURSES_BY_NAME = "SELECT * FROM course WHERE course.name LIKE ?";
     private static final String GET_COURSE = "SELECT * FROM course WHERE course.id = ?";
-    private static final String INSERT_COURSE = "INSERT INTO course (code,name,description,gym_gym_id) VALUES (?,?,?,?)";
+    private static final String INSERT_COURSE = "INSERT INTO course (code,name,description,gym_id) VALUES (?,?,?,?)";
     private static final String UPDATE_COURSE = "UPDATE course SET code=?, name=?, description=? WHERE id=?";
     private static final String DELETE_COURSE = "DELETE FROM course WHERE id=?";
 
