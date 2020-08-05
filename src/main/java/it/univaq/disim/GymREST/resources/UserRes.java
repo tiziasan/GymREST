@@ -1,14 +1,16 @@
 package it.univaq.disim.GymREST.resources;
 
+import it.univaq.disim.GymREST.business.FeedbackCourseService;
+import it.univaq.disim.GymREST.business.FeedbackGymService;
 import it.univaq.disim.GymREST.business.UserService;
+import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
+import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.User;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
 
 @Path("users")
@@ -44,10 +46,28 @@ public class UserRes {
         return Response.noContent().build();
     }
 
+    @GET
+    @Path("{idUser: [0-9]+}/feedbacks/gyms")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFeedbacksGym(@PathParam("idUser") long idUser) throws SQLException {
+        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+        return Response.ok(feedbackGymService.getAllFeedbackByUser(idUser)).build();
+    }
+
+    @GET
+    @Path("{idUser: [0-9]+}/feedbacks/courses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFeedbacksCourse(@PathParam("idUser") long idUser) throws SQLException {
+        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+        return Response.ok(feedbackCourseService.getAllFeedbackByUser(idUser)).build();
+    }
+
+
     @Path("{idUser: [0-9]+}/favorites")
     public FavoriteRes getFavorites(@PathParam("idUser") long idUser) {
         System.out.println("From UserRes to FavoriteRes");
         return new FavoriteRes(idUser);
     }
+
 
 }

@@ -27,11 +27,8 @@ public class FeedbackCourseRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbacksCourse(@QueryParam("user") long user) throws SQLException {
+    public Response getFeedbacksCourse() throws SQLException {
         FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
-        if ( user > 0 ){
-            return Response.ok(feedbackCourseService.getAllFeedbackByUser(user)).build();
-        }
 
         return Response.ok(feedbackCourseService.getAllFeedbackByCourse(idCourse)).build();
     }
