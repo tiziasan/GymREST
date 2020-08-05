@@ -12,7 +12,7 @@ import java.util.Map;
 public class FavoriteGymServiceImpl extends Service implements FavoriteGymService {
 
     private static final String INSERT_FAVORITE_GYM = "INSERT INTO favoritegym (gym_id,user_id) VALUES (?,?)";
-    private static final String GET_FAVORITE_BY_USER = "SELECT gym.gym_id, gym.address, gym.name, gym.province, gym.region, favoritegym.id FROM gym LEFT JOIN favoritegym ON favoritegym.gym_id = gym.gym_id WHERE favoritegym.user_id=?";
+    private static final String GET_FAVORITE_BY_USER = "SELECT gym.id, gym.address, gym.name, gym.province, gym.region, favoritegym.id FROM gym LEFT JOIN favoritegym ON favoritegym.gym_id = gym.id WHERE favoritegym.user_id=?";
     private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE user_id=? AND gym_id=?";
 
     private String urlDB;
