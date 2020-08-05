@@ -9,16 +9,19 @@ import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.security.Key;
+import java.security.Principal;
 
 @Provider
-@Authorization
+@Auth
 @Priority(Priorities.AUTHENTICATION)
 public class SecurityFilter implements ContainerRequestFilter {
+
+    @Context
+    UriInfo uriInfo;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -35,6 +38,38 @@ public class SecurityFilter implements ContainerRequestFilter {
                 //validiamo il token JWT
                 Key key = JWTHelpers.getInstance().getJwtKey();
                 Jws<Claims> jwsc = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+
+
+                // https://dzone.com/articles/custom-security-context-injax-rs
+                String subject = jwsc.getBody().getSubject();
+                if (subject!=null) {
+                    final SecurityContext securityContext = requestContext.getSecurityContext();
+                    requestContext.setSecurityContext(new SecurityContext() {
+                        @Override
+                        public Principal getUserPrincipal() {
+                            return new Principal() {
+                                @Override
+                                public String getName() {
+                                    return subject;
+                                }
+                            };
+                        }
+                        @Override
+                        public boolean isUserInRole(String role) {
+//                            List<Role> roles = findUserRole(subject);
+//                            return roles.contains(role);
+                            return true;
+                        }
+                        @Override
+                        public boolean isSecure() {
+                            return uriInfo.getAbsolutePath().toString().startsWith("https");
+                        }
+                        @Override
+                        public String getAuthenticationScheme() {
+                            return "Token-Based-Auth-Scheme";
+                        }
+                    });
+                }
 
             } catch (Exception e) {
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
