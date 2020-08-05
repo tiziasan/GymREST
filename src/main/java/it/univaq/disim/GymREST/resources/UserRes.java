@@ -5,10 +5,8 @@ import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.User;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
 
 @Path("users")
@@ -23,7 +21,7 @@ public class UserRes {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("idUser") long idUser) throws SQLException{
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(userService.getUser(idUser)).build();
+        return Response.ok(userService.getUserById(idUser)).build();
     }
 
     @DELETE

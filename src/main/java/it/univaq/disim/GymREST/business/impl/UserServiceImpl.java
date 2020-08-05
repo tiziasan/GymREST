@@ -11,6 +11,7 @@ public class UserServiceImpl extends Service implements UserService {
 
     private static final String CHECK_USER = "SELECT COUNT(1) FROM user WHERE user_name=? AND password=?";
     private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id=?";
+    private static final String GET_USER_BY_USERNAME = "SELECT * FROM user WHERE user_name=?";
     private static final String UPDATE_USER = "UPDATE user SET email=?, last_name=?, name=?, password=?, user_name=?";
     private static final String DELETE_USER = "DELETE FROM user WHERE id=?";
     private static final String CREATE_USER = "INSERT INTO user (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
@@ -116,7 +117,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public User getUser(long id) {
+    public User getUserById(long id) {
         System.out.println("getUser");
         loadDriver();
 
@@ -141,4 +142,33 @@ public class UserServiceImpl extends Service implements UserService {
         }
         return user;
     }
+
+    @Override
+    public User getUserByUsername(String username) {
+        System.out.println("getUser");
+        loadDriver();
+
+        User user = new User();
+        try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
+             PreparedStatement st = connection.prepareStatement(GET_USER_BY_USERNAME);) {
+            st.setString(1,username);
+
+            try (ResultSet rs = st.executeQuery();) {
+                if (rs.next()) {
+                    user.setId(rs.getLong(1));
+                    user.setEmail(rs.getString(3));
+                    user.setLastName(rs.getString(4));
+                    user.setName(rs.getString(5));
+                    user.setPassword(rs.getString(6));
+                    user.setUserName(rs.getString(7));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+
 }

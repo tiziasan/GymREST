@@ -1,16 +1,15 @@
 package it.univaq.disim.GymREST.resources;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 
 import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.Gym;
+import it.univaq.disim.GymREST.model.User;
+import it.univaq.disim.GymREST.security.Auth;
 
 import java.sql.SQLException;
 
@@ -49,9 +48,15 @@ public class GymRes {
     }
 
     @POST
+    @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addGym(@Context UriInfo uriinfo, Gym gym) throws SQLException {
+    public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws SQLException {
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        User user = userService.getUserByUsername(securityContext.getUserPrincipal().getName());
+        gym.setUser(user);
+
         long idGym = gymService.createGym(gym);
 
         return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
