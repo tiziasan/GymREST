@@ -122,8 +122,9 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                 while (rs.next()){
                     FeedbackCourse feedbackCourse = new FeedbackCourse();
                     feedbackCourse.setId(rs.getLong(1));
-                    feedbackCourse.setRating(rs.getInt(2));
-                    feedbackCourse.setFeed(rs.getString(3));
+                    feedbackCourse.setRating(rs.getInt(3));
+                    feedbackCourse.setFeed(rs.getString(2));
+                    feedbackCourse.setCourse(rs.getLong(4));
 
                     feedbackCourses.add(feedbackCourse);
                 }
