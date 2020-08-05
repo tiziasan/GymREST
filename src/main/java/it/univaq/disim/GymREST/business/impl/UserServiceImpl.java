@@ -10,9 +10,9 @@ import java.sql.*;
 public class UserServiceImpl extends Service implements UserService {
 
     private static final String CHECK_USER = "SELECT COUNT(1) FROM user WHERE user_name=? AND password=?";
-    private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE user_id=?";
+    private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id=?";
     private static final String UPDATE_USER = "UPDATE user SET email=?, last_name=?, name=?, password=?, user_name=?";
-    private static final String DELETE_USER = "DELETE FROM user WHERE user_id=?";
+    private static final String DELETE_USER = "DELETE FROM user WHERE id=?";
     private static final String CREATE_USER = "INSERT INTO user (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
 
     private String urlDB;
