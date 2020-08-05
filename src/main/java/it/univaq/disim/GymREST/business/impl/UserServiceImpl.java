@@ -80,43 +80,6 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public void deleteUser(long id) {
-        System.out.println("deleteUser");
-        loadDriver();
-
-        try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
-             PreparedStatement st = connection.prepareStatement(DELETE_USER);) {
-
-            st.setLong(1,id);
-            st.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void updateUser(User user) {
-        System.out.println("updateUser");
-        loadDriver();
-
-        try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
-             PreparedStatement st = connection.prepareStatement(UPDATE_USER);) {
-
-            st.setString(1, user.getEmail());
-            st.setString(2, user.getLastName());
-            st.setString(3, user.getName());
-            st.setString(4, user.getPassword());
-            st.setString(5, user.getUserName());
-
-            st.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public User getUserById(long id) {
         System.out.println("getUser");
         loadDriver();
@@ -168,6 +131,43 @@ public class UserServiceImpl extends Service implements UserService {
             e.printStackTrace();
         }
         return user;
+    }
+
+    @Override
+    public void updateUser(User user) {
+        System.out.println("updateUser");
+        loadDriver();
+
+        try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
+             PreparedStatement st = connection.prepareStatement(UPDATE_USER);) {
+
+            st.setString(1, user.getEmail());
+            st.setString(2, user.getLastName());
+            st.setString(3, user.getName());
+            st.setString(4, user.getPassword());
+            st.setString(5, user.getUserName());
+
+            st.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        System.out.println("deleteUser");
+        loadDriver();
+
+        try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
+             PreparedStatement st = connection.prepareStatement(DELETE_USER);) {
+
+            st.setLong(1,id);
+            st.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
