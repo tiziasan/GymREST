@@ -7,7 +7,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import it.univaq.disim.GymREST.business.GymService;
+import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
+import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.Gym;
 
 import java.sql.SQLException;
@@ -51,6 +53,7 @@ public class GymRes {
     public Response addGym(@Context UriInfo uriinfo, Gym gym) throws SQLException {
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
         long idGym = gymService.createGym(gym);
+
         return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
     }
 
@@ -72,13 +75,18 @@ public class GymRes {
         return Response.noContent().build();
     }
 
+
     @Path("{idGym: [0-9]+}/courses")
     public CourseRes getCourses(@PathParam("idGym") long idGym) {
+        System.out.println("From GymRes to CourseRes");
         return new CourseRes(idGym);
     }
 
     @Path("{idGym: [0-9]+}/feedbacks")
-    public FeedbackCourseRes getFeedbacksGym(@PathParam("idGym") long idGym) { return new FeedbackCourseRes(idGym); }
+    public FeedbackGymRes getFeedbacksGym(@PathParam("idGym") long idGym) {
+        System.out.println("From GymRes to FeedbackGymRes");
+        return new FeedbackGymRes(idGym);
+    }
 }
 
 
