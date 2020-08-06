@@ -1,9 +1,7 @@
 package it.univaq.disim.GymREST.resources;
 
 import it.univaq.disim.GymREST.business.FeedbackGymService;
-import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
-import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackGym;
 
 import javax.ws.rs.*;
@@ -27,11 +25,8 @@ public class FeedbackGymRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbacksGym(@QueryParam("user") long user) throws SQLException {
+    public Response getFeedbacksGym() throws SQLException {
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
-        if ( user > 0 ){
-            return Response.ok(feedbackGymService.getAllFeedbackByUser(user)).build();
-        }
 
         return Response.ok(feedbackGymService.getAllFeedbackByGym(idGym)).build();
     }
