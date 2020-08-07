@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+	name="GymPortalWS"
+    targetNamespace="http://org.univaq.mmwt.wa/GymPortalWS.wsdl"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://org.univaq.mmwt.wa/GymPortalWS.wsdl"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsd1="http://org.univaq.mmwt.wa/GymPortalWS.xsd1">
+    <wsdl:types>
+    	<xsd:schema
+    		targetNamespace="http://org.univaq.mmwt.wa/GymPortalWS.xsd1"
+            xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd1="http://org.univaq.mmwt.wa/GymPortalWS.xsd1">
+            <xsd:complexType name="TipoUtente">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="name" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="last_name" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="email" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="user_name" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="password" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="TipoListaUtente">
+                <xsd:sequence>
+                    <xsd:element
+                        maxOccurs="unbounded"
+                        minOccurs="1"
+                        name="utente"
+                        type="xsd1:TipoUtente"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="TipoRuolo">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="user_id" type="xsd:long"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="role_id" type="xsd:long"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="TipoErrore">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="codice" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="messaggio" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ElementoErrore" type="xsd1:TipoErrore"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="MsgErrore">
+        <wsdl:part element="xsd1:ElementoErrore" name="errore"/>
+    </wsdl:message>
+    <wsdl:message name="MsgAddRuoloResponse">
+        <wsdl:part name="successo" type="xsd:boolean"/>
+    </wsdl:message>
+    <wsdl:message name="MsgListaUtenti">
+        <wsdl:part name="utenti" type="xsd1:TipoListaUtente"/>
+    </wsdl:message>
+    <wsdl:message name="MsgUtente">
+        <wsdl:part name="utenti" type="xsd1:TipoUtente"/>
+    </wsdl:message>
+    <wsdl:message name="MsgVoid">   </wsdl:message>
+    <wsdl:portType name="GymPortalWSInterface">
+        <wsdl:operation name="getUtenti">
+            <wsdl:input message="tns:MsgVoid"/>
+            <wsdl:output message="tns:MsgListaUtenti"/>
+            <wsdl:fault message="tns:MsgErrore" name="erroreGenerale"/>
+        </wsdl:operation>
+        <wsdl:operation name="addRuoloUtente">
+            <wsdl:input message="tns:MsgUtente"/>
+            <wsdl:output message="tns:MsgAddRuoloResponse"/>
+            <wsdl:fault message="tns:MsgErrore" name="erroreGenerale"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteRuoloUtente">
+            <wsdl:input message="tns:MsgUtente"/>
+            <wsdl:output message="tns:MsgVoid"/>
+            <wsdl:fault message="tns:MsgErrore" name="erroreGenerale"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="GymPortalWSSOAP" type="tns:UniWSInterface">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getUtenti">
+            <soap:operation soapAction="GymPortalWSInterface#getUtenti"/>
+            <wsdl:input>
+                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="erroreGenerale">
+                <soap:fault name="erroreGenerale" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addRuoloUtente">
+            <soap:operation soapAction="GymPortalWSInterface#addRuoloUtente"/>
+            <wsdl:input>
+                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="erroreGenerale">
+                <soap:fault name="erroreGenerale" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deleteRuoloUtente">
+            <soap:operation soapAction="GymPortalWSInterface#deleteRuoloUtente"/>
+            <wsdl:input>
+                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="erroreGenerale">
+                <soap:fault name="erroreGenerale" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="GymPortalWSMain">
+        <wsdl:port binding="tns:GymPortalWSSOAP" name="GymPortalWSSOAP">
+            <soap:address location="http://localhost:8888/ccx/GymPortalWSMain"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
+
+
+
+
+
+
+
+
+
+
