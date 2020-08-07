@@ -30,7 +30,7 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public List<Course> getCoursesByGym(long courseId) {
-        System.out.println("getCoursesByGym");
+        System.out.println("[SERVICE] Course - getCoursesByGym");
 
         List<Course> courses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -58,7 +58,7 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public List<Course> getCoursesByName(String hint) {
-        System.out.println("getGymsByRegion");
+        System.out.println("[SERVICE] Course - getGymsByRegion");
 
         List<Course> courses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -85,7 +85,7 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public Course getCourse(long idCourse) {
-        System.out.println("getCourse");
+        System.out.println("[SERVICE] Course - getCourse");
 
         Course course = new Course();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -109,7 +109,7 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public long createCourse(Course course) {
-        System.out.println("createCourse");
+        System.out.println("[SERVICE] Course - createCourse");
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(INSERT_COURSE, Statement.RETURN_GENERATED_KEYS);) {
@@ -134,7 +134,7 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public void updateCourse(Course course) {
-        System.out.println("updateCourse");
+        System.out.println("[SERVICE] Course - updateCourse");
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(UPDATE_COURSE);) {
@@ -152,7 +152,7 @@ public class CourseServiceImpl extends Service implements CourseService {
 
     @Override
     public void deleteCourse(long idCourse) {
-        System.out.println("deleteCourse");
+        System.out.println("[SERVICE] Course - deleteCourse");
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_COURSE);) {

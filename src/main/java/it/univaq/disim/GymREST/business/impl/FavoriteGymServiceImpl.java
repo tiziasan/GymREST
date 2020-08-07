@@ -28,7 +28,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
 
     @Override
     public long createFavoriteGym(FavoriteGym favoriteGym){
-        System.out.println("createFavoriteGym");
+        System.out.println("[SERVICE] FavoriteGym - createFavoriteGym");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -51,7 +51,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
 
     @Override
     public Map<Long, Gym> getAllFavoriteGym(long idUser){
-        System.out.println("getAllFavoriteGym");
+        System.out.println("[SERVICE] FavoriteGym - getAllFavoriteGym");
         loadDriver();
 
         Map<Long,Gym> favoriteGyms = new HashMap<>();
@@ -82,7 +82,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
 
     @Override
     public void deleteFavoriteGym(long idUser, long idGym){
-        System.out.println("deleteFavoriteGym");
+        System.out.println("[SERVICE] FavoriteGym - deleteFavoriteGym");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);

@@ -30,7 +30,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
 
     @Override
     public long createFeedbackGym(FeedbackGym feedbackGym) {
-        System.out.println("createFeedbackGym");
+        System.out.println("[SERVICE] FeedbackGym - createFeedbackGym");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -55,7 +55,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
 
     @Override
     public List<FeedbackGym> getAllFeedbackByGym(long id) {
-        System.out.println("getAllFeedbackByGym");
+        System.out.println("[SERVICE] FeedbackGym - getAllFeedbackByGym");
         loadDriver();
 
         List<FeedbackGym> feedbackGyms = new ArrayList<>();
@@ -83,7 +83,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
 
     @Override
     public FeedbackGym getFeedback(long id) {
-        System.out.println("getFeedbackGym");
+        System.out.println("[SERVICE] FeedbackGym - getFeedbackGym");
         loadDriver();
 
         FeedbackGym feedbackGym = new FeedbackGym() ;
@@ -108,7 +108,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
 
     @Override
     public List<FeedbackGym> getAllFeedbackByUser(long idUser) {
-        System.out.println("getAllFeedbackByUser");
+        System.out.println("[SERVICE] FeedbackGym - getAllFeedbackByUser");
         loadDriver();
 
         List<FeedbackGym> feedbackGyms = new ArrayList<>();
@@ -135,7 +135,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
 
     @Override
     public void deleteFeedbackGym(long id) {
-        System.out.println("deleteFeedbackGym");
+        System.out.println("[SERVICE] FeedbackGym - deleteFeedbackGym");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -151,7 +151,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
 
     @Override
     public void updateFeedbackGym(FeedbackGym feedbackGym) {
-        System.out.println("updateFeedbackGym");
+        System.out.println("[SERVICE] FeedbackGym - updateFeedbackGym");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);

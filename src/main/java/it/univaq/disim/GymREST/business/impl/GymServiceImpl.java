@@ -31,7 +31,7 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public List<Gym> getAllGyms() {
-		System.out.println("getAllGyms");
+		System.out.println("[SERVICE] Gym - getAllGyms");
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
@@ -57,7 +57,7 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public List<Gym> getGymsByRegion(String region) {
-		System.out.println("getGymsByRegion");
+		System.out.println("[SERVICE] Gym - getGymsByRegion");
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
@@ -85,7 +85,7 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public List<Gym> getGymsByName(String name) {
-		System.out.println("getGymsByName");
+		System.out.println("[SERVICE] Gym - getGymsByName");
 		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
@@ -113,7 +113,7 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public Gym getGym(long id) {
-		System.out.println("getGym");
+		System.out.println("[SERVICE] Gym - getGym");
 		loadDriver();
 
 		Gym gym = new Gym();
@@ -139,7 +139,7 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public long createGym(Gym gym) {
-		System.out.println("createGym");
+		System.out.println("[SERVICE] Gym - createGym");
 		loadDriver();
 
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -166,7 +166,7 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public void updateGym(Gym gym) {
-		System.out.println("updateGym");
+		System.out.println("[SERVICE] Gym - updateGym");
 		loadDriver();
 
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -187,7 +187,7 @@ public class GymServiceImpl extends Service implements GymService {
 
 	@Override
 	public void deleteGym(long id) {
-		System.out.println("deleteGym");
+		System.out.println("[SERVICE] Gym - deleteGym");
 		loadDriver();
 
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);

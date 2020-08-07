@@ -31,7 +31,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
 
     @Override
     public long createFeedbackCourse(FeedbackCourse feedbackCourse) {
-        System.out.println("createFeedbackCourse");
+        System.out.println("[SERVICE] FeedbackCourse - createFeedbackCourse");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -57,7 +57,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
 
     @Override
     public List<FeedbackCourse> getAllFeedbackByCourse(long id) {
-        System.out.println("getAllFeedbackByCourse");
+        System.out.println("[SERVICE] FeedbackCourse - getAllFeedbackByCourse");
         loadDriver();
 
         List<FeedbackCourse> feedbackCourses = new ArrayList<>();
@@ -85,7 +85,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
 
     @Override
     public FeedbackCourse getFeedback(long id) {
-        System.out.println("getFeedbackCourse");
+        System.out.println("[SERVICE] FeedbackCourse - getFeedbackCourse");
         loadDriver();
 
         FeedbackCourse feedbackCourse = new FeedbackCourse() ;
@@ -110,7 +110,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
 
     @Override
     public List<FeedbackCourse> getAllFeedbackByUser(long idUser) {
-        System.out.println("getAllFeedbackByUser");
+        System.out.println("[SERVICE] FeedbackCourse - getAllFeedbackByUser");
         loadDriver();
 
         List<FeedbackCourse> feedbackCourses = new ArrayList<>();
@@ -137,7 +137,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
 
     @Override
     public void deleteFeedbackCourse(long id) {
-        System.out.println("deleteFeedbackCourse");
+        System.out.println("[SERVICE] FeedbackCourse - deleteFeedbackCourse");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -153,7 +153,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
 
     @Override
     public void updateFeedbackCourse(FeedbackCourse feedbackCourse) {
-        System.out.println("updateFeedbackCourse");
+        System.out.println("[SERVICE] FeedbackCourse - updateFeedbackCourse");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);

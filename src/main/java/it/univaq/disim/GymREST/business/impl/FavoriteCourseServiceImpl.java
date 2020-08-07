@@ -28,7 +28,7 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
 
     @Override
     public long createFavoriteCourse(FavoriteCourse favoriteCourse) {
-        System.out.println("createFavoriteCourse");
+        System.out.println("[SERVICE] FavoriteCourse - createFavoriteCourse");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -50,7 +50,7 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
 
     @Override
     public Map<Long, Course> getAllFavoriteCourse(long idUser) {
-        System.out.println("getAllFavoriteCourse");
+        System.out.println("[SERVICE] FavoriteCourse - getAllFavoriteCourse");
         loadDriver();
 
         Map<Long, Course> favoriteCourses = new HashMap<>();
@@ -81,7 +81,7 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
 
     @Override
     public void deleteFavoriteCourse(long idUser, long idCourse) {
-        System.out.println("deleteFavoriteCourse");
+        System.out.println("[SERVICE] FavoriteCourse - deleteFavoriteCourse");
         loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
