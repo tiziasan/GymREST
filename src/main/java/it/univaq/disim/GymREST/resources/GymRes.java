@@ -51,15 +51,20 @@ public class GymRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws SQLException {
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+        String username = securityContext.getUserPrincipal().getName();
+        if (securityContext.isUserInRole("gestore")){
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            User user = userService.getUserByUsername(username);
 
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        User user = userService.getUserByUsername(securityContext.getUserPrincipal().getName());
-        gym.setUser(user);
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            gym.setUser(user);
 
-        long idGym = gymService.createGym(gym);
+            long idGym = gymService.createGym(gym);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
+            return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+        }
     }
 
     @PUT
