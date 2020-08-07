@@ -11,6 +11,7 @@ public interface UserService {
     User getUserById(long id) throws SQLException;
     User getUserByUsername(String username);
     long createUser(User user) throws SQLException;
+    void addRoleToUser(long idUser) throws SQLException;
     void deleteUser(long id) throws SQLException;
     void updateUser(User user) throws SQLException;
 }

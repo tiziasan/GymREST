@@ -31,6 +31,7 @@ public class AuthRes {
     public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
         long idUser = userService.createUser(user);
+        userService.addRoleToUser(idUser);
         return Response.created(uriInfo.getBaseUriBuilder().path("users").path(UserRes.class,"getUser").build(idUser)).build();
     }
 

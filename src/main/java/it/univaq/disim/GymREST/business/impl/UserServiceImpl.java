@@ -15,6 +15,7 @@ public class UserServiceImpl extends Service implements UserService {
     private static final String UPDATE_USER = "UPDATE user SET email=?, last_name=?, name=?, password=?, user_name=?";
     private static final String DELETE_USER = "DELETE FROM user WHERE id=?";
     private static final String CREATE_USER = "INSERT INTO user (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
+    private static final String ADD_ROLE_TO_USER = "INSERT INTO user_role (user_id, role_id) VALUES (?,1)";
 
     private String urlDB;
     private String userDB;
@@ -96,8 +97,6 @@ public class UserServiceImpl extends Service implements UserService {
             try (ResultSet result = st.getGeneratedKeys();) {
                 if (result.next()) {
 
-                    //aggiungi ruolo
-
                     return result.getLong(1);
                 }
             }
@@ -105,6 +104,22 @@ public class UserServiceImpl extends Service implements UserService {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public void addRoleToUser(long idUser) {
+        System.out.println("[SERVICE] User - addRoleToUser");
+        loadDriver();
+
+        try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
+             PreparedStatement st = connection.prepareStatement(ADD_ROLE_TO_USER);) {
+            st.setLong(1, idUser);
+
+            st.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
