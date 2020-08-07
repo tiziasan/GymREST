@@ -43,6 +43,7 @@ public class AuthRes {
             //if (authenticate(username, password))
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             if (userService.checkUser(username, password)){
+                System.out.println("Login OK");
                 String authToken = issueToken(uriinfo, username);
                 return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
             }

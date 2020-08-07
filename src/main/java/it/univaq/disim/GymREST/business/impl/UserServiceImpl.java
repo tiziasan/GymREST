@@ -2,7 +2,6 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.business.UserService;
-import it.univaq.disim.GymREST.model.Gym;
 import it.univaq.disim.GymREST.model.User;
 
 import java.sql.*;
@@ -10,6 +9,7 @@ import java.sql.*;
 public class UserServiceImpl extends Service implements UserService {
 
     private static final String CHECK_USER = "SELECT COUNT(1) FROM user WHERE user_name=? AND password=?";
+    private static final String CHECK_ROLE = "SELECT COUNT(1) FROM user JOIN user_role ON user_role.user_id = user.id JOIN role ON user_role.role_id = role.id WHERE user.user_name=? AND role.role=?";
     private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id=?";
     private static final String GET_USER_BY_USERNAME = "SELECT * FROM user WHERE user_name=?";
     private static final String UPDATE_USER = "UPDATE user SET email=?, last_name=?, name=?, password=?, user_name=?";
@@ -53,6 +53,31 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
+    public boolean checkRole(String username, String role) {
+        System.out.println("checkRole");
+        loadDriver();
+
+        try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
+             PreparedStatement st = connection.prepareStatement(CHECK_ROLE);) {
+            st.setString(1,username);
+            st.setString(2,role);
+
+            try (ResultSet rs = st.executeQuery();) {
+                while (rs.next()){
+                    if (rs.getInt(1) == 1){
+                        System.out.println("user has role " + role);
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("user hasn't role " + role);
+        return false;
+    }
+
+    @Override
     public long createUser(User user) {
         System.out.println("createUser");
         loadDriver();
@@ -70,6 +95,9 @@ public class UserServiceImpl extends Service implements UserService {
 
             try (ResultSet result = st.getGeneratedKeys();) {
                 if (result.next()) {
+
+                    //aggiungi ruolo
+
                     return result.getLong(1);
                 }
             }

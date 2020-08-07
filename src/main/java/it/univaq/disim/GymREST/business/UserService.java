@@ -7,6 +7,7 @@ import java.sql.SQLException;
 public interface UserService {
 
     boolean checkUser(String username, String password) throws SQLException;
+    boolean checkRole(String username, String role);
     User getUserById(long id) throws SQLException;
     User getUserByUsername(String username);
     long createUser(User user) throws SQLException;

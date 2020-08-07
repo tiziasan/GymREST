@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import it.univaq.disim.GymREST.JWTHelpers;
+import it.univaq.disim.GymREST.business.UserService;
+import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -56,9 +58,11 @@ public class SecurityFilter implements ContainerRequestFilter {
                         }
                         @Override
                         public boolean isUserInRole(String role) {
-//                            List<Role> roles = findUserRole(subject);
-//                            return roles.contains(role);
-                            return true;
+                            UserService userService = new UserServiceImpl(
+                                    "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                                    "gymportal", "gymportal");
+
+                            return userService.checkRole(subject, role);
                         }
                         @Override
                         public boolean isSecure() {
