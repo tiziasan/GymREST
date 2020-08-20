@@ -76,7 +76,7 @@
             <wsdl:fault message="tns:MsgErrore" name="erroreGenerale"/>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:binding name="GymPortalWSSOAP" type="tns:UniWSInterface">
+    <wsdl:binding name="GymPortalWSSOAP" type="tns:GymPortalWSInterface">
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="getUtenti">
             <soap:operation soapAction="GymPortalWSInterface#getUtenti"/>
