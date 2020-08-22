@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions
         name="GymPortalWS"
-        targetNamespace="http://it.univaq.disim.GymREST.wsdl/GymPortalWS"
+        targetNamespace="http://it.univaq.disim.GymREST.wsdl/GymPortalWS.wsdl"
         xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-        xmlns:tns="http://it.univaq.disim.GymREST.wsdl/GymPortalWS"
+        xmlns:tns="http://it.univaq.disim.GymREST.wsdl/GymPortalWS.wsdl"
         xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsd1="http:/it.univaq.disim.GymREST.wsdl/GymPortalWS.xsd1" xmlns="http://java.sun.com/jsf/composite">
+        xmlns:xsd1="http://it.univaq.disim.GymREST.wsdl/GymPortalWS.xsd1">
     <wsdl:types>
-    	<xsd:schema
-    		targetNamespace="http:/it.univaq.disim.GymREST.wsdl/GymPortalWS.xsd1"
-            xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:xsd1="http:/it.univaq.disim.GymREST.wsdl/GymPortalWS.xsd1">
-            <xsd:complexType name="User">
+        <xsd:schema
+                targetNamespace="http://it.univaq.disim.GymREST.wsdl/GymPortalWS.xsd1"
+                xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsd1="http://it.univaq.disim.GymREST.wsdl/GymPortalWS.xsd1">
+            <xsd:complexType name="TipoUtente">
                 <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="id" type="xsd:long"/>
                     <xsd:element maxOccurs="1" minOccurs="1" name="name" type="xsd:string"/>
                     <xsd:element maxOccurs="1" minOccurs="1" name="lastName" type="xsd:string"/>
                     <xsd:element maxOccurs="1" minOccurs="1" name="email" type="xsd:string"/>
@@ -33,6 +34,7 @@
 
             <xsd:complexType name="Role">
                 <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="id" type="xsd:long"/>
                     <xsd:element maxOccurs="1" minOccurs="1" name="role" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
@@ -54,10 +56,12 @@
     <wsdl:message name="MsgListaUtenti">
         <wsdl:part name="utenti" type="xsd1:TipoListaUtente"/>
     </wsdl:message>
-    <wsdl:message name="MsgUtente">
-        <wsdl:part name="utenti" type="xsd1:TipoUtente"/>
+    <wsdl:message name="MsgUtenteRuolo">
+        <wsdl:part name="utente" type="xsd1:TipoUtente"/>
+        <wsdl:part name="ruolo" type="xsd1:TipoRuolo"/>
     </wsdl:message>
-    <wsdl:message name="MsgVoid">   </wsdl:message>
+    <wsdl:message name="MsgVoid">
+    </wsdl:message>
     <wsdl:portType name="GymPortalWSInterface">
         <wsdl:operation name="getUtenti">
             <wsdl:input message="tns:MsgVoid"/>
@@ -65,12 +69,12 @@
             <wsdl:fault message="tns:MsgErrore" name="erroreGenerale"/>
         </wsdl:operation>
         <wsdl:operation name="addRuoloUtente">
-            <wsdl:input message="tns:MsgUtente"/>
+            <wsdl:input message="tns:MsgUtenteRuolo"/>
             <wsdl:output message="tns:MsgAddRuoloResponse"/>
             <wsdl:fault message="tns:MsgErrore" name="erroreGenerale"/>
         </wsdl:operation>
         <wsdl:operation name="deleteRuoloUtente">
-            <wsdl:input message="tns:MsgUtente"/>
+            <wsdl:input message="tns:MsgUtenteRuolo"/>
             <wsdl:output message="tns:MsgVoid"/>
             <wsdl:fault message="tns:MsgErrore" name="erroreGenerale"/>
         </wsdl:operation>
@@ -80,10 +84,10 @@
         <wsdl:operation name="getUtenti">
             <soap:operation soapAction="GymPortalWSInterface#getUtenti"/>
             <wsdl:input>
-                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+                <soap:body namespace="http://it.univaq.disim.GymREST.wsdl/gymportalws/data" use="literal"/>
             </wsdl:input>
             <wsdl:output>
-                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+                <soap:body namespace="http://it.univaq.disim.GymREST.wsdl/gymportalws/data" use="literal"/>
             </wsdl:output>
             <wsdl:fault name="erroreGenerale">
                 <soap:fault name="erroreGenerale" use="literal"/>
@@ -92,10 +96,10 @@
         <wsdl:operation name="addRuoloUtente">
             <soap:operation soapAction="GymPortalWSInterface#addRuoloUtente"/>
             <wsdl:input>
-                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+                <soap:body namespace="http://it.univaq.disim.GymREST.wsdl/gymportalws/data" use="literal"/>
             </wsdl:input>
             <wsdl:output>
-                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+                <soap:body namespace="http://it.univaq.disim.GymREST.wsdl/gymportalws/data" use="literal"/>
             </wsdl:output>
             <wsdl:fault name="erroreGenerale">
                 <soap:fault name="erroreGenerale" use="literal"/>
@@ -104,10 +108,10 @@
         <wsdl:operation name="deleteRuoloUtente">
             <soap:operation soapAction="GymPortalWSInterface#deleteRuoloUtente"/>
             <wsdl:input>
-                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+                <soap:body namespace="http://it.univaq.disim.GymREST.wsdl/gymportalws/data" use="literal"/>
             </wsdl:input>
             <wsdl:output>
-                <soap:body namespace="http://org.univaq.mmwt.wa/gymportalws/data" use="literal"/>
+                <soap:body namespace="http://it.univaq.disim.GymREST.wsdl/gymportalws/data" use="literal"/>
             </wsdl:output>
             <wsdl:fault name="erroreGenerale">
                 <soap:fault name="erroreGenerale" use="literal"/>
