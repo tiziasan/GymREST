@@ -3,11 +3,17 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>GymREST</groupId>
-    <artifactId>GymREST</artifactId>
-    <packaging>war</packaging>
+    <groupId>it.univaq.disim.GymPortalWA</groupId>
+    <artifactId>GymPortalWA</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
     <name>GymREST</name>
+
+    <properties>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
