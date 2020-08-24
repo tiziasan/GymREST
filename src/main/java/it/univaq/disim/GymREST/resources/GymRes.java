@@ -1,5 +1,6 @@
 package it.univaq.disim.GymREST.resources;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -48,6 +49,7 @@ public class GymRes {
     }
 
     @POST
+    @RolesAllowed("gestore")
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws SQLException {
@@ -69,6 +71,7 @@ public class GymRes {
 
     @PUT
     @Path("{idGym: [0-9]+}")
+    @RolesAllowed("gestore")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateGym(@PathParam("idGym") long idGym, Gym gym) throws SQLException {
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
@@ -79,6 +82,7 @@ public class GymRes {
 
     @DELETE
     @Path("{idGym: [0-9]+}")
+    @RolesAllowed("gestore")
     public Response deleteGym(@PathParam("idGym") long idGym) throws SQLException {
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
         gymService.deleteGym(idGym);

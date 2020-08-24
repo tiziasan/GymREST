@@ -5,6 +5,8 @@ import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.impl.CourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.model.Course;
+
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -44,6 +46,7 @@ public class CourseRes {
     }
 
     @POST
+    @RolesAllowed("gestore")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCourse(@Context UriInfo uriinfo, Course course) throws SQLException {
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
@@ -56,9 +59,10 @@ public class CourseRes {
     }
 
     @PUT
+    @RolesAllowed("gestore")
     @Path("{idCourse: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateGym(@PathParam("idCourse") long idCourse, Course course) throws SQLException {
+    public Response updateCourse(@PathParam("idCourse") long idCourse, Course course) throws SQLException {
         CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
         course.setId(idCourse);
         courseService.updateCourse(course);
@@ -66,8 +70,9 @@ public class CourseRes {
     }
 
     @DELETE
+    @RolesAllowed("gestore")
     @Path("{idCourse: [0-9]+}")
-    public Response deleteGym(@PathParam("idCourse") long idCourse) throws SQLException {
+    public Response deleteCourse(@PathParam("idCourse") long idCourse) throws SQLException {
         CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
         courseService.deleteCourse(idCourse);
         return Response.noContent().build();

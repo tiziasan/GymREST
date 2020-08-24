@@ -4,6 +4,7 @@ import it.univaq.disim.GymREST.business.FeedbackGymService;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackGym;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -41,6 +42,7 @@ public class FeedbackGymRes {
     }
 
     @POST
+    @RolesAllowed("utente")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackGym(@Context UriInfo uriinfo, FeedbackGym feedbackGym) throws SQLException {
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
@@ -56,6 +58,7 @@ public class FeedbackGymRes {
 
     @PUT
     @Path("{idFeedback: [0-9]+}")
+    @RolesAllowed("utente")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws SQLException {
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
@@ -67,6 +70,7 @@ public class FeedbackGymRes {
 
     @DELETE
     @Path("{idFeedback: [0-9]+}")
+    @RolesAllowed("utente")
     public Response deleteFeedbackGym(@PathParam("idFeedback") long idFeedback) throws SQLException {
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
         feedbackGymService.deleteFeedbackGym(idFeedback);

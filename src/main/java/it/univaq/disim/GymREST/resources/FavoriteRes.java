@@ -8,6 +8,7 @@ import it.univaq.disim.GymREST.model.FavoriteCourse;
 import it.univaq.disim.GymREST.model.FavoriteGym;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -28,6 +29,8 @@ public class FavoriteRes {
     }
 
     @Path("gyms")
+    @RolesAllowed("utente")
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteGym(@Context UriInfo uriinfo, long idGym) throws SQLException {
@@ -42,6 +45,8 @@ public class FavoriteRes {
     }
 
     @Path("courses")
+    @RolesAllowed("utente")
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteCourse(@Context UriInfo uriinfo, long idCourse) throws SQLException {
@@ -73,6 +78,8 @@ public class FavoriteRes {
     }
 
     @DELETE
+    @RolesAllowed("utente")
+
     @Path("gyms/{idGym: [0-9]+}")
     public Response deleteFavoriteGym(@PathParam("idGym") long idGym) throws SQLException {
         FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
@@ -81,6 +88,8 @@ public class FavoriteRes {
     }
 
     @DELETE
+    @RolesAllowed("utente")
+
     @Path("courses/{idCourse: [0-9]+}")
     public Response deleteFavoriteCourse(@PathParam("idCourse") long idCourse) throws SQLException {
         FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
