@@ -5,11 +5,11 @@ import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.impl.CourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.model.Course;
+import it.univaq.disim.GymREST.security.Auth;
+
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.sql.SQLException;
 
 public class CourseRes {
@@ -44,33 +44,51 @@ public class CourseRes {
     }
 
     @POST
+    @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addCourse(@Context UriInfo uriinfo, Course course) throws SQLException {
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-        course.setGym(gymService.getGym(idGym));
+    public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws SQLException {
+        if (securityContext.isUserInRole("gestore")) {
 
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
-        long idCourse = courseService.createCourse(course);
-        
-        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getCourse").build(idCourse)).build();
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            course.setGym(gymService.getGym(idGym));
+
+            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            long idCourse = courseService.createCourse(course);
+
+            return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getCourse").build(idCourse)).build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+        }
     }
 
     @PUT
+    @Auth
     @Path("{idCourse: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateGym(@PathParam("idCourse") long idCourse, Course course) throws SQLException {
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
-        course.setId(idCourse);
-        courseService.updateCourse(course);
-        return Response.noContent().build();
+    public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws SQLException {
+        if (securityContext.isUserInRole("gestore")) {
+
+            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            course.setId(idCourse);
+            courseService.updateCourse(course);
+            return Response.noContent().build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+        }
     }
 
     @DELETE
+    @Auth
     @Path("{idCourse: [0-9]+}")
-    public Response deleteGym(@PathParam("idCourse") long idCourse) throws SQLException {
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
-        courseService.deleteCourse(idCourse);
-        return Response.noContent().build();
+    public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
+        if (securityContext.isUserInRole("gestore")) {
+
+            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            courseService.deleteCourse(idCourse);
+            return Response.noContent().build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+        }
     }
 
     @Path("{idCourse: [0-9]+}/feedbacks")

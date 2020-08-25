@@ -7,12 +7,11 @@ import it.univaq.disim.GymREST.business.impl.FavoriteGymServiceImpl;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
 import it.univaq.disim.GymREST.model.FavoriteGym;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
+import it.univaq.disim.GymREST.security.Auth;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.sql.SQLException;
 
 public class FavoriteRes {
@@ -28,31 +27,45 @@ public class FavoriteRes {
     }
 
     @Path("gyms")
+    @Auth
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createFavoriteGym(@Context UriInfo uriinfo, long idGym) throws SQLException {
-        FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
+    public Response createFavoriteGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idGym) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
 
-        FavoriteGym favoriteGym = new FavoriteGym();
-        favoriteGym.setGym(idGym);
-        favoriteGym.setUser(idUser);
-        favoriteGymService.createFavoriteGym(favoriteGym);
+            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
+            FavoriteGym favoriteGym = new FavoriteGym();
+            favoriteGym.setGym(idGym);
+            favoriteGym.setUser(idUser);
+            favoriteGymService.createFavoriteGym(favoriteGym);
+
+            return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
     @Path("courses")
     @POST
+    @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createFavoriteCourse(@Context UriInfo uriinfo, long idCourse) throws SQLException {
-        FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
+    public Response createFavoriteCourse(@Context SecurityContext securityContext,@Context UriInfo uriinfo, long idCourse) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
 
-        FavoriteCourse favoriteCourse = new FavoriteCourse();
-        favoriteCourse.setCourse(idCourse);
-        favoriteCourse.setUser(idUser);
-        favoriteCourseService.createFavoriteCourse(favoriteCourse);
+            FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
+            FavoriteCourse favoriteCourse = new FavoriteCourse();
+            favoriteCourse.setCourse(idCourse);
+            favoriteCourse.setUser(idUser);
+            favoriteCourseService.createFavoriteCourse(favoriteCourse);
+
+            return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
 
@@ -73,19 +86,33 @@ public class FavoriteRes {
     }
 
     @DELETE
+    @Auth
     @Path("gyms/{idGym: [0-9]+}")
-    public Response deleteFavoriteGym(@PathParam("idGym") long idGym) throws SQLException {
-        FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
-        favoriteGymService.deleteFavoriteGym(idUser, idGym);
-        return Response.noContent().build();
+    public Response deleteFavoriteGym(@Context SecurityContext securityContext,@PathParam("idGym") long idGym) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
+
+            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
+            favoriteGymService.deleteFavoriteGym(idUser, idGym);
+            return Response.noContent().build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
     @DELETE
+    @Auth
     @Path("courses/{idCourse: [0-9]+}")
-    public Response deleteFavoriteCourse(@PathParam("idCourse") long idCourse) throws SQLException {
-        FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
-        favoriteCourseService.deleteFavoriteCourse(idUser, idCourse);
-        return Response.noContent().build();
+    public Response deleteFavoriteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
+
+            FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
+            favoriteCourseService.deleteFavoriteCourse(idUser, idCourse);
+            return Response.noContent().build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
 

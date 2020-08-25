@@ -149,7 +149,7 @@ public class GymServiceImpl extends Service implements GymService {
 			st.setString(4, gym.getRegion());
 			st.setString(3, gym.getProvince());
 			st.setString(1, gym.getAddress());
-			st.setLong(5,gym.getUser().getId());
+			st.setLong(5, gym.getUser());
 
 			st.execute();
 
