@@ -58,7 +58,7 @@ public class GymRes {
             User user = userService.getUserByUsername(username);
 
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-            gym.setUser(user);
+            gym.setUser(user.getId());
 
             long idGym = gymService.createGym(gym);
 

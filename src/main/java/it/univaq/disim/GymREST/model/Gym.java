@@ -12,8 +12,7 @@ public class Gym {
 	private String address;
 	private String province;
 	private String region;
-
-	private User user;
+	private long user;
 
 	@JsonIgnore
 	private List<FeedbackGym> feedbackGym;
@@ -29,10 +28,10 @@ public class Gym {
 		this.address = "";
 		this.province = "";
 		this.region = "";
-		this.user = null;
+		this.user = 0;
 	}
 
-	public Gym(long id, String name, String address, String province, String region, User user) {
+	public Gym(long id, String name, String address, String province, String region, long user) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
@@ -105,11 +104,11 @@ public class Gym {
 		this.course = course;
 	}
 
-	public User getUser() {
+	public long getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(long user) {
 		this.user = user;
 	}
 
