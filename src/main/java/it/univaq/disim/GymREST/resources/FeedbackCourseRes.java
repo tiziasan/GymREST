@@ -2,9 +2,12 @@ package it.univaq.disim.GymREST.resources;
 
 import it.univaq.disim.GymREST.business.FeedbackCourseService;
 import it.univaq.disim.GymREST.business.FeedbackGymService;
+import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
+import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
+import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
 import javax.annotation.security.RolesAllowed;
@@ -45,13 +48,14 @@ public class FeedbackCourseRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws SQLException {
+        String username = securityContext.getUserPrincipal().getName();
         if (securityContext.isUserInRole("utente")) {
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            User user = userService.getUserByUsername(username);
 
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+            feedbackCourse.setUser(user.getId());
             feedbackCourse.setCourse(idCourse);
-
-            //recupera id da utente connesso
-            feedbackCourse.setUser(1);
 
             long idFeedback = feedbackCourseService.createFeedbackCourse(feedbackCourse);
 

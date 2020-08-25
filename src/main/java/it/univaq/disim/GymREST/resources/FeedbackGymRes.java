@@ -1,8 +1,11 @@
 package it.univaq.disim.GymREST.resources;
 
 import it.univaq.disim.GymREST.business.FeedbackGymService;
+import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
+import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackGym;
+import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
 import javax.annotation.security.RolesAllowed;
@@ -43,13 +46,14 @@ public class FeedbackGymRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackGym feedbackGym) throws SQLException {
+        String username = securityContext.getUserPrincipal().getName();
         if (securityContext.isUserInRole("utente")) {
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            User user = userService.getUserByUsername(username);
 
             FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            feedbackGym.setUser(user.getId());
             feedbackGym.setGym(idGym);
-
-            //recupera id da utente connesso
-            feedbackGym.setUser(1);
 
             long idFeedback = feedbackGymService.createFeedbackGym(feedbackGym);
 
