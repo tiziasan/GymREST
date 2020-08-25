@@ -3,13 +3,11 @@ package it.univaq.disim.GymREST.resources;
 import it.univaq.disim.GymREST.business.FeedbackGymService;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackGym;
+import it.univaq.disim.GymREST.security.Auth;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.sql.SQLException;
 
 public class FeedbackGymRes {
@@ -42,40 +40,59 @@ public class FeedbackGymRes {
     }
 
     @POST
-    @RolesAllowed("utente")
+    @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addFeedbackGym(@Context UriInfo uriinfo, FeedbackGym feedbackGym) throws SQLException {
-        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
-        feedbackGym.setGym(idGym);
+    public Response addFeedbackGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackGym feedbackGym) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
 
-        //recupera id da utente connesso
-        feedbackGym.setUser(1);
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            feedbackGym.setGym(idGym);
 
-        long idFeedback = feedbackGymService.createFeedbackGym(feedbackGym);
+            //recupera id da utente connesso
+            feedbackGym.setUser(1);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackGym").build(idFeedback)).build();
+            long idFeedback = feedbackGymService.createFeedbackGym(feedbackGym);
+
+            return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackGym").build(idFeedback)).build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
     @PUT
+    @Auth
     @Path("{idFeedback: [0-9]+}")
-    @RolesAllowed("utente")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateFeedbackGym(@PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws SQLException {
-        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
-        feedbackGym.setId(idFeedback);
-        feedbackGymService.updateFeedbackGym(feedbackGym);
+    public Response updateFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
 
-        return Response.noContent().build();
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            feedbackGym.setId(idFeedback);
+            feedbackGymService.updateFeedbackGym(feedbackGym);
+
+            return Response.noContent().build();
+        }else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
     @DELETE
+    @Auth
     @Path("{idFeedback: [0-9]+}")
-    @RolesAllowed("utente")
-    public Response deleteFeedbackGym(@PathParam("idFeedback") long idFeedback) throws SQLException {
-        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
-        feedbackGymService.deleteFeedbackGym(idFeedback);
+    public Response deleteFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
 
-        return Response.noContent().build();
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            feedbackGymService.deleteFeedbackGym(idFeedback);
+
+            return Response.noContent().build();
+        }else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
+
     }
 
 }

@@ -5,13 +5,11 @@ import it.univaq.disim.GymREST.business.FeedbackGymService;
 import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
+import it.univaq.disim.GymREST.security.Auth;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.sql.SQLException;
 
 public class FeedbackCourseRes {
@@ -44,42 +42,60 @@ public class FeedbackCourseRes {
     }
 
     @POST
-    @RolesAllowed("utente")
+    @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addFeedbackCourse(@Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws SQLException {
-        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
-        feedbackCourse.setCourse(idCourse);
+    public Response addFeedbackCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
 
-        //recupera id da utente connesso
-        feedbackCourse.setUser(1);
+            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+            feedbackCourse.setCourse(idCourse);
 
-        long idFeedback = feedbackCourseService.createFeedbackCourse(feedbackCourse);
+            //recupera id da utente connesso
+            feedbackCourse.setUser(1);
 
-        return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackCourse").build(idFeedback)).build();
+            long idFeedback = feedbackCourseService.createFeedbackCourse(feedbackCourse);
+
+            return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackCourse").build(idFeedback)).build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
     @PUT
-    @RolesAllowed("utente")
+    @Auth
     @Path("{idFeedback: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateFeedbackGym(@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws SQLException {
-        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
-        feedbackCourse.setId(idFeedback);
-        feedbackCourseService.updateFeedbackCourse(feedbackCourse);
+    public Response updateFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
 
-        return Response.noContent().build();
+            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+            feedbackCourse.setId(idFeedback);
+            feedbackCourseService.updateFeedbackCourse(feedbackCourse);
+
+            return Response.noContent().build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
 
 
 
     @DELETE
-    @RolesAllowed("utente")
+    @Auth
     @Path("{idFeedback: [0-9]+}")
-    public Response deleteFeedbackGym(@PathParam("idFeedback") long idFeedback) throws SQLException {
-        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
-        feedbackCourseService.deleteFeedbackCourse(idFeedback);
+    public Response deleteFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback) throws SQLException {
+        if (securityContext.isUserInRole("utente")) {
 
-        return Response.noContent().build();
+            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+            feedbackCourseService.deleteFeedbackCourse(idFeedback);
+
+            return Response.noContent().build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 }

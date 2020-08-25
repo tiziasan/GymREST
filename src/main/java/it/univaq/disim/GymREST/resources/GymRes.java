@@ -49,7 +49,6 @@ public class GymRes {
     }
 
     @POST
-    @RolesAllowed("gestore")
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws SQLException {
@@ -71,22 +70,31 @@ public class GymRes {
 
     @PUT
     @Path("{idGym: [0-9]+}")
-    @RolesAllowed("gestore")
+    @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateGym(@PathParam("idGym") long idGym, Gym gym) throws SQLException {
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-        gym.setId(idGym);
-        gymService.updateGym(gym);
-        return Response.noContent().build();
+    public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws SQLException {
+        if (securityContext.isUserInRole("gestore")) {
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            gym.setId(idGym);
+            gymService.updateGym(gym);
+            return Response.noContent().build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+        }
     }
 
     @DELETE
+    @Auth
     @Path("{idGym: [0-9]+}")
-    @RolesAllowed("gestore")
-    public Response deleteGym(@PathParam("idGym") long idGym) throws SQLException {
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-        gymService.deleteGym(idGym);
-        return Response.noContent().build();
+    public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws SQLException {
+        if (securityContext.isUserInRole("gestore")) {
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            gymService.deleteGym(idGym);
+            return Response.noContent().build();
+        } else {
+            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+
+        }
     }
 
 
