@@ -30,8 +30,10 @@ public class AuthRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+
         long idUser = userService.createUser(user);
         userService.addRoleToUser(idUser);
+
         return Response.created(uriInfo.getBaseUriBuilder().path("users").path(UserRes.class,"getUser").build(idUser)).build();
     }
 
@@ -45,10 +47,10 @@ public class AuthRes {
             if (userService.checkUser(username, password)){
                 System.out.println("Login OK");
                 String authToken = issueToken(uriinfo, username);
+
                 return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
             }
             return Response.status(UNAUTHORIZED).build();
-
         } catch (Exception e) {
             return Response.status(UNAUTHORIZED).build();
         }
@@ -77,9 +79,10 @@ public class AuthRes {
             String newtoken = issueToken(uriinfo, jwsc.getSubject());
 
             return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + newtoken).build();
+            
         } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | IllegalArgumentException e) {
             return Response.status(UNAUTHORIZED).build();
         }
     }
-    
+
 }
