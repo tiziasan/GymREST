@@ -37,7 +37,7 @@ public class GymRes {
             return Response.ok(gymService.getGymsByName(name)).build();
 
         }
-        return Response.serverError().entity("Chiamata errata").build();
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @GET
@@ -52,8 +52,9 @@ public class GymRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws SQLException {
-        String username = securityContext.getUserPrincipal().getName();
         if (securityContext.isUserInRole("gestore")){
+            String username = securityContext.getUserPrincipal().getName();
+
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             User user = userService.getUserByUsername(username);
 
@@ -74,10 +75,19 @@ public class GymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
+            String username = securityContext.getUserPrincipal().getName();
+
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            User user = userService.getUserByUsername(username);
+
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-            gym.setId(idGym);
-            gymService.updateGym(gym);
-            return Response.noContent().build();
+            if (gymService.getGym(idGym).getUser() == user.getId()){
+                gym.setId(idGym);
+                gymService.updateGym(gym);
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
@@ -88,12 +98,20 @@ public class GymRes {
     @Path("{idGym: [0-9]+}")
     public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
+            String username = securityContext.getUserPrincipal().getName();
+
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            User user = userService.getUserByUsername(username);
+
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-            gymService.deleteGym(idGym);
-            return Response.noContent().build();
+            if (gymService.getGym(idGym).getUser() == user.getId()){
+                gymService.deleteGym(idGym);
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
-
         }
     }
 
