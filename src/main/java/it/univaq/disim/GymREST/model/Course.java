@@ -17,17 +17,17 @@ public class Course {
 	@JsonIgnore
 	private List<FavoriteCourse> favoriteCourse;
 	@JsonIgnore
-	private Gym gym;
+	private long gym;
 
 	public Course() {
 		this.id = 0;
 		this.name = "";
 		this.description = "";
 		this.code = "";
-		this.gym = null;
+		this.gym = 0;
 	}
 
-	public Course(long id, String name, String description, String code, Gym gym) {
+	public Course(long id, String name, String description, String code, long gym) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -83,11 +83,11 @@ public class Course {
 		this.favoriteCourse = favoriteCourse;
 	}
 
-	public Gym getGym() {
+	public long getGym() {
 		return gym;
 	}
 
-	public void setGym(Gym gym) {
+	public void setGym(long gym) {
 		this.gym = gym;
 	}
 

@@ -117,7 +117,7 @@ public class CourseServiceImpl extends Service implements CourseService {
             st.setString(1, course.getCode());
             st.setString(2, course.getName());
             st.setString(3, course.getDescription());
-            st.setLong(4,course.getGym().getId());
+            st.setLong(4,course.getGym());
             st.execute();
 
             try (ResultSet result = st.getGeneratedKeys();) {

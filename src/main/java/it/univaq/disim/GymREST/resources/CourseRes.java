@@ -48,9 +48,7 @@ public class CourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-            course.setGym(gymService.getGym(idGym));
+            course.setGym(idGym);
 
             CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
             long idCourse = courseService.createCourse(course);
