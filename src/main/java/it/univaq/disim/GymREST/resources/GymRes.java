@@ -71,13 +71,9 @@ public class GymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 
-            String username = securityContext.getUserPrincipal().getName();
-            User user = userService.getUserByUsername(username);
-
-            if (gymService.getGym(idGym).getUser() == user.getId()){
+            if (isUserManagerOfGym(securityContext, idGym)){
                 gym.setId(idGym);
                 gymService.updateGym(gym);
                 return Response.noContent().build();
@@ -94,13 +90,9 @@ public class GymRes {
     @Path("{idGym: [0-9]+}")
     public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 
-            String username = securityContext.getUserPrincipal().getName();
-            User user = userService.getUserByUsername(username);
-
-            if (gymService.getGym(idGym).getUser() == user.getId()){
+            if (isUserManagerOfGym(securityContext, idGym)){
                 gymService.deleteGym(idGym);
                 return Response.noContent().build();
             } else {
@@ -123,6 +115,19 @@ public class GymRes {
         System.out.println("From GymRes to FeedbackGymRes");
         return new FeedbackGymRes(idGym);
     }
+
+
+    public boolean isUserManagerOfGym(SecurityContext securityContext, long idGym) throws SQLException {
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+
+        String username = securityContext.getUserPrincipal().getName();
+        User user = userService.getUserByUsername(username);
+        Gym gym = gymService.getGym(idGym);
+
+        return gym.getUser() == user.getId();
+    }
+
 }
 
 

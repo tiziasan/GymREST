@@ -11,7 +11,6 @@ import it.univaq.disim.GymREST.model.Gym;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.sql.SQLException;
@@ -70,15 +69,9 @@ public class CourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
 
-            String username = securityContext.getUserPrincipal().getName();
-            User user = userService.getUserByUsername(username);
-            Gym gym = gymService.getGym(idGym);
-
-            if (gym.getUser() == user.getId()){
+            if (isUserManagerOfGym(securityContext)){
                 course.setId(idCourse);
                 courseService.updateCourse(course);
                 return Response.noContent().build();
@@ -95,15 +88,9 @@ public class CourseRes {
     @Path("{idCourse: [0-9]+}")
     public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
 
-            String username = securityContext.getUserPrincipal().getName();
-            User user = userService.getUserByUsername(username);
-            Gym gym = gymService.getGym(idGym);
-
-            if (gym.getUser() == user.getId()){
+            if (isUserManagerOfGym(securityContext)){
                 courseService.deleteCourse(idCourse);
                 return Response.noContent().build();
             } else {
@@ -114,10 +101,23 @@ public class CourseRes {
         }
     }
 
+
     @Path("{idCourse: [0-9]+}/feedbacks")
     public FeedbackCourseRes getFeedbacksCourse(@PathParam("idCourse") long idCourse) {
         System.out.println("From CourseRes to FeedbackCourseRes");
         return new FeedbackCourseRes(idGym, idCourse);
+    }
+
+
+    public boolean isUserManagerOfGym(SecurityContext securityContext) throws SQLException {
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+
+        String username = securityContext.getUserPrincipal().getName();
+        User user = userService.getUserByUsername(username);
+        Gym gym = gymService.getGym(idGym);
+
+        return gym.getUser() == user.getId();
     }
 
 }

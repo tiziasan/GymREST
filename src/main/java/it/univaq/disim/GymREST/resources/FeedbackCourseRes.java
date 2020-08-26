@@ -76,15 +76,9 @@ public class FeedbackCourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
 
-            String username = securityContext.getUserPrincipal().getName();
-            User user = userService.getUserByUsername(username);
-            Gym gym = gymService.getGym(idGym);
-
-            if (gym.getUser() == user.getId()){
+            if (isUserManagerOfGym(securityContext)){
                 feedbackCourse.setId(idFeedback);
                 feedbackCourseService.updateFeedbackCourse(feedbackCourse);
 
@@ -102,15 +96,9 @@ public class FeedbackCourseRes {
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
 
-            String username = securityContext.getUserPrincipal().getName();
-            User user = userService.getUserByUsername(username);
-            Gym gym = gymService.getGym(idGym);
-
-            if (gym.getUser() == user.getId()){
+            if (isUserManagerOfGym(securityContext)){
                 feedbackCourseService.deleteFeedbackCourse(idFeedback);
 
                 return Response.noContent().build();
@@ -121,5 +109,17 @@ public class FeedbackCourseRes {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
-    
+
+
+    public boolean isUserManagerOfGym(SecurityContext securityContext) throws SQLException {
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+
+        String username = securityContext.getUserPrincipal().getName();
+        User user = userService.getUserByUsername(username);
+        Gym gym = gymService.getGym(idGym);
+
+        return gym.getUser() == user.getId();
+    }
+
 }

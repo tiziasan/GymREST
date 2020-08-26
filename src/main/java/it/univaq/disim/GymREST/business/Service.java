@@ -1,9 +1,5 @@
 package it.univaq.disim.GymREST.business;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-
 public class Service {
 
     protected static void loadDriver() {
