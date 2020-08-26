@@ -21,8 +21,6 @@ public class GymRes {
     private static final String userDB = "gymportal";
     private static final String pswDB = "gymportal";
 
-    //un altro metodo per fare la distinzione delle 3 url
-    //Passing Collection in Query Parameters -- https://memorynotfound.com/jaxrs-queryparam-example/
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGyms(@QueryParam("name") String name, @QueryParam("region") String region) throws SQLException {
