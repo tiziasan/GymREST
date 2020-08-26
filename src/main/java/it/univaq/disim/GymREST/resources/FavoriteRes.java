@@ -32,25 +32,30 @@ public class FavoriteRes {
     @Path("gyms")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idGym) throws SQLException {
-        if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
+        try {
+            if (securityContext.isUserInRole("utente")) {
+                UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
 
-            String username = securityContext.getUserPrincipal().getName();
-            User user = userService.getUserByUsername(username);
+                String username = securityContext.getUserPrincipal().getName();
+                User user = userService.getUserByUsername(username);
 
-            if (idUser == user.getId()){
-                FavoriteGym favoriteGym = new FavoriteGym();
-                favoriteGym.setGym(idGym);
-                favoriteGym.setUser(user.getId());
-                favoriteGymService.createFavoriteGym(favoriteGym);
+                if (idUser == user.getId()){
+                    FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
 
-                return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
+                    FavoriteGym favoriteGym = new FavoriteGym();
+                    favoriteGym.setGym(idGym);
+                    favoriteGym.setUser(user.getId());
+                    favoriteGymService.createFavoriteGym(favoriteGym);
+
+                    return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
+                } else {
+                    return Response.status(Response.Status.FORBIDDEN).build();
+                }
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
     }
 
@@ -58,6 +63,11 @@ public class FavoriteRes {
     @Path("courses")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idCourse) throws SQLException {
+        try {
+
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
@@ -84,6 +94,11 @@ public class FavoriteRes {
     @Path("gyms")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllFavoritesGym(@Context SecurityContext securityContext) throws SQLException {
+        try {
+
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
@@ -105,6 +120,11 @@ public class FavoriteRes {
     @Path("courses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllFavoritesCourse(@Context SecurityContext securityContext) throws SQLException {
+        try {
+
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
@@ -125,6 +145,11 @@ public class FavoriteRes {
     @DELETE
     @Path("gyms/{idGym: [0-9]+}")
     public Response deleteFavoriteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws SQLException {
+        try {
+
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
@@ -146,6 +171,11 @@ public class FavoriteRes {
     @DELETE
     @Path("courses/{idCourse: [0-9]+}")
     public Response deleteFavoriteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
+        try {
+
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
