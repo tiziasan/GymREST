@@ -67,7 +67,6 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
                     course.setCode(rs.getString(2));
                     course.setName(rs.getString(4));
                     course.setDescription(rs.getString(3));
-                    //restituire gym di appartenenza per far visualizzare info gym?
 
                     key = rs.getLong(5);
                     favoriteCourses.put(key, course);
