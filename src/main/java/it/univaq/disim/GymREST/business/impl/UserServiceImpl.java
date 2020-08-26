@@ -12,7 +12,7 @@ public class UserServiceImpl extends Service implements UserService {
     private static final String CHECK_ROLE = "SELECT COUNT(1) FROM user JOIN user_role ON user_role.user_id = user.id JOIN role ON user_role.role_id = role.id WHERE user.user_name=? AND role.role=?";
     private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id=?";
     private static final String GET_USER_BY_USERNAME = "SELECT * FROM user WHERE user_name=?";
-    private static final String UPDATE_USER = "UPDATE user SET email=?, last_name=?, name=?, password=?, user_name=?";
+    private static final String UPDATE_USER = "UPDATE user SET email=?, last_name=?, name=?, password=?, user_name=? WHERE id=?";
     private static final String DELETE_USER = "DELETE FROM user WHERE id=?";
     private static final String CREATE_USER = "INSERT INTO user (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
     private static final String ADD_ROLE_TO_USER = "INSERT INTO user_role (user_id, role_id) VALUES (?,1)";
@@ -189,6 +189,8 @@ public class UserServiceImpl extends Service implements UserService {
             st.setString(3, user.getName());
             st.setString(4, user.getPassword());
             st.setString(5, user.getUserName());
+
+            st.setLong(6, user.getId());
 
             st.execute();
 
