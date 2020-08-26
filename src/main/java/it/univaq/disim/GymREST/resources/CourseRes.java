@@ -2,9 +2,13 @@ package it.univaq.disim.GymREST.resources;
 
 import it.univaq.disim.GymREST.business.CourseService;
 import it.univaq.disim.GymREST.business.GymService;
+import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.CourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
+import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.Course;
+import it.univaq.disim.GymREST.model.Gym;
+import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
 import javax.annotation.security.RolesAllowed;
@@ -48,9 +52,10 @@ public class CourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
+            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+
             course.setGym(idGym);
 
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
             long idCourse = courseService.createCourse(course);
 
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getCourse").build(idCourse)).build();
@@ -65,11 +70,21 @@ public class CourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
-            course.setId(idCourse);
-            courseService.updateCourse(course);
-            return Response.noContent().build();
+
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
+            Gym gym = gymService.getGym(idGym);
+
+            if (gym.getUser() == user.getId()){
+                course.setId(idCourse);
+                courseService.updateCourse(course);
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
@@ -80,10 +95,20 @@ public class CourseRes {
     @Path("{idCourse: [0-9]+}")
     public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
-            courseService.deleteCourse(idCourse);
-            return Response.noContent().build();
+
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
+            Gym gym = gymService.getGym(idGym);
+
+            if (gym.getUser() == user.getId()){
+                courseService.deleteCourse(idCourse);
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
