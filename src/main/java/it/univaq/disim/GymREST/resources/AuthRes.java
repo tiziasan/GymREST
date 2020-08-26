@@ -79,7 +79,7 @@ public class AuthRes {
             String newtoken = issueToken(uriinfo, jwsc.getSubject());
 
             return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + newtoken).build();
-            
+
         } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | SignatureException | IllegalArgumentException e) {
             return Response.status(UNAUTHORIZED).build();
         }
