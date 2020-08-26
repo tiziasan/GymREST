@@ -7,7 +7,6 @@ import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.User;
 
-import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.security.Key;
@@ -20,7 +19,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path("auth")
-@PermitAll
 public class AuthRes {
 
     private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -43,7 +41,6 @@ public class AuthRes {
     public Response authenticateUser(@Context UriInfo uriinfo,
                                      @FormParam("username") String username, @FormParam("password") String password) {
         try {
-            //if (authenticate(username, password))
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             if (userService.checkUser(username, password)){
                 System.out.println("Login OK");
@@ -58,8 +55,6 @@ public class AuthRes {
     }
 
     private String issueToken(UriInfo context, String username) {
-
-//        JWT
         Key key = JWTHelpers.getInstance().getJwtKey();
         String token = Jwts.builder()
                 .setSubject(username)
@@ -71,7 +66,6 @@ public class AuthRes {
         return token;
     }
 
-    //Metodo per fare "refresh" del token JWT senza ritrasmettere le credenziali
     @GET
     @Path("/refresh")
     public Response refreshJWTToken(@Context HttpHeaders headers, @Context UriInfo uriinfo) {
@@ -87,4 +81,5 @@ public class AuthRes {
             return Response.status(UNAUTHORIZED).build();
         }
     }
+    
 }
