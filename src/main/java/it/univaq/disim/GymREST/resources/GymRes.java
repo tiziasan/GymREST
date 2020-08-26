@@ -12,6 +12,7 @@ import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Path("gyms")
 public class GymRes {
@@ -22,46 +23,63 @@ public class GymRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGyms(@QueryParam("name") String name, @QueryParam("region") String region) throws SQLException {
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-        if ( region==null && name==null ) {
-            return Response.ok(gymService.getAllGyms()).build();
+    public Response getGyms(@QueryParam("name") String name, @QueryParam("region") String region) {
+        try {
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            List<Gym> list = null;
+            if ( region!=null && name==null ){
+                list = gymService.getGymsByRegion(region);
 
-        } if ( region!=null && name==null ){
-            return Response.ok(gymService.getGymsByRegion(region)).build();
+            } if ( region==null && name!=null ){
+                list = gymService.getGymsByName(name);
 
-        } if ( region==null && name!=null ){
-            return Response.ok(gymService.getGymsByName(name)).build();
+            } if ( region==null && name==null ) {
+                list = gymService.getAllGyms();
 
+            }
+            if (list == null){
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+            return Response.ok(list).build();
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @GET
     @Path("{idGym: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGym(@PathParam("idGym") long idGym) throws SQLException {
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(gymService.getGym(idGym)).build();
+    public Response getGym(@PathParam("idGym") long idGym){
+        try {
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            Gym gym = gymService.getGym(idGym);
+            return Response.ok(gym).build();
+        } catch (SQLException e) {
+            return Response.serverError().build();
+        }
     }
 
     @POST
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws SQLException {
-        if (securityContext.isUserInRole("gestore")){
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+    public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym){
+        try {
+            if (securityContext.isUserInRole("gestore")){
+                UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+                GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 
-            String username = securityContext.getUserPrincipal().getName();
-            User user = userService.getUserByUsername(username);
-            gym.setUser(user.getId());
+                String username = securityContext.getUserPrincipal().getName();
+                User user = userService.getUserByUsername(username);
+                gym.setUser(user.getId());
 
-            long idGym = gymService.createGym(gym);
+                long idGym = gymService.createGym(gym);
 
-            return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
+                return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
     }
 
@@ -69,37 +87,45 @@ public class GymRes {
     @Path("{idGym: [0-9]+}")
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws SQLException {
-        if (securityContext.isUserInRole("gestore")) {
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+    public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym){
+        try {
+            if (securityContext.isUserInRole("gestore")) {
+                GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 
-            if (isUserManagerOfGym(securityContext, idGym)){
-                gym.setId(idGym);
-                gymService.updateGym(gym);
-                return Response.noContent().build();
+                if (isUserManagerOfGym(securityContext, idGym)){
+                    gym.setId(idGym);
+                    gymService.updateGym(gym);
+                    return Response.noContent().build();
+                } else {
+                    return Response.status(Response.Status.FORBIDDEN).build();
+                }
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
     }
 
     @DELETE
     @Auth
     @Path("{idGym: [0-9]+}")
-    public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws SQLException {
-        if (securityContext.isUserInRole("gestore")) {
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+    public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym){
+        try {
+            if (securityContext.isUserInRole("gestore")) {
+                GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 
-            if (isUserManagerOfGym(securityContext, idGym)){
-                gymService.deleteGym(idGym);
-                return Response.noContent().build();
+                if (isUserManagerOfGym(securityContext, idGym)){
+                    gymService.deleteGym(idGym);
+                    return Response.noContent().build();
+                } else {
+                    return Response.status(Response.Status.FORBIDDEN).build();
+                }
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
     }
 
