@@ -10,8 +10,10 @@ import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.sql.SQLException;
 
 @Auth
@@ -25,51 +27,91 @@ public class UserRes {
     @GET
     @Path("{idUser: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam("idUser") long idUser) throws SQLException{
+    public Response getUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws SQLException{
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(userService.getUserById(idUser)).build();
+
+        String username = securityContext.getUserPrincipal().getName();
+        User user = userService.getUserByUsername(username);
+
+        if (idUser == user.getId()){
+            return Response.ok(userService.getUserById(idUser)).build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @DELETE
     @Path("{idUser: [0-9]+}")
-    public Response deleteUser(@PathParam("idUser") long idUser) throws SQLException {
+    public Response deleteUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws SQLException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        userService.deleteUser(idUser);
-        return Response.noContent().build();
+
+        String username = securityContext.getUserPrincipal().getName();
+        User user = userService.getUserByUsername(username);
+
+        if (idUser == user.getId()){
+            userService.deleteUser(idUser);
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @PUT
     @Path("{idUser: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(@PathParam("idUser") long idUser, User user) throws SQLException {
+    public Response updateUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser, User user) throws SQLException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        user.setId(idUser);
-        userService.updateUser(user);
-        return Response.noContent().build();
+
+        String username = securityContext.getUserPrincipal().getName();
+
+        if (idUser == userService.getUserByUsername(username).getId()){
+            user.setId(idUser);
+            userService.updateUser(user);
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @GET
     @Path("{idUser: [0-9]+}/feedbacks/gyms")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbacksGym(@PathParam("idUser") long idUser) throws SQLException {
+    public Response getFeedbacksGym(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws SQLException {
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(feedbackGymService.getAllFeedbackByUser(idUser)).build();
+
+        String username = securityContext.getUserPrincipal().getName();
+        User user = userService.getUserByUsername(username);
+
+        if (idUser == user.getId()){
+            return Response.ok(feedbackGymService.getAllFeedbackByUser(idUser)).build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @GET
     @Path("{idUser: [0-9]+}/feedbacks/courses")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbacksCourse(@PathParam("idUser") long idUser) throws SQLException {
+    public Response getFeedbacksCourse(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws SQLException {
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
         FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(feedbackCourseService.getAllFeedbackByUser(idUser)).build();
+
+        String username = securityContext.getUserPrincipal().getName();
+        User user = userService.getUserByUsername(username);
+
+        if (idUser == user.getId()){
+            return Response.ok(feedbackCourseService.getAllFeedbackByUser(idUser)).build();
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
 
     @Path("{idUser: [0-9]+}/favorites")
-    public FavoriteRes getFavorites(@PathParam("idUser") long idUser) {
+    public FavoriteRes getFavorites(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) {
         System.out.println("From UserRes to FavoriteRes");
         return new FavoriteRes(idUser);
     }
-
 
 }
