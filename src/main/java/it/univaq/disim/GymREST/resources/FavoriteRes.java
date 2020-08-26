@@ -42,7 +42,7 @@ public class FavoriteRes {
 
             return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }
@@ -63,7 +63,7 @@ public class FavoriteRes {
 
             return Response.created(uriinfo.getAbsolutePathBuilder().build()).build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }
@@ -95,7 +95,7 @@ public class FavoriteRes {
             favoriteGymService.deleteFavoriteGym(idUser, idGym);
             return Response.noContent().build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }
@@ -110,7 +110,7 @@ public class FavoriteRes {
             favoriteCourseService.deleteFavoriteCourse(idUser, idCourse);
             return Response.noContent().build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }

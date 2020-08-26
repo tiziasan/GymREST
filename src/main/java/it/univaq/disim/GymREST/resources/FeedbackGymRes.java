@@ -59,7 +59,7 @@ public class FeedbackGymRes {
 
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackGym").build(idFeedback)).build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }
@@ -77,7 +77,7 @@ public class FeedbackGymRes {
 
             return Response.noContent().build();
         }else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }
@@ -93,7 +93,7 @@ public class FeedbackGymRes {
 
             return Response.noContent().build();
         }else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
 

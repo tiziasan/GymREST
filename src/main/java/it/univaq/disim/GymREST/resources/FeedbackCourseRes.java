@@ -61,7 +61,7 @@ public class FeedbackCourseRes {
 
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackCourse").build(idFeedback)).build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }
@@ -79,7 +79,7 @@ public class FeedbackCourseRes {
 
             return Response.noContent().build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }
@@ -98,7 +98,7 @@ public class FeedbackCourseRes {
 
             return Response.noContent().build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }

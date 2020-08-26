@@ -64,7 +64,7 @@ public class GymRes {
 
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
 
@@ -79,7 +79,7 @@ public class GymRes {
             gymService.updateGym(gym);
             return Response.noContent().build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
 
@@ -92,7 +92,7 @@ public class GymRes {
             gymService.deleteGym(idGym);
             return Response.noContent().build();
         } else {
-            return Response.serverError().entity("Non hai i permessi per fare questa operazione").build();
+            return Response.status(Response.Status.FORBIDDEN).build();
 
         }
     }
