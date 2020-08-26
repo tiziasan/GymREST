@@ -14,6 +14,7 @@ import it.univaq.disim.GymREST.security.Auth;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.sql.SQLException;
+import java.util.List;
 
 public class CourseRes {
 
@@ -29,75 +30,98 @@ public class CourseRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCourses(@QueryParam("name") String name) throws SQLException {
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
-        if ( name != null ){
-            return Response.ok(courseService.getCoursesByName(name)).build();
+    public Response getCourses(@QueryParam("name") String name) {
+        try {
+            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            List<Course> list;
+            if ( name != null ){
+                list = courseService.getCoursesByName(name);
+            } else {
+                list = courseService.getCoursesByGym(idGym);
+            }
+            return Response.ok(list).build();
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
-
-        return Response.ok(courseService.getCoursesByGym(idGym)).build();
     }
 
     @GET
     @Path("{idCourse: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCourse(@PathParam("idCourse") long idCourse) throws SQLException {
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
-        return Response.ok(courseService.getCourse(idCourse)).build();
+    public Response getCourse(@PathParam("idCourse") long idCourse){
+        try {
+            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            Course course = courseService.getCourse(idCourse);
+            return Response.ok(course).build();
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
     }
 
     @POST
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws SQLException {
-        if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+    public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course){
+        try {
+            if (securityContext.isUserInRole("gestore")) {
+                CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
 
-            course.setGym(idGym);
+                course.setGym(idGym);
+                long idCourse = courseService.createCourse(course);
 
-            long idCourse = courseService.createCourse(course);
-
-            return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getCourse").build(idCourse)).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
+                return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getCourse").build(idCourse)).build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
+
     }
 
     @PUT
     @Auth
     @Path("{idCourse: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws SQLException {
-        if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+    public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course){
+        try {
+            if (securityContext.isUserInRole("gestore")) {
+                CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
 
-            if (isUserManagerOfGym(securityContext)){
-                course.setId(idCourse);
-                courseService.updateCourse(course);
-                return Response.noContent().build();
+                if (isUserManagerOfGym(securityContext)){
+                    course.setId(idCourse);
+                    courseService.updateCourse(course);
+                    return Response.noContent().build();
+                } else {
+                    return Response.status(Response.Status.FORBIDDEN).build();
+                }
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
     }
 
     @DELETE
     @Auth
     @Path("{idCourse: [0-9]+}")
-    public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
-        if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+    public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse){
+        try {
+            if (securityContext.isUserInRole("gestore")) {
+                CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
 
-            if (isUserManagerOfGym(securityContext)){
-                courseService.deleteCourse(idCourse);
-                return Response.noContent().build();
+                if (isUserManagerOfGym(securityContext)){
+                    courseService.deleteCourse(idCourse);
+                    return Response.noContent().build();
+                } else {
+                    return Response.status(Response.Status.FORBIDDEN).build();
+                }
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
+        } catch (Exception e) {
+            return Response.serverError().build();
         }
     }
 
