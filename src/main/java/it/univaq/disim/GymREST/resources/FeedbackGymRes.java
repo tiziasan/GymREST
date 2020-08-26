@@ -1,19 +1,13 @@
 package it.univaq.disim.GymREST.resources;
 
-import it.univaq.disim.GymREST.business.FeedbackCourseService;
 import it.univaq.disim.GymREST.business.FeedbackGymService;
-import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.UserService;
-import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
-import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackGym;
-import it.univaq.disim.GymREST.model.Gym;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.sql.SQLException;
