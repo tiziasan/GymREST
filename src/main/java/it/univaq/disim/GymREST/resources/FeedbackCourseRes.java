@@ -24,11 +24,9 @@ public class FeedbackCourseRes {
     private static final String userDB = "gymportal";
     private static final String pswDB = "gymportal";
 
-    private final long idGym;
     private final long idCourse;
 
-    FeedbackCourseRes(long idGym, long idCourse){
-        this.idGym = idGym;
+    FeedbackCourseRes(long idCourse){
         this.idCourse = idCourse;
     }
 
@@ -53,11 +51,11 @@ public class FeedbackCourseRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws SQLException {
-        String username = securityContext.getUserPrincipal().getName();
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
 
+            String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
             feedbackCourse.setUser(user.getId());
             feedbackCourse.setCourse(idCourse);
@@ -76,9 +74,13 @@ public class FeedbackCourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
 
-            if (isUserManagerOfGym(securityContext)){
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
+
+            if (feedbackCourseService.getFeedback(idFeedback).getUser() == user.getId()){
                 feedbackCourse.setId(idFeedback);
                 feedbackCourseService.updateFeedbackCourse(feedbackCourse);
 
@@ -96,9 +98,13 @@ public class FeedbackCourseRes {
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
 
-            if (isUserManagerOfGym(securityContext)){
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
+
+            if (feedbackCourseService.getFeedback(idFeedback).getUser() == user.getId()){
                 feedbackCourseService.deleteFeedbackCourse(idFeedback);
 
                 return Response.noContent().build();
@@ -108,18 +114,6 @@ public class FeedbackCourseRes {
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-    }
-
-
-    public boolean isUserManagerOfGym(SecurityContext securityContext) throws SQLException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
-
-        String username = securityContext.getUserPrincipal().getName();
-        User user = userService.getUserByUsername(username);
-        Gym gym = gymService.getGym(idGym);
-
-        return gym.getUser() == user.getId();
     }
 
 }

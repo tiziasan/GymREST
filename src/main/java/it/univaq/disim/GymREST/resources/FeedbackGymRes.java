@@ -1,10 +1,15 @@
 package it.univaq.disim.GymREST.resources;
 
+import it.univaq.disim.GymREST.business.FeedbackCourseService;
 import it.univaq.disim.GymREST.business.FeedbackGymService;
+import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.UserService;
+import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
+import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackGym;
+import it.univaq.disim.GymREST.model.Gym;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
@@ -22,7 +27,7 @@ public class FeedbackGymRes {
     private final long idGym;
 
     FeedbackGymRes(long idGym){
-        this.idGym=idGym;
+        this.idGym = idGym;
     }
 
     @GET
@@ -46,12 +51,13 @@ public class FeedbackGymRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackGym feedbackGym) throws SQLException {
-        String username = securityContext.getUserPrincipal().getName();
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+
+            String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
 
-            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
             feedbackGym.setUser(user.getId());
             feedbackGym.setGym(idGym);
 
@@ -70,15 +76,21 @@ public class FeedbackGymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
-
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
-            feedbackGym.setId(idFeedback);
-            feedbackGymService.updateFeedbackGym(feedbackGym);
 
-            return Response.noContent().build();
-        }else {
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
+            if (feedbackGymService.getFeedback(idFeedback).getUser() == user.getId()){
+                feedbackGym.setId(idFeedback);
+                feedbackGymService.updateFeedbackGym(feedbackGym);
+
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+        } else {
             return Response.status(Response.Status.FORBIDDEN).build();
-
         }
     }
 
@@ -87,11 +99,18 @@ public class FeedbackGymRes {
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
-
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
-            feedbackGymService.deleteFeedbackGym(idFeedback);
 
-            return Response.noContent().build();
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
+            if (feedbackGymService.getFeedback(idFeedback).getUser() == user.getId()){
+                feedbackGymService.deleteFeedbackGym(idFeedback);
+
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         }else {
             return Response.status(Response.Status.FORBIDDEN).build();
 
