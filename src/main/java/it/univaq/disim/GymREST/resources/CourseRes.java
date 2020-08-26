@@ -117,7 +117,7 @@ public class CourseRes {
     @Path("{idCourse: [0-9]+}/feedbacks")
     public FeedbackCourseRes getFeedbacksCourse(@PathParam("idCourse") long idCourse) {
         System.out.println("From CourseRes to FeedbackCourseRes");
-        return new FeedbackCourseRes(idCourse);
+        return new FeedbackCourseRes(idGym, idCourse);
     }
 
 }

@@ -2,11 +2,14 @@ package it.univaq.disim.GymREST.resources;
 
 import it.univaq.disim.GymREST.business.FeedbackCourseService;
 import it.univaq.disim.GymREST.business.FeedbackGymService;
+import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
+import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
+import it.univaq.disim.GymREST.model.Gym;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
@@ -21,9 +24,11 @@ public class FeedbackCourseRes {
     private static final String userDB = "gymportal";
     private static final String pswDB = "gymportal";
 
+    private final long idGym;
     private final long idCourse;
 
-    FeedbackCourseRes(long idCourse){
+    FeedbackCourseRes(long idGym, long idCourse){
+        this.idGym = idGym;
         this.idCourse = idCourse;
     }
 
@@ -51,9 +56,9 @@ public class FeedbackCourseRes {
         String username = securityContext.getUserPrincipal().getName();
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            User user = userService.getUserByUsername(username);
-
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+
+            User user = userService.getUserByUsername(username);
             feedbackCourse.setUser(user.getId());
             feedbackCourse.setCourse(idCourse);
 
@@ -62,7 +67,6 @@ public class FeedbackCourseRes {
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackCourse").build(idFeedback)).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
-
         }
     }
 
@@ -72,34 +76,50 @@ public class FeedbackCourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
-
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
-            feedbackCourse.setId(idFeedback);
-            feedbackCourseService.updateFeedbackCourse(feedbackCourse);
 
-            return Response.noContent().build();
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
+            Gym gym = gymService.getGym(idGym);
+
+            if (gym.getUser() == user.getId()){
+                feedbackCourse.setId(idFeedback);
+                feedbackCourseService.updateFeedbackCourse(feedbackCourse);
+
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
-
         }
     }
-
-
-
 
     @DELETE
     @Auth
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
-
+            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
-            feedbackCourseService.deleteFeedbackCourse(idFeedback);
 
-            return Response.noContent().build();
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
+            Gym gym = gymService.getGym(idGym);
+
+            if (gym.getUser() == user.getId()){
+                feedbackCourseService.deleteFeedbackCourse(idFeedback);
+
+                return Response.noContent().build();
+            } else {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
-
         }
     }
+    
 }
