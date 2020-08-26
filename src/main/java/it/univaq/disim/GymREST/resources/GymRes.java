@@ -1,6 +1,5 @@
 package it.univaq.disim.GymREST.resources;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -51,12 +50,11 @@ public class GymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws SQLException {
         if (securityContext.isUserInRole("gestore")){
-            String username = securityContext.getUserPrincipal().getName();
-
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            User user = userService.getUserByUsername(username);
-
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+
+            String username = securityContext.getUserPrincipal().getName();
+            User user = userService.getUserByUsername(username);
             gym.setUser(user.getId());
 
             long idGym = gymService.createGym(gym);
@@ -73,12 +71,12 @@ public class GymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-            String username = securityContext.getUserPrincipal().getName();
-
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+
+            String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
 
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             if (gymService.getGym(idGym).getUser() == user.getId()){
                 gym.setId(idGym);
                 gymService.updateGym(gym);
@@ -96,12 +94,12 @@ public class GymRes {
     @Path("{idGym: [0-9]+}")
     public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws SQLException {
         if (securityContext.isUserInRole("gestore")) {
-            String username = securityContext.getUserPrincipal().getName();
-
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+
+            String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
 
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
             if (gymService.getGym(idGym).getUser() == user.getId()){
                 gymService.deleteGym(idGym);
                 return Response.noContent().build();
