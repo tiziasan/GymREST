@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.sql.SQLException;
 
+@Auth
 public class FavoriteRes {
 
     private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -26,9 +27,8 @@ public class FavoriteRes {
         this.idUser = idUser;
     }
 
-    @Path("gyms")
-    @Auth
     @POST
+    @Path("gyms")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idGym) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
@@ -47,11 +47,10 @@ public class FavoriteRes {
         }
     }
 
-    @Path("courses")
     @POST
-    @Auth
+    @Path("courses")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createFavoriteCourse(@Context SecurityContext securityContext,@Context UriInfo uriinfo, long idCourse) throws SQLException {
+    public Response createFavoriteCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idCourse) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
 
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
@@ -68,25 +67,23 @@ public class FavoriteRes {
         }
     }
 
-
-    @Path("gyms")
     @GET
+    @Path("gyms")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFavoritesGym() throws SQLException {
+    public Response getAllFavoritesGym() throws SQLException {
         FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
         return Response.ok(favoriteGymService.getAllFavoriteGym(idUser)).build();
     }
 
-    @Path("courses")
     @GET
+    @Path("courses")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFavoritesCourse() throws SQLException {
+    public Response getAllFavoritesCourse() throws SQLException {
         FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
         return Response.ok(favoriteCourseService.getAllFavoriteCourse(idUser)).build();
     }
 
     @DELETE
-    @Auth
     @Path("gyms/{idGym: [0-9]+}")
     public Response deleteFavoriteGym(@Context SecurityContext securityContext,@PathParam("idGym") long idGym) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
@@ -101,7 +98,6 @@ public class FavoriteRes {
     }
 
     @DELETE
-    @Auth
     @Path("courses/{idCourse: [0-9]+}")
     public Response deleteFavoriteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
         if (securityContext.isUserInRole("utente")) {
@@ -114,6 +110,5 @@ public class FavoriteRes {
 
         }
     }
-
 
 }
