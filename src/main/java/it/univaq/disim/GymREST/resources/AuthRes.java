@@ -28,9 +28,11 @@ public class AuthRes {
     @POST
     @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException {
+    public Response registerUser(@Context UriInfo uriInfo,@FormParam("email") String email,
+                                 @FormParam("username") String username, @FormParam("password") String password,
+                                 @FormParam("lastname") String lastname, @FormParam("name") String name) throws SQLException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-
+        User user = new User(username, email, password, name, lastname);
         long idUser = userService.createUser(user);
         userService.addRoleToUser(idUser);
 

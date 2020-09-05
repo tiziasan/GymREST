@@ -87,10 +87,10 @@ public class UserServiceImpl extends Service implements UserService {
              PreparedStatement st = connection.prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS);) {
 
             st.setString(1, user.getEmail());
-            st.setString(2, user.getLastName());
+            st.setString(2, user.getLastname());
             st.setString(3, user.getName());
             st.setString(4, user.getPassword());
-            st.setString(5, user.getUserName());
+            st.setString(5, user.getUsername());
 
             st.execute();
 
@@ -136,10 +136,10 @@ public class UserServiceImpl extends Service implements UserService {
                 if (rs.next()) {
                     user.setId(rs.getLong(1));
                     user.setEmail(rs.getString(3));
-                    user.setLastName(rs.getString(4));
+                    user.setLastname(rs.getString(4));
                     user.setName(rs.getString(5));
                     user.setPassword(rs.getString(6));
-                    user.setUserName(rs.getString(7));
+                    user.setUsername(rs.getString(7));
                 }
             }
 
@@ -163,10 +163,10 @@ public class UserServiceImpl extends Service implements UserService {
                 if (rs.next()) {
                     user.setId(rs.getLong(1));
                     user.setEmail(rs.getString(3));
-                    user.setLastName(rs.getString(4));
+                    user.setLastname(rs.getString(4));
                     user.setName(rs.getString(5));
                     user.setPassword(rs.getString(6));
-                    user.setUserName(rs.getString(7));
+                    user.setUsername(rs.getString(7));
                 }
             }
 
@@ -185,10 +185,10 @@ public class UserServiceImpl extends Service implements UserService {
              PreparedStatement st = connection.prepareStatement(UPDATE_USER);) {
 
             st.setString(1, user.getEmail());
-            st.setString(2, user.getLastName());
+            st.setString(2, user.getLastname());
             st.setString(3, user.getName());
             st.setString(4, user.getPassword());
-            st.setString(5, user.getUserName());
+            st.setString(5, user.getUsername());
 
             st.setLong(6, user.getId());
 

@@ -9,11 +9,11 @@ import java.util.Set;
 public class User {
 
 	private long id;
-	private String userName;
+	private String username;
 	private String email;
 	private String password;
 	private String name;
-	private String lastName;
+	private String lastname;
 	private Boolean active;
 
 	@JsonIgnore
@@ -31,22 +31,28 @@ public class User {
 
 	public User() {
 		this.id = 0;
-		this.userName = "";
+		this.username = "";
 		this.email = "";
 		this.password = "";
 		this.name = "";
-		this.lastName = "";
-		this.active = null;
+		this.lastname = "";
 	}
 
-	public User(long id, String userName, String email, String password, String name, String lastName, Boolean active) {
-		this.id = id;
-		this.userName = userName;
+	public User(String username, String email, String password, String name, String lastname) {
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.name = name;
-		this.lastName = lastName;
-		this.active = active;
+		this.lastname = lastname;
+	}
+
+	public User(long id, String username, String email, String password, String name, String lastname) {
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.lastname = lastname;
 	}
 
 	public long getId() {
@@ -57,12 +63,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmail() {
@@ -89,12 +95,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getLastname() {
+		return lastname;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	public Boolean getActive() {
@@ -163,6 +169,6 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), getUserName());
+		return Objects.hash(getId(), getUsername());
 	}
 }
