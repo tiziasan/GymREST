@@ -2,8 +2,8 @@ package it.univaq.disim.GymREST.exceptions;
 
 public class ErrorMessage {
 
-    private int statusCode;
-    private String statusMessage;
+    private int code;
+    private String message;
 
     public ErrorMessage() {
     }
@@ -12,37 +12,37 @@ public class ErrorMessage {
         System.out.println("[SQL Error Code]: " + SQLcode);
         switch (SQLcode){
             case 1062:
-                this.statusCode = 400;
-                this.statusMessage = "Data Already Exist";
+                this.code = 400;
+                this.message = "Data Already Exist";
                 break;
             default:
-                this.statusCode = 500;
-                this.statusMessage = "Server Error - SQLError: " + SQLcode;
+                this.code = 500;
+                this.message = "Server Error - SQLError: " + SQLcode;
                 break;
         }
     }
 
 
-    public int getStatusCode() {
-        return statusCode;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getStatusMessage() {
-        return statusMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
     public String toString() {
         return "[Error Message] - " +
-                "Status Code: " + statusCode +
-                ", statusMessage: '" + statusMessage + '\'';
+                "Code: " + code +
+                ", Message: '" + message + '\'';
     }
 }

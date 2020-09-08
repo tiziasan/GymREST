@@ -12,7 +12,7 @@ public class ServiceExceptionMapper implements ExceptionMapper<ServiceException>
     public Response toResponse(ServiceException exception) {
         ErrorMessage errorMessage = new ErrorMessage(exception.getSqlErrorCode());
         System.out.println(errorMessage);
-        return Response.status(errorMessage.getStatusCode()).entity(errorMessage).type(MediaType.APPLICATION_JSON).build();
+        return Response.status(errorMessage.getCode()).entity(errorMessage).type(MediaType.APPLICATION_JSON).build();
     }
 
 }
