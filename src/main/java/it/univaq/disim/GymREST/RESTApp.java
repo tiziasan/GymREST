@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+import it.univaq.disim.GymREST.exceptions.ServiceExceptionMapper;
 import it.univaq.disim.GymREST.resources.*;
 import it.univaq.disim.GymREST.security.SecurityFilter;
 
@@ -43,6 +44,9 @@ public class RESTApp extends Application {
         //esempio di autoenticazione con JWT
         //c.add(AuthLevel1Filter.class);
         c.add(SecurityFilter.class);
+
+        c.add(ServiceExceptionMapper.class);
+
         classes = Collections.unmodifiableSet(c);
     }
 
