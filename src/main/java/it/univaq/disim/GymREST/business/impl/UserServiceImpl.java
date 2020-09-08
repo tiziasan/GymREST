@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.Service;
 import it.univaq.disim.GymREST.business.UserService;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.User;
 
 import java.sql.*;
@@ -79,7 +80,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public long createUser(User user) {
+    public long createUser(User user) throws ServiceException {
         System.out.println("[SERVICE] User - createUser");
         loadDriver();
 
@@ -101,7 +102,7 @@ public class UserServiceImpl extends Service implements UserService {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return 0;
     }

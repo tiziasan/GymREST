@@ -5,6 +5,7 @@ import io.jsonwebtoken.security.SignatureException;
 import it.univaq.disim.GymREST.JWTHelpers;
 import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.User;
 
 import javax.ws.rs.*;
@@ -28,7 +29,7 @@ public class AuthRes {
     @POST
     @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException {
+    public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException, ServiceException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
         
         long idUser = userService.createUser(user);
