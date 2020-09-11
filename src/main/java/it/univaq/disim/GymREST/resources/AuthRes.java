@@ -47,9 +47,10 @@ public class AuthRes {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             if (userService.checkUser(username, password)){
                 System.out.println("Login OK");
+                User user = userService.getUserByUsername(username);
                 String authToken = issueToken(uriinfo, username);
 
-                return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
+                return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).location(uriinfo.getBaseUriBuilder().path("users").path(UserRes.class,"getUser").build(user.getId())).build();
             }
             return Response.status(UNAUTHORIZED).build();
         } catch (Exception e) {
