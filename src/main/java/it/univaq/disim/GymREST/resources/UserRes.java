@@ -34,7 +34,7 @@ public class UserRes {
         User user = userService.getUserByUsername(username);
 
         if (idUser == user.getId()){
-            return Response.ok(userService.getUserById(idUser)).build();
+            return Response.ok(user).build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
