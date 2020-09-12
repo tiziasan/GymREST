@@ -43,7 +43,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 
 
                 // https://dzone.com/articles/custom-security-context-injax-rs
-                String subject = jwsc.getBody().getSubject();
+                final String subject = jwsc.getBody().getSubject();
                 if (subject!=null) {
                     final SecurityContext securityContext = requestContext.getSecurityContext();
                     requestContext.setSecurityContext(new SecurityContext() {
