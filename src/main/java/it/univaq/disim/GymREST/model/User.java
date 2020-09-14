@@ -11,7 +11,6 @@ public class User {
 	private long id;
 	private String username;
 	private String email;
-	@JsonIgnore
 	private String password;
 	private String name;
 	private String lastname;
