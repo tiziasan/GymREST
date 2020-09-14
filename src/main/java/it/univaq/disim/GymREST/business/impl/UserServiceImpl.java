@@ -138,7 +138,7 @@ public class UserServiceImpl extends Service implements UserService {
                     user.setEmail(rs.getString(3));
                     user.setLastname(rs.getString(4));
                     user.setName(rs.getString(5));
-                    user.setPassword(rs.getString(6));
+//                    user.setPassword(rs.getString(6));
                     user.setUsername(rs.getString(7));
                 }
             }
@@ -165,7 +165,7 @@ public class UserServiceImpl extends Service implements UserService {
                     user.setEmail(rs.getString(3));
                     user.setLastname(rs.getString(4));
                     user.setName(rs.getString(5));
-                    user.setPassword(rs.getString(6));
+//                    user.setPassword(rs.getString(6));
                     user.setUsername(rs.getString(7));
                 }
             }
