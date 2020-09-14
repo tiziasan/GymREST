@@ -1,5 +1,6 @@
 package it.univaq.disim.GymREST.resources;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -19,6 +20,7 @@ public class GymRes {
     private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private static final String userDB = "gymportal";
     private static final String pswDB = "gymportal";
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
