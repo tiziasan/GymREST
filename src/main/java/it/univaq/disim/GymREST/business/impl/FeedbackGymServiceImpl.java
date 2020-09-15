@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.FeedbackGymService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FeedbackGym;
 
 import java.sql.*;
@@ -29,7 +30,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     }
 
     @Override
-    public long createFeedbackGym(FeedbackGym feedbackGym) {
+    public long createFeedbackGym(FeedbackGym feedbackGym) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - createFeedbackGym");
         loadDriver();
 
@@ -48,13 +49,13 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
                 return result.getLong(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return 0;
     }
 
     @Override
-    public List<FeedbackGym> getAllFeedbackByGym(long id) {
+    public List<FeedbackGym> getAllFeedbackByGym(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - getAllFeedbackByGym");
         loadDriver();
 
@@ -76,13 +77,13 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return feedbackGyms;
     }
 
     @Override
-    public FeedbackGym getFeedback(long id) {
+    public FeedbackGym getFeedback(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - getFeedbackGym");
         loadDriver();
 
@@ -101,13 +102,13 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return feedbackGym;
     }
 
     @Override
-    public List<FeedbackGym> getAllFeedbackByUser(long idUser) {
+    public List<FeedbackGym> getAllFeedbackByUser(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - getAllFeedbackByUser");
         loadDriver();
 
@@ -128,13 +129,13 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return feedbackGyms;
     }
 
     @Override
-    public void deleteFeedbackGym(long id) {
+    public void deleteFeedbackGym(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - deleteFeedbackGym");
         loadDriver();
 
@@ -145,12 +146,12 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 
     @Override
-    public void updateFeedbackGym(FeedbackGym feedbackGym) {
+    public void updateFeedbackGym(FeedbackGym feedbackGym) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - updateFeedbackGym");
         loadDriver();
 
@@ -164,7 +165,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 }

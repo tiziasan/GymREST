@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import it.univaq.disim.GymREST.JWTHelpers;
 import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -41,7 +42,6 @@ public class SecurityFilter implements ContainerRequestFilter {
                 Key key = JWTHelpers.getInstance().getJwtKey();
                 Jws<Claims> jwsc = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
 
-
                 // https://dzone.com/articles/custom-security-context-injax-rs
                 final String subject = jwsc.getBody().getSubject();
                 if (subject!=null) {
@@ -56,13 +56,19 @@ public class SecurityFilter implements ContainerRequestFilter {
                                 }
                             };
                         }
+
                         @Override
                         public boolean isUserInRole(String role) {
-                            UserService userService = new UserServiceImpl(
+                            try {
+                                UserService userService = new UserServiceImpl(
                                     "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
                                     "gymportal", "gymportal");
 
-                            return userService.checkRole(subject, role);
+                                return userService.checkRole(subject, role);
+                            } catch (ServiceException e) {
+                                e.setSqlErrorCode();
+                            }
+                            return false;
                         }
                         @Override
                         public boolean isSecure() {

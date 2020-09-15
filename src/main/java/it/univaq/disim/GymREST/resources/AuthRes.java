@@ -29,9 +29,9 @@ public class AuthRes {
     @POST
     @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(@Context UriInfo uriInfo, User user) throws SQLException, ServiceException {
+    public Response registerUser(@Context UriInfo uriInfo, User user) throws ServiceException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        
+
         long idUser = userService.createUser(user);
         userService.addRoleToUser(idUser);
 
@@ -42,20 +42,17 @@ public class AuthRes {
     @Path("/login")
     @Consumes(APPLICATION_FORM_URLENCODED)
     public Response authenticateUser(@Context UriInfo uriinfo,
-                                     @FormParam("username") String username, @FormParam("password") String password) {
-        try {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            if (userService.checkUser(username, password)){
-                System.out.println("Login OK");
-                User user = userService.getUserByUsername(username);
-                String authToken = issueToken(uriinfo, username);
+                                     @FormParam("username") String username, @FormParam("password") String password) throws ServiceException, SQLException {
+        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        if (userService.checkUser(username, password)){
+            System.out.println("LOGIN OK");
+            User user = userService.getUserByUsername(username);
+            String authToken = issueToken(uriinfo, username);
 
-                return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).location(uriinfo.getBaseUriBuilder().path("users").path(UserRes.class,"getUser").build(user.getId())).build();
-            }
-            return Response.status(UNAUTHORIZED).build();
-        } catch (Exception e) {
-            return Response.status(UNAUTHORIZED).build();
+            return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).location(uriinfo.getBaseUriBuilder().path("users").path(UserRes.class,"getUser").build(user.getId())).build();
         }
+        return Response.status(UNAUTHORIZED).build();
+
     }
 
     private String issueToken(UriInfo context, String username) {

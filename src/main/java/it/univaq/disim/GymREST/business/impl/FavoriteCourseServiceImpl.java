@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.FavoriteCourseService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
 
@@ -27,7 +28,7 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     }
 
     @Override
-    public long createFavoriteCourse(FavoriteCourse favoriteCourse) {
+    public long createFavoriteCourse(FavoriteCourse favoriteCourse) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - createFavoriteCourse");
         loadDriver();
 
@@ -43,13 +44,13 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return 0;
     }
 
     @Override
-    public Map<Long, Course> getAllFavoriteCourse(long idUser) {
+    public Map<Long, Course> getAllFavoriteCourse(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - getAllFavoriteCourse");
         loadDriver();
 
@@ -73,13 +74,13 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return favoriteCourses;
     }
 
     @Override
-    public void deleteFavoriteCourse(long idUser, long idCourse) {
+    public void deleteFavoriteCourse(long idUser, long idCourse) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - deleteFavoriteCourse");
         loadDriver();
 
@@ -91,7 +92,7 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 

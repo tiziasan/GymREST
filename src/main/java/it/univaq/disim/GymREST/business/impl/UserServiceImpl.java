@@ -30,7 +30,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public boolean checkUser(String username, String password) {
+    public boolean checkUser(String username, String password) throws ServiceException {
         System.out.println("[SERVICE] User - checkUser");
         loadDriver();
 
@@ -42,20 +42,20 @@ public class UserServiceImpl extends Service implements UserService {
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()){
                     if (rs.getInt(1) == 1){
-                        System.out.println("user exists");
+                        System.out.println("User exists");
                         return true;
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
-        System.out.println("user doesn't exist");
+        System.out.println("User doesn't exist");
         return false;
     }
 
     @Override
-    public boolean checkRole(String username, String role) {
+    public boolean checkRole(String username, String role) throws ServiceException {
         System.out.println("[SERVICE] User - checkRole");
         loadDriver();
 
@@ -67,15 +67,15 @@ public class UserServiceImpl extends Service implements UserService {
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()){
                     if (rs.getInt(1) == 1){
-                        System.out.println("user has role " + role);
+                        System.out.println("User has role " + role);
                         return true;
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
-        System.out.println("user hasn't role " + role);
+        System.out.println("User hasn't role " + role);
         return false;
     }
 
@@ -108,7 +108,7 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
-    public void addRoleToUser(long idUser) {
+    public void addRoleToUser(long idUser) throws ServiceException {
         System.out.println("[SERVICE] User - addRoleToUser");
         loadDriver();
 
@@ -119,12 +119,12 @@ public class UserServiceImpl extends Service implements UserService {
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 
     @Override
-    public User getUserById(long id) {
+    public User getUserById(long id) throws ServiceException {
         System.out.println("[SERVICE] User - getUser");
         loadDriver();
 
@@ -145,13 +145,13 @@ public class UserServiceImpl extends Service implements UserService {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return user;
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(String username) throws ServiceException {
         System.out.println("[SERVICE] User - getUser");
         loadDriver();
 
@@ -172,13 +172,13 @@ public class UserServiceImpl extends Service implements UserService {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return user;
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user) throws ServiceException {
         System.out.println("[SERVICE] User - updateUser");
         loadDriver();
 
@@ -196,12 +196,12 @@ public class UserServiceImpl extends Service implements UserService {
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(long id) throws ServiceException {
         System.out.println("[SERVICE] User - deleteUser");
         loadDriver();
 
@@ -212,7 +212,7 @@ public class UserServiceImpl extends Service implements UserService {
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 

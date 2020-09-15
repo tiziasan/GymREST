@@ -6,6 +6,7 @@ import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
@@ -14,7 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.sql.SQLException;
+
 
 @Auth
 @Path("users")
@@ -27,7 +28,7 @@ public class UserRes {
     @GET
     @Path("{idUser: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws SQLException{
+    public Response getUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException{
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
 
         String username = securityContext.getUserPrincipal().getName();
@@ -35,14 +36,13 @@ public class UserRes {
 
         if (idUser == user.getId()){
             return Response.ok(user).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Path("{idUser: [0-9]+}")
-    public Response deleteUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws SQLException {
+    public Response deleteUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
 
         String username = securityContext.getUserPrincipal().getName();
@@ -51,15 +51,14 @@ public class UserRes {
         if (idUser == user.getId()){
             userService.deleteUser(idUser);
             return Response.noContent().build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @PUT
     @Path("{idUser: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser, User user) throws SQLException {
+    public Response updateUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser, User user) throws ServiceException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
 
         String username = securityContext.getUserPrincipal().getName();
@@ -68,15 +67,14 @@ public class UserRes {
             user.setId(idUser);
             userService.updateUser(user);
             return Response.noContent().build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @GET
     @Path("{idUser: [0-9]+}/feedbacks/gyms")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbacksGym(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws SQLException {
+    public Response getFeedbacksGym(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
 
@@ -85,15 +83,14 @@ public class UserRes {
 
         if (idUser == user.getId()){
             return Response.ok(feedbackGymService.getAllFeedbackByUser(idUser)).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @GET
     @Path("{idUser: [0-9]+}/feedbacks/courses")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbacksCourse(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws SQLException {
+    public Response getFeedbacksCourse(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
         FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
 
@@ -102,9 +99,8 @@ public class UserRes {
 
         if (idUser == user.getId()){
             return Response.ok(feedbackCourseService.getAllFeedbackByUser(idUser)).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 

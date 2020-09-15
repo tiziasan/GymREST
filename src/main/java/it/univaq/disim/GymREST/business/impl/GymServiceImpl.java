@@ -6,6 +6,7 @@ import java.util.List;
 
 import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.Gym;
 
 public class GymServiceImpl extends Service implements GymService {
@@ -30,7 +31,7 @@ public class GymServiceImpl extends Service implements GymService {
 	}
 
 	@Override
-	public List<Gym> getAllGyms() {
+	public List<Gym> getAllGyms() throws ServiceException {
 		System.out.println("[SERVICE] Gym - getAllGyms");
 		loadDriver();
 
@@ -50,13 +51,13 @@ public class GymServiceImpl extends Service implements GymService {
 				gyms.add(gym);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ServiceException(e.getErrorCode());
 		}
 		return gyms;
 	}
 
 	@Override
-	public List<Gym> getGymsByRegion(String region) {
+	public List<Gym> getGymsByRegion(String region) throws ServiceException {
 		System.out.println("[SERVICE] Gym - getGymsByRegion");
 		loadDriver();
 
@@ -78,13 +79,13 @@ public class GymServiceImpl extends Service implements GymService {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ServiceException(e.getErrorCode());
 		}
 		return gyms;
 	}
 
 	@Override
-	public List<Gym> getGymsByName(String name) {
+	public List<Gym> getGymsByName(String name) throws ServiceException {
 		System.out.println("[SERVICE] Gym - getGymsByName");
 		loadDriver();
 
@@ -106,13 +107,13 @@ public class GymServiceImpl extends Service implements GymService {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ServiceException(e.getErrorCode());
 		}
 		return gyms;
 	}
 
 	@Override
-	public Gym getGym(long id) {
+	public Gym getGym(long id) throws ServiceException {
 		System.out.println("[SERVICE] Gym - getGym");
 		loadDriver();
 
@@ -132,13 +133,13 @@ public class GymServiceImpl extends Service implements GymService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ServiceException(e.getErrorCode());
 		}
 		return gym;
 	}
 
 	@Override
-	public long createGym(Gym gym) {
+	public long createGym(Gym gym) throws ServiceException {
 		System.out.println("[SERVICE] Gym - createGym");
 		loadDriver();
 
@@ -159,13 +160,13 @@ public class GymServiceImpl extends Service implements GymService {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ServiceException(e.getErrorCode());
 		}
 		return 0;
 	}
 
 	@Override
-	public void updateGym(Gym gym) {
+	public void updateGym(Gym gym) throws ServiceException {
 		System.out.println("[SERVICE] Gym - updateGym");
 		loadDriver();
 
@@ -181,12 +182,12 @@ public class GymServiceImpl extends Service implements GymService {
 			st.execute();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ServiceException(e.getErrorCode());
 		}
 	}
 
 	@Override
-	public void deleteGym(long id) {
+	public void deleteGym(long id) throws ServiceException {
 		System.out.println("[SERVICE] Gym - deleteGym");
 		loadDriver();
 
@@ -197,7 +198,7 @@ public class GymServiceImpl extends Service implements GymService {
 			st.execute();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new ServiceException(e.getErrorCode());
 		}
 	}
 

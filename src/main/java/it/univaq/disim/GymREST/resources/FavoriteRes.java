@@ -6,6 +6,7 @@ import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FavoriteCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.FavoriteGymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
 import it.univaq.disim.GymREST.model.FavoriteGym;
 import it.univaq.disim.GymREST.model.User;
@@ -13,7 +14,6 @@ import it.univaq.disim.GymREST.security.Auth;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.sql.SQLException;
 
 @Auth
 public class FavoriteRes {
@@ -31,7 +31,7 @@ public class FavoriteRes {
     @POST
     @Path("gyms")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createFavoriteGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idGym) throws SQLException {
+    public Response createFavoriteGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
@@ -49,15 +49,14 @@ public class FavoriteRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @POST
     @Path("courses")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createFavoriteCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idCourse) throws SQLException {
+    public Response createFavoriteCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idCourse) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
@@ -75,20 +74,21 @@ public class FavoriteRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @GET
     @Path("gyms")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllFavoritesGym(@Context SecurityContext securityContext) throws SQLException {
+    public Response getAllFavoritesGym(@Context SecurityContext securityContext) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
 
             String username = securityContext.getUserPrincipal().getName();
+
+            System.out.println(username);
             User user = userService.getUserByUsername(username);
 
             if (idUser == user.getId()){
@@ -96,15 +96,14 @@ public class FavoriteRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @GET
     @Path("courses")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllFavoritesCourse(@Context SecurityContext securityContext) throws SQLException {
+    public Response getAllFavoritesCourse(@Context SecurityContext securityContext) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
@@ -117,14 +116,13 @@ public class FavoriteRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Path("gyms/{idGym: [0-9]+}")
-    public Response deleteFavoriteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws SQLException {
+    public Response deleteFavoriteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
@@ -138,14 +136,13 @@ public class FavoriteRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Path("courses/{idCourse: [0-9]+}")
-    public Response deleteFavoriteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
+    public Response deleteFavoriteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
@@ -159,9 +156,8 @@ public class FavoriteRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 }

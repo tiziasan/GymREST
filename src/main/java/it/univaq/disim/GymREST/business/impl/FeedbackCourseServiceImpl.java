@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.FeedbackCourseService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
 import it.univaq.disim.GymREST.model.FeedbackGym;
 
@@ -30,7 +31,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     }
 
     @Override
-    public long createFeedbackCourse(FeedbackCourse feedbackCourse) {
+    public long createFeedbackCourse(FeedbackCourse feedbackCourse) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - createFeedbackCourse");
         loadDriver();
 
@@ -50,13 +51,13 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return 0;
     }
 
     @Override
-    public List<FeedbackCourse> getAllFeedbackByCourse(long id) {
+    public List<FeedbackCourse> getAllFeedbackByCourse(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - getAllFeedbackByCourse");
         loadDriver();
 
@@ -78,13 +79,13 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return feedbackCourses;
     }
 
     @Override
-    public FeedbackCourse getFeedback(long id) {
+    public FeedbackCourse getFeedback(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - getFeedbackCourse");
         loadDriver();
 
@@ -103,13 +104,13 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return feedbackCourse;
     }
 
     @Override
-    public List<FeedbackCourse> getAllFeedbackByUser(long idUser) {
+    public List<FeedbackCourse> getAllFeedbackByUser(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - getAllFeedbackByUser");
         loadDriver();
 
@@ -130,13 +131,13 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return feedbackCourses;
     }
 
     @Override
-    public void deleteFeedbackCourse(long id) {
+    public void deleteFeedbackCourse(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - deleteFeedbackCourse");
         loadDriver();
 
@@ -147,12 +148,12 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 
     @Override
-    public void updateFeedbackCourse(FeedbackCourse feedbackCourse) {
+    public void updateFeedbackCourse(FeedbackCourse feedbackCourse) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - updateFeedbackCourse");
         loadDriver();
 
@@ -166,7 +167,7 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 }

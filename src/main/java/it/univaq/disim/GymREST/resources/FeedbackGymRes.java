@@ -4,13 +4,13 @@ import it.univaq.disim.GymREST.business.FeedbackGymService;
 import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FeedbackGym;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.sql.SQLException;
 
 public class FeedbackGymRes {
 
@@ -26,7 +26,7 @@ public class FeedbackGymRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbacksGym() throws SQLException {
+    public Response getFeedbacksGym() throws ServiceException {
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
 
         return Response.ok(feedbackGymService.getAllFeedbackByGym(idGym)).build();
@@ -35,7 +35,7 @@ public class FeedbackGymRes {
     @GET
     @Path("{idFeedback: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbackGym(@PathParam("idFeedback") long idFeedback) throws SQLException {
+    public Response getFeedbackGym(@PathParam("idFeedback") long idFeedback) throws ServiceException {
         FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
 
         return Response.ok(feedbackGymService.getFeedback(idFeedback)).build();
@@ -44,7 +44,7 @@ public class FeedbackGymRes {
     @POST
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addFeedbackGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackGym feedbackGym) throws SQLException {
+    public Response addFeedbackGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackGym feedbackGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
@@ -58,17 +58,15 @@ public class FeedbackGymRes {
             long idFeedback = feedbackGymService.createFeedbackGym(feedbackGym);
 
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackGym").build(idFeedback)).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
-
-        }
+        } 
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @PUT
     @Auth
     @Path("{idFeedback: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws SQLException {
+    public Response updateFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
@@ -83,15 +81,14 @@ public class FeedbackGymRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Auth
     @Path("{idFeedback: [0-9]+}")
-    public Response deleteFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback) throws SQLException {
+    public Response deleteFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
@@ -105,11 +102,8 @@ public class FeedbackGymRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        }else {
-            return Response.status(Response.Status.FORBIDDEN).build();
-
         }
-
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 }

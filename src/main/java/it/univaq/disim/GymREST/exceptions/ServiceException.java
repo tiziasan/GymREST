@@ -5,6 +5,10 @@ public class ServiceException extends Exception {
 
     private int sqlErrorCode;
 
+    public ServiceException() {
+        this.sqlErrorCode = 0;
+    }
+
     public ServiceException(int sqlErrorCode) {
         this.sqlErrorCode = sqlErrorCode;
     }
@@ -15,6 +19,10 @@ public class ServiceException extends Exception {
 
     public void setSqlErrorCode(int sqlErrorCode) {
         this.sqlErrorCode = sqlErrorCode;
+    }
+
+    public void setSqlErrorCode() {
+        this.sqlErrorCode = 0;
     }
 
 }

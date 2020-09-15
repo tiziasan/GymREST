@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.FavoriteGymService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FavoriteGym;
 import it.univaq.disim.GymREST.model.Gym;
 
@@ -27,7 +28,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     }
 
     @Override
-    public long createFavoriteGym(FavoriteGym favoriteGym){
+    public long createFavoriteGym(FavoriteGym favoriteGym) throws ServiceException {
         System.out.println("[SERVICE] FavoriteGym - createFavoriteGym");
         loadDriver();
 
@@ -43,14 +44,14 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return 0;
 
     }
 
     @Override
-    public Map<Long, Gym> getAllFavoriteGym(long idUser){
+    public Map<Long, Gym> getAllFavoriteGym(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FavoriteGym - getAllFavoriteGym");
         loadDriver();
 
@@ -75,13 +76,13 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return favoriteGyms;
     }
 
     @Override
-    public void deleteFavoriteGym(long idUser, long idGym){
+    public void deleteFavoriteGym(long idUser, long idGym) throws ServiceException {
         System.out.println("[SERVICE] FavoriteGym - deleteFavoriteGym");
         loadDriver();
 
@@ -93,7 +94,7 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 
