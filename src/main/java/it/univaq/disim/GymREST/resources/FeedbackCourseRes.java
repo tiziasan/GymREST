@@ -4,13 +4,13 @@ import it.univaq.disim.GymREST.business.FeedbackCourseService;
 import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.sql.SQLException;
 
 public class FeedbackCourseRes {
 
@@ -26,7 +26,7 @@ public class FeedbackCourseRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbacksCourse() throws SQLException {
+    public Response getFeedbacksCourse() throws ServiceException {
         FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
 
         return Response.ok(feedbackCourseService.getAllFeedbackByCourse(idCourse)).build();
@@ -35,7 +35,7 @@ public class FeedbackCourseRes {
     @GET
     @Path("{idFeedback: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbackCourse(@PathParam("idFeedback") long idFeedback) throws SQLException {
+    public Response getFeedbackCourse(@PathParam("idFeedback") long idFeedback) throws ServiceException {
         FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
 
         return Response.ok(feedbackCourseService.getFeedback(idFeedback)).build();
@@ -44,7 +44,7 @@ public class FeedbackCourseRes {
     @POST
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addFeedbackCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws SQLException {
+    public Response addFeedbackCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
@@ -57,9 +57,8 @@ public class FeedbackCourseRes {
             long idFeedback = feedbackCourseService.createFeedbackCourse(feedbackCourse);
 
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getFeedbackCourse").build(idFeedback)).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 
@@ -67,7 +66,7 @@ public class FeedbackCourseRes {
     @Auth
     @Path("{idFeedback: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws SQLException {
+    public Response updateFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
@@ -83,15 +82,14 @@ public class FeedbackCourseRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Auth
     @Path("{idFeedback: [0-9]+}")
-    public Response deleteFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback) throws SQLException {
+    public Response deleteFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
@@ -106,9 +104,8 @@ public class FeedbackCourseRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 }

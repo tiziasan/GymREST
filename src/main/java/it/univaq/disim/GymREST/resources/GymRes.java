@@ -1,6 +1,5 @@
 package it.univaq.disim.GymREST.resources;
 
-import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -8,11 +7,11 @@ import it.univaq.disim.GymREST.business.GymService;
 import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.Gym;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
-import java.sql.SQLException;
 
 @Path("gyms")
 public class GymRes {
@@ -24,7 +23,7 @@ public class GymRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGyms(@QueryParam("name") String name, @QueryParam("region") String region) throws SQLException {
+    public Response getGyms(@QueryParam("name") String name, @QueryParam("region") String region) throws ServiceException {
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
         if ( region==null && name==null ) {
             return Response.ok(gymService.getAllGyms()).build();
@@ -42,7 +41,7 @@ public class GymRes {
     @GET
     @Path("{idGym: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGym(@PathParam("idGym") long idGym) throws SQLException {
+    public Response getGym(@PathParam("idGym") long idGym) throws ServiceException {
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
         return Response.ok(gymService.getGym(idGym)).build();
     }
@@ -50,7 +49,7 @@ public class GymRes {
     @POST
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws SQLException {
+    public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws ServiceException {
         if (securityContext.isUserInRole("gestore")){
             UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
@@ -62,16 +61,15 @@ public class GymRes {
             long idGym = gymService.createGym(gym);
 
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getGym").build(idGym)).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @PUT
     @Path("{idGym: [0-9]+}")
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws SQLException {
+    public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 
@@ -82,15 +80,14 @@ public class GymRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Auth
     @Path("{idGym: [0-9]+}")
-    public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws SQLException {
+    public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
             GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 
@@ -100,9 +97,8 @@ public class GymRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 
@@ -119,7 +115,7 @@ public class GymRes {
     }
 
 
-    public boolean isUserManagerOfGym(SecurityContext securityContext, long idGym) throws SQLException {
+    public boolean isUserManagerOfGym(SecurityContext securityContext, long idGym) throws ServiceException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 

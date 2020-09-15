@@ -1,18 +1,18 @@
 package it.univaq.disim.GymREST.business;
 
-import java.sql.SQLException;
 import java.util.List;
 
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.Gym;
 
 public interface GymService {
 	
-	List<Gym> getAllGyms() throws SQLException;
-	List<Gym> getGymsByRegion(String region) throws SQLException;
-	List<Gym> getGymsByName(String hint) throws SQLException;
-	Gym getGym(long id) throws SQLException;
-	long createGym(Gym gym) throws SQLException;
-	void updateGym(Gym gym) throws SQLException;
-	void deleteGym(long id) throws SQLException;
+	List<Gym> getAllGyms() throws ServiceException;
+	List<Gym> getGymsByRegion(String region) throws ServiceException;
+	List<Gym> getGymsByName(String hint) throws ServiceException;
+	Gym getGym(long id) throws ServiceException;
+	long createGym(Gym gym) throws ServiceException;
+	void updateGym(Gym gym) throws ServiceException;
+	void deleteGym(long id) throws ServiceException;
 
 }

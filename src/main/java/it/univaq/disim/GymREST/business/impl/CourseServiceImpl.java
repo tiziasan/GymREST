@@ -2,6 +2,7 @@ package it.univaq.disim.GymREST.business.impl;
 
 import it.univaq.disim.GymREST.business.CourseService;
 import it.univaq.disim.GymREST.business.Service;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.Course;
 
 import java.sql.*;
@@ -29,7 +30,7 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public List<Course> getCoursesByGym(long courseId) {
+    public List<Course> getCoursesByGym(long courseId) throws ServiceException {
         System.out.println("[SERVICE] Course - getCoursesByGym");
 
         List<Course> courses = new ArrayList<>();
@@ -50,14 +51,14 @@ public class CourseServiceImpl extends Service implements CourseService {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return courses;
 
     }
 
     @Override
-    public List<Course> getCoursesByName(String hint) {
+    public List<Course> getCoursesByName(String hint) throws ServiceException {
         System.out.println("[SERVICE] Course - getGymsByRegion");
 
         List<Course> courses = new ArrayList<>();
@@ -78,13 +79,13 @@ public class CourseServiceImpl extends Service implements CourseService {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return courses;
     }
 
     @Override
-    public Course getCourse(long idCourse) {
+    public Course getCourse(long idCourse) throws ServiceException {
         System.out.println("[SERVICE] Course - getCourse");
 
         Course course = new Course();
@@ -102,13 +103,13 @@ public class CourseServiceImpl extends Service implements CourseService {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return course;
     }
 
     @Override
-    public long createCourse(Course course) {
+    public long createCourse(Course course) throws ServiceException {
         System.out.println("[SERVICE] Course - createCourse");
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -127,13 +128,13 @@ public class CourseServiceImpl extends Service implements CourseService {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
         return 0;
     }
 
     @Override
-    public void updateCourse(Course course) {
+    public void updateCourse(Course course) throws ServiceException {
         System.out.println("[SERVICE] Course - updateCourse");
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -146,12 +147,12 @@ public class CourseServiceImpl extends Service implements CourseService {
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 
     @Override
-    public void deleteCourse(long idCourse) {
+    public void deleteCourse(long idCourse) throws ServiceException {
         System.out.println("[SERVICE] Course - deleteCourse");
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -161,7 +162,7 @@ public class CourseServiceImpl extends Service implements CourseService {
             st.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getErrorCode());
         }
     }
 }

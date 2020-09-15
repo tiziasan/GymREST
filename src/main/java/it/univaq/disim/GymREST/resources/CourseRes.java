@@ -6,6 +6,7 @@ import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.CourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
+import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.Gym;
 import it.univaq.disim.GymREST.model.User;
@@ -13,7 +14,6 @@ import it.univaq.disim.GymREST.security.Auth;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.sql.SQLException;
 
 public class CourseRes {
 
@@ -29,7 +29,7 @@ public class CourseRes {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCourses(@QueryParam("name") String name) throws SQLException {
+    public Response getCourses(@QueryParam("name") String name) throws ServiceException {
         CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
         if ( name != null ){
             return Response.ok(courseService.getCoursesByName(name)).build();
@@ -41,7 +41,7 @@ public class CourseRes {
     @GET
     @Path("{idCourse: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCourse(@PathParam("idCourse") long idCourse) throws SQLException {
+    public Response getCourse(@PathParam("idCourse") long idCourse) throws ServiceException {
         CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
         return Response.ok(courseService.getCourse(idCourse)).build();
     }
@@ -49,7 +49,7 @@ public class CourseRes {
     @POST
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws SQLException {
+    public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
             CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
 
@@ -58,16 +58,15 @@ public class CourseRes {
             long idCourse = courseService.createCourse(course);
 
             return Response.created(uriinfo.getAbsolutePathBuilder().path(this.getClass(), "getCourse").build(idCourse)).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @PUT
     @Auth
     @Path("{idCourse: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws SQLException {
+    public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
             CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
 
@@ -78,15 +77,14 @@ public class CourseRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Auth
     @Path("{idCourse: [0-9]+}")
-    public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws SQLException {
+    public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
             CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
 
@@ -96,9 +94,8 @@ public class CourseRes {
             } else {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
         }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 
@@ -109,7 +106,7 @@ public class CourseRes {
     }
 
 
-    public boolean isUserManagerOfGym(SecurityContext securityContext) throws SQLException {
+    public boolean isUserManagerOfGym(SecurityContext securityContext) throws ServiceException {
         UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
         GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
 
