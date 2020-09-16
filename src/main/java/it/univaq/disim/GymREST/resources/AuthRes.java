@@ -71,6 +71,7 @@ public class AuthRes {
     @Path("/refresh")
     public Response refreshJWTToken(@Context HttpHeaders headers, @Context UriInfo uriinfo) {
         try {
+            System.out.println("LOGIN OK");
             String authorizationHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
             String token = authorizationHeader.substring("Bearer".length()).trim();
             Key key = JWTHelpers.getInstance().getJwtKey();

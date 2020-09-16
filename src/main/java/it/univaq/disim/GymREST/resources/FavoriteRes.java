@@ -87,8 +87,6 @@ public class FavoriteRes {
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
 
             String username = securityContext.getUserPrincipal().getName();
-
-            System.out.println(username);
             User user = userService.getUserByUsername(username);
 
             if (idUser == user.getId()){

@@ -15,13 +15,17 @@ public class CorsFilter implements ContainerResponseFilter {
         responseContext.getHeaders().add(
                 "Access-Control-Allow-Origin", "*");
         responseContext.getHeaders().add(
-                "Access-Control-Allow-Credentials", "true");
+                "Access-Control-Allow-Credentials", "*");
         responseContext.getHeaders().add(
                 "Access-Control-Allow-Headers",
-                "origin, content-type, accept, authorization");
+                "*,Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Custom-header");
         responseContext.getHeaders().add(
                 "Access-Control-Allow-Methods",
-                "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+                "*");
+        responseContext.getHeaders().add(
+                "Access-Control-Expose-Headers",
+                "Location,Authorization, *");
+
     }
 
 
