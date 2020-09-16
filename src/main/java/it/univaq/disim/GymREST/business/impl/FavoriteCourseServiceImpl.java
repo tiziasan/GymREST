@@ -7,8 +7,8 @@ import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FavoriteCourseServiceImpl extends Service implements FavoriteCourseService {
 
@@ -50,27 +50,24 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     }
 
     @Override
-    public Map<Long, Course> getAllFavoriteCourse(long idUser) throws ServiceException {
+    public List<Course> getAllFavoriteCourse(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - getAllFavoriteCourse");
         loadDriver();
 
-        Map<Long, Course> favoriteCourses = new HashMap<>();
+        List<Course> favoriteCourses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_FAVORITE_BY_USER);) {
             st.setLong(1,idUser);
 
             try (ResultSet rs = st.executeQuery();) {
-                Course course;
-                long key;
                 while (rs.next()) {
-                    course = new Course();
+                    Course course = new Course();
                     course.setId(rs.getLong(1));
                     course.setCode(rs.getString(2));
                     course.setName(rs.getString(4));
                     course.setDescription(rs.getString(3));
 
-                    key = rs.getLong(5);
-                    favoriteCourses.put(key, course);
+                    favoriteCourses.add(course);
                 }
             }
         } catch (SQLException e) {
