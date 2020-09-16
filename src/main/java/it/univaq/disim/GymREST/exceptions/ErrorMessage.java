@@ -15,6 +15,10 @@ public class ErrorMessage {
                 this.code = 400;
                 this.message = "Data Already Exist";
                 break;
+            case 1452:
+                this.code = 400;
+                this.message = "Cannot add or update - The related data doesn't exist";
+                break;
             default:
                 this.code = 500;
                 this.message = "Server Error - SQLError: " + SQLcode;
