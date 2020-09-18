@@ -1,13 +1,13 @@
 package it.univaq.disim.GymREST;
 
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.container.*;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
 @Provider
-public class CorsFilter implements ContainerResponseFilter {
+@PreMatching
+public class CorsFilter implements ContainerResponseFilter, ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext,
@@ -18,10 +18,10 @@ public class CorsFilter implements ContainerResponseFilter {
                 "Access-Control-Allow-Credentials", "*");
         responseContext.getHeaders().add(
                 "Access-Control-Allow-Headers",
-                "*,Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Custom-header");
+                "*,Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Custom-header,X-Requested-With, content-type, access-control-allow-origin, access-control-allow-methods, access-control-allow-headers");
         responseContext.getHeaders().add(
                 "Access-Control-Allow-Methods",
-                "*");
+                "GET, POST, OPTIONS, PUT, DELETE, HEAD");
         responseContext.getHeaders().add(
                 "Access-Control-Expose-Headers",
                 "Location,Authorization, *");
@@ -29,4 +29,19 @@ public class CorsFilter implements ContainerResponseFilter {
     }
 
 
-}
+    @Override
+    public void filter(ContainerRequestContext request) throws IOException {
+
+        if (isPreflightRequest(request)) {
+            request.abortWith(Response.ok().build());
+            return;
+        }
+
+    }
+
+    private boolean isPreflightRequest(ContainerRequestContext request) {
+        return request.getHeaderString("Origin") != null
+                && request.getMethod().equalsIgnoreCase("OPTIONS");
+    }
+    }
+
