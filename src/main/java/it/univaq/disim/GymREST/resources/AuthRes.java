@@ -20,13 +20,13 @@ import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path("auth")
-public class AuthRes extends Resources {
+public class AuthRes {
 
     @POST
     @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerUser(@Context UriInfo uriInfo, User user) throws ServiceException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        UserService userService = new UserServiceImpl();
 
         long idUser = userService.createUser(user);
         userService.addRoleToUser(idUser);
@@ -39,7 +39,7 @@ public class AuthRes extends Resources {
     @Consumes(APPLICATION_FORM_URLENCODED)
     public Response authenticateUser(@Context UriInfo uriinfo,
                                      @FormParam("username") String username, @FormParam("password") String password) throws ServiceException, SQLException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        UserService userService = new UserServiceImpl();
         if (userService.checkUser(username, password)){
             System.out.println("LOGIN OK");
             User user = userService.getUserByUsername(username);

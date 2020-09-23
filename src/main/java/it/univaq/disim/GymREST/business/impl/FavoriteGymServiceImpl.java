@@ -15,10 +15,6 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     private static final String GET_FAVORITE_BY_USER = "SELECT gym.id, gym.address, gym.name, gym.province, gym.region, favoritegym.id FROM gym LEFT JOIN favoritegym ON favoritegym.gym_id = gym.id WHERE favoritegym.user_id=?";
     private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE user_id=? AND gym_id=?";
 
-    public FavoriteGymServiceImpl(String url, String user, String psw) {
-        super(url, user, psw);
-    }
-
     @Override
     public long createFavoriteGym(FavoriteGym favoriteGym) throws ServiceException {
         System.out.println("[SERVICE] FavoriteGym - createFavoriteGym");

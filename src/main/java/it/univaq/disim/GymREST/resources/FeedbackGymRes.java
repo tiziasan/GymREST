@@ -12,7 +12,7 @@ import it.univaq.disim.GymREST.security.Auth;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-public class FeedbackGymRes extends Resources {
+public class FeedbackGymRes {
 
     private final long idGym;
 
@@ -23,7 +23,7 @@ public class FeedbackGymRes extends Resources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbacksGym() throws ServiceException {
-        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
         return Response.ok(feedbackGymService.getAllFeedbackByGym(idGym)).build();
     }
@@ -32,7 +32,7 @@ public class FeedbackGymRes extends Resources {
     @Path("{idFeedback: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbackGym(@PathParam("idFeedback") long idFeedback) throws ServiceException {
-        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
         return Response.ok(feedbackGymService.getFeedback(idFeedback)).build();
     }
@@ -42,8 +42,8 @@ public class FeedbackGymRes extends Resources {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackGym feedbackGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -64,8 +64,8 @@ public class FeedbackGymRes extends Resources {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -86,8 +86,8 @@ public class FeedbackGymRes extends Resources {
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);

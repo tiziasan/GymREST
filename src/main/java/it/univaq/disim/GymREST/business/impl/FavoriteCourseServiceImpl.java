@@ -16,10 +16,6 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     private static final String GET_FAVORITE_BY_USER = "SELECT * FROM course LEFT JOIN favoritecourse ON favoritecourse.course_id = course.id WHERE favoritecourse.user_id=?";
     private static final String DELETE_FAVORITE_COURSE = "DELETE FROM favoritecourse WHERE user_id=? AND course_id=?";
 
-    public FavoriteCourseServiceImpl(String url, String user, String psw) {
-        super(url, user, psw);
-    }
-
     @Override
     public long createFavoriteCourse(FavoriteCourse favoriteCourse) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - createFavoriteCourse");

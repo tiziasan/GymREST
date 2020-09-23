@@ -18,9 +18,6 @@ public class UserServiceImpl extends Service implements UserService {
     private static final String CREATE_USER = "INSERT INTO user (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
     private static final String ADD_ROLE_TO_USER = "INSERT INTO user_role (user_id, role_id) VALUES (?,1)";
 
-    public UserServiceImpl(String url, String user, String psw) {
-        super(url, user, psw);
-    }
 
     @Override
     public boolean checkUser(String username, String password) throws ServiceException {

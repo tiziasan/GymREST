@@ -18,10 +18,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     private static final String DELETE_FEEDBACK__GYM = "DELETE FROM feedbackgym WHERE id=?";
     private static final String UPDATE_FEEDBACK_GYM = "UPDATE feedbackgym SET feed=?, rating=? WHERE id=?";
 
-    public FeedbackGymServiceImpl(String url, String user, String psw) {
-        super(url, user, psw);
-    }
-
     @Override
     public long createFeedbackGym(FeedbackGym feedbackGym) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - createFeedbackGym");

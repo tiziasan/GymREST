@@ -15,7 +15,7 @@ import it.univaq.disim.GymREST.security.Auth;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-public class CourseRes extends Resources {
+public class CourseRes {
 
     private final long idGym;
 
@@ -26,7 +26,7 @@ public class CourseRes extends Resources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCourses(@QueryParam("name") String name) throws ServiceException {
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+        CourseService courseService = new CourseServiceImpl();
         if ( name != null ){
             return Response.ok(courseService.getCoursesByName(name)).build();
         }
@@ -38,7 +38,7 @@ public class CourseRes extends Resources {
     @Path("{idCourse: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCourse(@PathParam("idCourse") long idCourse) throws ServiceException {
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+        CourseService courseService = new CourseServiceImpl();
         return Response.ok(courseService.getCourse(idCourse)).build();
     }
 
@@ -47,7 +47,7 @@ public class CourseRes extends Resources {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            CourseService courseService = new CourseServiceImpl();
 
             course.setGym(idGym);
 
@@ -64,7 +64,7 @@ public class CourseRes extends Resources {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            CourseService courseService = new CourseServiceImpl();
 
             if (isUserManagerOfGym(securityContext)){
                 course.setId(idCourse);
@@ -82,7 +82,7 @@ public class CourseRes extends Resources {
     @Path("{idCourse: [0-9]+}")
     public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            CourseService courseService = new CourseServiceImpl();
 
             if (isUserManagerOfGym(securityContext)){
                 courseService.deleteCourse(idCourse);
@@ -103,8 +103,8 @@ public class CourseRes extends Resources {
 
 
     public boolean isUserManagerOfGym(SecurityContext securityContext) throws ServiceException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+        UserService userService = new UserServiceImpl();
+        GymService gymService = new GymServiceImpl();
 
         String username = securityContext.getUserPrincipal().getName();
         User user = userService.getUserByUsername(username);

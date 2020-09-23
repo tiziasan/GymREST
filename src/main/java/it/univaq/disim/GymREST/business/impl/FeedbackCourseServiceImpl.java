@@ -19,10 +19,6 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     private static final String DELETE_FEEDBACK_COURSE = "DELETE FROM feedbackcourse WHERE id=?";
     private static final String UPDATE_FEEDBACK_COURSE = "UPDATE feedbackcourse SET feed=?, rating=? WHERE id=?";
 
-    public FeedbackCourseServiceImpl(String url, String user, String psw) {
-        super(url, user, psw);
-    }
-
     @Override
     public long createFeedbackCourse(FeedbackCourse feedbackCourse) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - createFeedbackCourse");
