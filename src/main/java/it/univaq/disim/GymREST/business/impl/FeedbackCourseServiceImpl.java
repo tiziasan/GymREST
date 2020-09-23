@@ -19,15 +19,8 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     private static final String DELETE_FEEDBACK_COURSE = "DELETE FROM feedbackcourse WHERE id=?";
     private static final String UPDATE_FEEDBACK_COURSE = "UPDATE feedbackcourse SET feed=?, rating=? WHERE id=?";
 
-    private String urlDB;
-    private String userDB;
-    private String pswDB;
-
     public FeedbackCourseServiceImpl(String url, String user, String psw) {
-        super();
-        this.urlDB = url;
-        this.userDB = user;
-        this.pswDB = psw;
+        super(url, user, psw);
     }
 
     @Override

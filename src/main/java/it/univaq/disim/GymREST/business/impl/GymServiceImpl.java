@@ -19,15 +19,8 @@ public class GymServiceImpl extends Service implements GymService {
 	private static final String UPDATE_GYM = "UPDATE gym SET address=?, name=?, province=?, region= ? WHERE id=?";
 	private static final String DELETE_GYM = "DELETE FROM gym WHERE gym_id=?";
 
-	private String urlDB;
-	private String userDB;
-	private String pswDB;
-
 	public GymServiceImpl(String url, String user, String psw) {
-		super();
-		this.urlDB = url;
-		this.userDB = user;
-		this.pswDB = psw;
+		super(url, user, psw);
 	}
 
 	@Override

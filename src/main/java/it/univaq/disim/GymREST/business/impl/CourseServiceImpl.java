@@ -18,20 +18,14 @@ public class CourseServiceImpl extends Service implements CourseService {
     private static final String UPDATE_COURSE = "UPDATE course SET code=?, name=?, description=? WHERE id=?";
     private static final String DELETE_COURSE = "DELETE FROM course WHERE id=?";
 
-    private String urlDB;
-    private String userDB;
-    private String pswDB;
-
     public CourseServiceImpl(String url, String user, String psw) {
-        super();
-        this.urlDB = url;
-        this.userDB = user;
-        this.pswDB = psw;
+        super(url, user, psw);
     }
 
     @Override
     public List<Course> getCoursesByGym(long courseId) throws ServiceException {
         System.out.println("[SERVICE] Course - getCoursesByGym");
+        loadDriver();
 
         List<Course> courses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -60,6 +54,7 @@ public class CourseServiceImpl extends Service implements CourseService {
     @Override
     public List<Course> getCoursesByName(String hint) throws ServiceException {
         System.out.println("[SERVICE] Course - getGymsByRegion");
+        loadDriver();
 
         List<Course> courses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -87,6 +82,7 @@ public class CourseServiceImpl extends Service implements CourseService {
     @Override
     public Course getCourse(long idCourse) throws ServiceException {
         System.out.println("[SERVICE] Course - getCourse");
+        loadDriver();
 
         Course course = new Course();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -111,6 +107,7 @@ public class CourseServiceImpl extends Service implements CourseService {
     @Override
     public long createCourse(Course course) throws ServiceException {
         System.out.println("[SERVICE] Course - createCourse");
+        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(INSERT_COURSE, Statement.RETURN_GENERATED_KEYS);) {
@@ -136,6 +133,7 @@ public class CourseServiceImpl extends Service implements CourseService {
     @Override
     public void updateCourse(Course course) throws ServiceException {
         System.out.println("[SERVICE] Course - updateCourse");
+        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(UPDATE_COURSE);) {
@@ -154,6 +152,7 @@ public class CourseServiceImpl extends Service implements CourseService {
     @Override
     public void deleteCourse(long idCourse) throws ServiceException {
         System.out.println("[SERVICE] Course - deleteCourse");
+        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_COURSE);) {
