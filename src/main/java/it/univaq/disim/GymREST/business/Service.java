@@ -6,6 +6,10 @@ public abstract class Service {
     protected final String userDB;
     protected final String pswDB;
 
+    static {
+        loadDriver();
+    }
+
     public Service(String url, String user, String psw) {
         this.urlDB = url;
         this.userDB = user;

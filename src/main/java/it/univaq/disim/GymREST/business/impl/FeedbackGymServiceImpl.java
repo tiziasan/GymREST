@@ -25,7 +25,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     @Override
     public long createFeedbackGym(FeedbackGym feedbackGym) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - createFeedbackGym");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(INSERT_FEEDBACK_GYM, Statement.RETURN_GENERATED_KEYS);) {
@@ -50,7 +49,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     @Override
     public List<FeedbackGym> getAllFeedbackByGym(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - getAllFeedbackByGym");
-        loadDriver();
 
         List<FeedbackGym> feedbackGyms = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -78,7 +76,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     @Override
     public FeedbackGym getFeedback(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - getFeedbackGym");
-        loadDriver();
 
         FeedbackGym feedbackGym = new FeedbackGym() ;
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -103,7 +100,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     @Override
     public List<FeedbackGym> getAllFeedbackByUser(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - getAllFeedbackByUser");
-        loadDriver();
 
         List<FeedbackGym> feedbackGyms = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -130,7 +126,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     @Override
     public void deleteFeedbackGym(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - deleteFeedbackGym");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_FEEDBACK__GYM);) {
@@ -146,7 +141,6 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     @Override
     public void updateFeedbackGym(FeedbackGym feedbackGym) throws ServiceException {
         System.out.println("[SERVICE] FeedbackGym - updateFeedbackGym");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(UPDATE_FEEDBACK_GYM);) {

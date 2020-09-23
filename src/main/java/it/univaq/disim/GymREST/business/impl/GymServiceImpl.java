@@ -26,7 +26,6 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public List<Gym> getAllGyms() throws ServiceException {
 		System.out.println("[SERVICE] Gym - getAllGyms");
-		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -52,7 +51,6 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public List<Gym> getGymsByRegion(String region) throws ServiceException {
 		System.out.println("[SERVICE] Gym - getGymsByRegion");
-		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -80,7 +78,6 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public List<Gym> getGymsByName(String name) throws ServiceException {
 		System.out.println("[SERVICE] Gym - getGymsByName");
-		loadDriver();
 
 		List<Gym> gyms = new ArrayList<>();
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -108,7 +105,6 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public Gym getGym(long id) throws ServiceException {
 		System.out.println("[SERVICE] Gym - getGym");
-		loadDriver();
 
 		Gym gym = new Gym();
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -134,7 +130,6 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public long createGym(Gym gym) throws ServiceException {
 		System.out.println("[SERVICE] Gym - createGym");
-		loadDriver();
 
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(INSERT_GYM, Statement.RETURN_GENERATED_KEYS);) {
@@ -161,7 +156,6 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public void updateGym(Gym gym) throws ServiceException {
 		System.out.println("[SERVICE] Gym - updateGym");
-		loadDriver();
 
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(UPDATE_GYM);) {
@@ -182,7 +176,6 @@ public class GymServiceImpl extends Service implements GymService {
 	@Override
 	public void deleteGym(long id) throws ServiceException {
 		System.out.println("[SERVICE] Gym - deleteGym");
-		loadDriver();
 
 		try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
 			 PreparedStatement st = connection.prepareStatement(DELETE_GYM);) {

@@ -25,7 +25,6 @@ public class UserServiceImpl extends Service implements UserService {
     @Override
     public boolean checkUser(String username, String password) throws ServiceException {
         System.out.println("[SERVICE] User - checkUser");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
              PreparedStatement st = connection.prepareStatement(CHECK_USER);) {
@@ -50,7 +49,6 @@ public class UserServiceImpl extends Service implements UserService {
     @Override
     public boolean checkRole(String username, String role) throws ServiceException {
         System.out.println("[SERVICE] User - checkRole");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
              PreparedStatement st = connection.prepareStatement(CHECK_ROLE);) {
@@ -75,7 +73,6 @@ public class UserServiceImpl extends Service implements UserService {
     @Override
     public long createUser(User user) throws ServiceException {
         System.out.println("[SERVICE] User - createUser");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
              PreparedStatement st = connection.prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS);) {
@@ -103,7 +100,6 @@ public class UserServiceImpl extends Service implements UserService {
     @Override
     public void addRoleToUser(long idUser) throws ServiceException {
         System.out.println("[SERVICE] User - addRoleToUser");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
              PreparedStatement st = connection.prepareStatement(ADD_ROLE_TO_USER);) {
@@ -119,7 +115,6 @@ public class UserServiceImpl extends Service implements UserService {
     @Override
     public User getUserById(long id) throws ServiceException {
         System.out.println("[SERVICE] User - getUser");
-        loadDriver();
 
         User user = new User();
         try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
@@ -146,7 +141,6 @@ public class UserServiceImpl extends Service implements UserService {
     @Override
     public User getUserByUsername(String username) throws ServiceException {
         System.out.println("[SERVICE] User - getUser");
-        loadDriver();
 
         User user = new User();
         try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
@@ -173,7 +167,6 @@ public class UserServiceImpl extends Service implements UserService {
     @Override
     public void updateUser(User user) throws ServiceException {
         System.out.println("[SERVICE] User - updateUser");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
              PreparedStatement st = connection.prepareStatement(UPDATE_USER);) {
@@ -196,7 +189,6 @@ public class UserServiceImpl extends Service implements UserService {
     @Override
     public void deleteUser(long id) throws ServiceException {
         System.out.println("[SERVICE] User - deleteUser");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_USER);) {

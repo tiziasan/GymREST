@@ -23,7 +23,6 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     @Override
     public long createFavoriteCourse(FavoriteCourse favoriteCourse) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - createFavoriteCourse");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(INSERT_FAVORITE_COURSE, Statement.RETURN_GENERATED_KEYS);) {
@@ -45,7 +44,6 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     @Override
     public List<Course> getAllFavoriteCourse(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - getAllFavoriteCourse");
-        loadDriver();
 
         List<Course> favoriteCourses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -72,7 +70,6 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     @Override
     public void deleteFavoriteCourse(long idUser, long idCourse) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - deleteFavoriteCourse");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_FAVORITE_COURSE);) {
