@@ -19,11 +19,7 @@ import javax.ws.rs.core.SecurityContext;
 
 @Auth
 @Path("users")
-public class UserRes {
-
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
+public class UserRes extends Resources {
 
     @GET
     @Path("{idUser: [0-9]+}")

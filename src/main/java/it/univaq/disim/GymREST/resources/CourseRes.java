@@ -15,11 +15,7 @@ import it.univaq.disim.GymREST.security.Auth;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-public class CourseRes {
-
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
+public class CourseRes extends Resources {
 
     private final long idGym;
 

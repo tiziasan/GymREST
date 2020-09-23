@@ -14,12 +14,7 @@ import it.univaq.disim.GymREST.security.Auth;
 
 
 @Path("gyms")
-public class GymRes {
-
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
-
+public class GymRes extends Resources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
