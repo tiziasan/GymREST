@@ -1,5 +1,9 @@
 package it.univaq.disim.GymREST.business;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
 public abstract class Service {
 
     protected static final String urlDB;
@@ -11,7 +15,7 @@ public abstract class Service {
         loadDriver();
 
         System.out.println("Init connection params");
-        urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+        urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal_db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         userDB = "gymportal";
         pswDB = "gymportal";
     }
