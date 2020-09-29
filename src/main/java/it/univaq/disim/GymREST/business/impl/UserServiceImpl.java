@@ -9,13 +9,13 @@ import java.sql.*;
 
 public class UserServiceImpl extends Service implements UserService {
 
-    private static final String CHECK_USER = "SELECT COUNT(1) FROM user WHERE user_name=? AND password=?";
-    private static final String CHECK_ROLE = "SELECT COUNT(1) FROM user JOIN user_role ON user_role.user_id = user.id JOIN role ON user_role.role_id = role.id WHERE user.user_name=? AND role.role=?";
+    private static final String CHECK_USER = "SELECT COUNT(1) FROM user WHERE username=? AND password=?";
+    private static final String CHECK_ROLE = "SELECT COUNT(1) FROM user JOIN user_role ON user_role.user_id = user.id JOIN role ON user_role.role_id = role.id WHERE user.username=? AND role.role=?";
     private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id=?";
-    private static final String GET_USER_BY_USERNAME = "SELECT * FROM user WHERE user_name=?";
-    private static final String UPDATE_USER = "UPDATE user SET email=?, last_name=?, name=?, password=?, user_name=? WHERE id=?";
+    private static final String GET_USER_BY_USERNAME = "SELECT * FROM user WHERE username=?";
+    private static final String UPDATE_USER = "UPDATE user SET email=?, lastname=?, name=?, password=?, username=? WHERE id=?";
     private static final String DELETE_USER = "DELETE FROM user WHERE id=?";
-    private static final String CREATE_USER = "INSERT INTO user (email,last_name,name,password,user_name) VALUES (?,?,?,?,?)";
+    private static final String CREATE_USER = "INSERT INTO user (email,lastname,name,password,username) VALUES (?,?,?,?,?)";
     private static final String ADD_ROLE_TO_USER = "INSERT INTO user_role (user_id, role_id) VALUES (?,1)";
 
 
@@ -121,11 +121,11 @@ public class UserServiceImpl extends Service implements UserService {
             try (ResultSet rs = st.executeQuery();) {
                 if (rs.next()) {
                     user.setId(rs.getLong(1));
-                    user.setEmail(rs.getString(3));
-                    user.setLastname(rs.getString(4));
-                    user.setName(rs.getString(5));
-//                    user.setPassword(rs.getString(6));
-                    user.setUsername(rs.getString(7));
+                    user.setEmail(rs.getString(2));
+                    user.setLastname(rs.getString(3));
+                    user.setName(rs.getString(4));
+//                    user.setPassword(rs.getString(5));
+                    user.setUsername(rs.getString(6));
                 }
             }
 
@@ -147,11 +147,11 @@ public class UserServiceImpl extends Service implements UserService {
             try (ResultSet rs = st.executeQuery();) {
                 if (rs.next()) {
                     user.setId(rs.getLong(1));
-                    user.setEmail(rs.getString(3));
-                    user.setLastname(rs.getString(4));
-                    user.setName(rs.getString(5));
-//                    user.setPassword(rs.getString(6));
-                    user.setUsername(rs.getString(7));
+                    user.setEmail(rs.getString(2));
+                    user.setLastname(rs.getString(3));
+                    user.setName(rs.getString(4));
+//                    user.setPassword(rs.getString(5));
+                    user.setUsername(rs.getString(6));
                 }
             }
 

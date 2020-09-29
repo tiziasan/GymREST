@@ -16,9 +16,9 @@
             <xsd:complexType name="TipoUtente">
                 <xsd:sequence>
                     <xsd:element maxOccurs="1" minOccurs="1" name="name" type="xsd:string"/>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="last_name" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="lastname" type="xsd:string"/>
                     <xsd:element maxOccurs="1" minOccurs="1" name="email" type="xsd:string"/>
-                    <xsd:element maxOccurs="1" minOccurs="1" name="user_name" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="username" type="xsd:string"/>
                     <xsd:element maxOccurs="1" minOccurs="1" name="password" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
