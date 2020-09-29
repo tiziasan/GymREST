@@ -6,7 +6,6 @@ import it.univaq.disim.GymREST.business.impl.FeedbackGymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FeedbackGym;
-import it.univaq.disim.GymREST.model.Role;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
@@ -64,7 +63,7 @@ public class FeedbackGymRes {
     @Path("{idFeedback: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws ServiceException {
-        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
+        if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl();
             FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
@@ -86,7 +85,7 @@ public class FeedbackGymRes {
     @Auth
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback) throws ServiceException {
-        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
+        if (securityContext.isUserInRole("utente")) {
             UserService userService = new UserServiceImpl();
             FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 

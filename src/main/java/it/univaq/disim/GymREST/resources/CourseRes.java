@@ -9,7 +9,6 @@ import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.Course;
 import it.univaq.disim.GymREST.model.Gym;
-import it.univaq.disim.GymREST.model.Role;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
@@ -47,7 +46,7 @@ public class CourseRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws ServiceException {
-        if (securityContext.isUserInRole(Role.Values.MANAGER)) {
+        if (securityContext.isUserInRole("gestore")) {
             CourseService courseService = new CourseServiceImpl();
 
             course.setGym(idGym);
@@ -64,7 +63,7 @@ public class CourseRes {
     @Path("{idCourse: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws ServiceException {
-        if (securityContext.isUserInRole(Role.Values.MANAGER)) {
+        if (securityContext.isUserInRole("gestore")) {
             CourseService courseService = new CourseServiceImpl();
 
             if (isUserManagerOfGym(securityContext)){
@@ -82,7 +81,7 @@ public class CourseRes {
     @Auth
     @Path("{idCourse: [0-9]+}")
     public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws ServiceException {
-        if (securityContext.isUserInRole(Role.Values.MANAGER)) {
+        if (securityContext.isUserInRole("gestore")) {
             CourseService courseService = new CourseServiceImpl();
 
             if (isUserManagerOfGym(securityContext)){

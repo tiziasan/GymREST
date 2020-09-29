@@ -9,7 +9,6 @@ import it.univaq.disim.GymREST.business.impl.GymServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.Gym;
-import it.univaq.disim.GymREST.model.Role;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
@@ -46,7 +45,7 @@ public class GymRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws ServiceException {
-        if (securityContext.isUserInRole(Role.MANAGER.getValue())) {
+        if (securityContext.isUserInRole("gestore")){
             UserService userService = new UserServiceImpl();
             GymService gymService = new GymServiceImpl();
 
@@ -66,7 +65,7 @@ public class GymRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws ServiceException {
-        if (securityContext.isUserInRole(Role.Values.MANAGER)) {
+        if (securityContext.isUserInRole("gestore")) {
             GymService gymService = new GymServiceImpl();
 
             if (isUserManagerOfGym(securityContext, idGym)){
@@ -84,7 +83,7 @@ public class GymRes {
     @Auth
     @Path("{idGym: [0-9]+}")
     public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws ServiceException {
-        if (securityContext.isUserInRole(Role.Values.MANAGER)) {
+        if (securityContext.isUserInRole("gestore")) {
             GymService gymService = new GymServiceImpl();
 
             if (isUserManagerOfGym(securityContext, idGym)){
