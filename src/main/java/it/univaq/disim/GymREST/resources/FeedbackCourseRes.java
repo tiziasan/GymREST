@@ -6,6 +6,7 @@ import it.univaq.disim.GymREST.business.impl.FeedbackCourseServiceImpl;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FeedbackCourse;
+import it.univaq.disim.GymREST.model.Role;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
@@ -41,7 +42,7 @@ public class FeedbackCourseRes {
     @Auth
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl();
 
@@ -63,7 +64,7 @@ public class FeedbackCourseRes {
     @Path("{idFeedback: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl();
 
@@ -86,7 +87,7 @@ public class FeedbackCourseRes {
     @Auth
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl();
 

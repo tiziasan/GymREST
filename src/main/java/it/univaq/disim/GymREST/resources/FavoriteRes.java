@@ -9,6 +9,7 @@ import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.FavoriteCourse;
 import it.univaq.disim.GymREST.model.FavoriteGym;
+import it.univaq.disim.GymREST.model.Role;
 import it.univaq.disim.GymREST.model.User;
 import it.univaq.disim.GymREST.security.Auth;
 
@@ -28,7 +29,7 @@ public class FavoriteRes {
     @Path("gyms")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idGym) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
 
@@ -53,7 +54,7 @@ public class FavoriteRes {
     @Path("courses")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idCourse) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl();
 
@@ -78,7 +79,7 @@ public class FavoriteRes {
     @Path("gyms")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllFavoritesGym(@Context SecurityContext securityContext) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
 
@@ -98,7 +99,7 @@ public class FavoriteRes {
     @Path("courses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllFavoritesCourse(@Context SecurityContext securityContext) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl();
 
@@ -117,7 +118,7 @@ public class FavoriteRes {
     @DELETE
     @Path("gyms/{idGym: [0-9]+}")
     public Response deleteFavoriteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
 
@@ -137,7 +138,7 @@ public class FavoriteRes {
     @DELETE
     @Path("courses/{idCourse: [0-9]+}")
     public Response deleteFavoriteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws ServiceException {
-        if (securityContext.isUserInRole("utente")) {
+        if (securityContext.isUserInRole(Role.Values.CUSTOMER)) {
             UserService userService = new UserServiceImpl();
             FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl();
 
