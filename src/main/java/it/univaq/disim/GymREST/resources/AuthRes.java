@@ -6,7 +6,6 @@ import it.univaq.disim.GymREST.JWTHelpers;
 import it.univaq.disim.GymREST.business.UserService;
 import it.univaq.disim.GymREST.business.impl.UserServiceImpl;
 import it.univaq.disim.GymREST.exceptions.ServiceException;
-import it.univaq.disim.GymREST.model.Role;
 import it.univaq.disim.GymREST.model.User;
 
 import javax.ws.rs.*;
@@ -28,7 +27,9 @@ public class AuthRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerUser(@Context UriInfo uriInfo, User user) throws ServiceException {
         UserService userService = new UserServiceImpl();
+
         long idUser = userService.createUser(user);
+        userService.addRoleToUser(idUser);
 
         return Response.created(uriInfo.getBaseUriBuilder().path("users").path(UserRes.class,"getUser").build(idUser)).build();
     }
