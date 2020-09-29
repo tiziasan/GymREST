@@ -1,27 +1,48 @@
 package it.univaq.disim.GymREST.model;
 
-public enum Role {
+import java.util.Objects;
 
-    CUSTOMER("CUSTOMER"),
-    MANAGER("MANAGER");
+public class Role {
 
-    private String value;
+    private long id;
+    private String role;
 
-    Role(String role) {
-        setValue(role);
+    public Role() {
+        this.id = 0;
+        this.role = "";
     }
 
-    public String getValue() {
-        return value;
+    public Role(long id, String role) {
+        this.id = id;
+        this.role = role;
+    }
+    public long getId() {
+        return id;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public static class Values {
-        public static final String CUSTOMER= "CUSTOMER";
-        public static final String MANAGER= "MANAGER";
+    public String getRole() {
+        return role;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Role)) return false;
+        Role role1 = (Role) o;
+        return getId() == role1.getId() &&
+                getRole().equals(role1.getRole());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getRole());
+    }
 }

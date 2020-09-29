@@ -1,5 +1,9 @@
 package it.univaq.disim.GymREST.business;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
 public abstract class Service {
 
     protected static final String urlDB;

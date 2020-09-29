@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class User {
 
@@ -13,7 +14,9 @@ public class User {
 	private String password;
 	private String name;
 	private String lastname;
-	private Role role;
+
+	@JsonIgnore
+	private Boolean active;
 
 	@JsonIgnore
 	private List<FeedbackCourse> feedbackCourse;
@@ -24,6 +27,8 @@ public class User {
 	@JsonIgnore
 	private List<FeedbackGym> feedbackGym;
 	@JsonIgnore
+	private Set<Role> roles;
+	@JsonIgnore
 	private List<Gym> gyms;
 
 	public User() {
@@ -33,7 +38,6 @@ public class User {
 		this.password = "";
 		this.name = "";
 		this.lastname = "";
-		this.role = null;
 	}
 
 	public User(String username, String email, String password, String name, String lastname) {
@@ -42,7 +46,6 @@ public class User {
 		this.password = password;
 		this.name = name;
 		this.lastname = lastname;
-		this.role = Role.CUSTOMER;
 	}
 
 	public User(long id, String username, String email, String password, String name, String lastname) {
@@ -52,33 +55,13 @@ public class User {
 		this.password = password;
 		this.name = name;
 		this.lastname = lastname;
-		this.role = Role.CUSTOMER;
-	}
-
-	public User(String username, String email, String password, String name, String lastname, Role role) {
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.lastname = lastname;
-		this.role = role;
-	}
-
-	public User(long id, String username, String email, String password, String name, String lastname, Role role) {
-		this.id = id;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.lastname = lastname;
-		this.role = role;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -122,12 +105,12 @@ public class User {
 		this.lastname = lastname;
 	}
 
-	public Role getRole() {
-		return role;
+	public Boolean getActive() {
+		return active;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public List<FeedbackCourse> getFeedbackCourse() {
@@ -162,11 +145,19 @@ public class User {
 		this.feedbackGym = feedbackGym;
 	}
 
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 	public List<Gym> getGyms() {
 		return gyms;
 	}
 
-	public void setGyms(List<Gym> gyms) {
+	public void setGym(List<Gym> gyms) {
 		this.gyms = gyms;
 	}
 
