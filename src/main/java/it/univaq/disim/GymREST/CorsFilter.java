@@ -43,5 +43,6 @@ public class CorsFilter implements ContainerResponseFilter, ContainerRequestFilt
         return request.getHeaderString("Origin") != null
                 && request.getMethod().equalsIgnoreCase("OPTIONS");
     }
-    }
+
+}
 
