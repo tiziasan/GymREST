@@ -15,21 +15,9 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     private static final String GET_FAVORITE_BY_USER = "SELECT gym.id, gym.address, gym.name, gym.province, gym.region, favoritegym.id FROM gym LEFT JOIN favoritegym ON favoritegym.gym_id = gym.id WHERE favoritegym.user_id=?";
     private static final String DELETE_FAVORITE_GYM = "DELETE FROM favoritegym WHERE user_id=? AND gym_id=?";
 
-    private String urlDB;
-    private String userDB;
-    private String pswDB;
-
-    public FavoriteGymServiceImpl(String url, String user, String psw) {
-        super();
-        this.urlDB = url;
-        this.userDB = user;
-        this.pswDB = psw;
-    }
-
     @Override
     public long createFavoriteGym(FavoriteGym favoriteGym) throws ServiceException {
         System.out.println("[SERVICE] FavoriteGym - createFavoriteGym");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(INSERT_FAVORITE_GYM, Statement.RETURN_GENERATED_KEYS);) {
@@ -52,7 +40,6 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     @Override
     public List<Gym> getAllFavoriteGym(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FavoriteGym - getAllFavoriteGym");
-        loadDriver();
 
         List<Gym> favoriteGyms = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -80,7 +67,6 @@ public class FavoriteGymServiceImpl extends Service implements FavoriteGymServic
     @Override
     public void deleteFavoriteGym(long idUser, long idGym) throws ServiceException {
         System.out.println("[SERVICE] FavoriteGym - deleteFavoriteGym");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_FAVORITE_GYM);) {

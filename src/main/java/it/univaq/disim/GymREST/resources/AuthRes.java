@@ -22,15 +22,11 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 @Path("auth")
 public class AuthRes {
 
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
-
     @POST
     @Path("/registration")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerUser(@Context UriInfo uriInfo, User user) throws ServiceException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        UserService userService = new UserServiceImpl();
 
         long idUser = userService.createUser(user);
         userService.addRoleToUser(idUser);
@@ -43,7 +39,7 @@ public class AuthRes {
     @Consumes(APPLICATION_FORM_URLENCODED)
     public Response authenticateUser(@Context UriInfo uriinfo,
                                      @FormParam("username") String username, @FormParam("password") String password) throws ServiceException, SQLException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
+        UserService userService = new UserServiceImpl();
         if (userService.checkUser(username, password)){
             System.out.println("LOGIN OK");
             User user = userService.getUserByUsername(username);

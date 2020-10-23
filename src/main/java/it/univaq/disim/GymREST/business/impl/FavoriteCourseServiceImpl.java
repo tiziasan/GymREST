@@ -16,21 +16,9 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     private static final String GET_FAVORITE_BY_USER = "SELECT * FROM course LEFT JOIN favoritecourse ON favoritecourse.course_id = course.id WHERE favoritecourse.user_id=?";
     private static final String DELETE_FAVORITE_COURSE = "DELETE FROM favoritecourse WHERE user_id=? AND course_id=?";
 
-    private String urlDB;
-    private String userDB;
-    private String pswDB;
-
-    public FavoriteCourseServiceImpl(String url, String user, String psw) {
-        super();
-        this.urlDB = url;
-        this.userDB = user;
-        this.pswDB = psw;
-    }
-
     @Override
     public long createFavoriteCourse(FavoriteCourse favoriteCourse) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - createFavoriteCourse");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(INSERT_FAVORITE_COURSE, Statement.RETURN_GENERATED_KEYS);) {
@@ -52,7 +40,6 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     @Override
     public List<Course> getAllFavoriteCourse(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - getAllFavoriteCourse");
-        loadDriver();
 
         List<Course> favoriteCourses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -79,7 +66,6 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
     @Override
     public void deleteFavoriteCourse(long idUser, long idCourse) throws ServiceException {
         System.out.println("[SERVICE] FavoriteCourse - deleteFavoriteCourse");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_FAVORITE_COURSE);) {

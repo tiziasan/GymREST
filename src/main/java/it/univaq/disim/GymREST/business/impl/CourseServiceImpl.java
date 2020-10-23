@@ -18,17 +18,6 @@ public class CourseServiceImpl extends Service implements CourseService {
     private static final String UPDATE_COURSE = "UPDATE course SET code=?, name=?, description=? WHERE id=?";
     private static final String DELETE_COURSE = "DELETE FROM course WHERE id=?";
 
-    private String urlDB;
-    private String userDB;
-    private String pswDB;
-
-    public CourseServiceImpl(String url, String user, String psw) {
-        super();
-        this.urlDB = url;
-        this.userDB = user;
-        this.pswDB = psw;
-    }
-
     @Override
     public List<Course> getCoursesByGym(long courseId) throws ServiceException {
         System.out.println("[SERVICE] Course - getCoursesByGym");

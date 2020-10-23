@@ -14,10 +14,6 @@ import javax.ws.rs.core.*;
 
 public class FeedbackCourseRes {
 
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
-
     private final long idCourse;
 
     FeedbackCourseRes(long idCourse){
@@ -27,7 +23,7 @@ public class FeedbackCourseRes {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbacksCourse() throws ServiceException {
-        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl();
 
         return Response.ok(feedbackCourseService.getAllFeedbackByCourse(idCourse)).build();
     }
@@ -36,7 +32,7 @@ public class FeedbackCourseRes {
     @Path("{idFeedback: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbackCourse(@PathParam("idFeedback") long idFeedback) throws ServiceException {
-        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+        FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl();
 
         return Response.ok(feedbackCourseService.getFeedback(idFeedback)).build();
     }
@@ -46,8 +42,8 @@ public class FeedbackCourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackCourse feedbackCourse) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -68,8 +64,8 @@ public class FeedbackCourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback, FeedbackCourse feedbackCourse) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -91,8 +87,8 @@ public class FeedbackCourseRes {
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackCourseService feedbackCourseService = new FeedbackCourseServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);

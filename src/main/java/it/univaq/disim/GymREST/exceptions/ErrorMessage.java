@@ -15,6 +15,10 @@ public class ErrorMessage {
                 this.code = 400;
                 this.message = "Data Already Exist";
                 break;
+            case 1366:
+                this.code = 400;
+                this.message = "Incorrect value";
+                break;
             case 1452:
                 this.code = 400;
                 this.message = "Cannot add or update - The related data doesn't exist";

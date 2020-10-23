@@ -17,10 +17,6 @@ import javax.ws.rs.core.*;
 
 public class CourseRes {
 
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
-
     private final long idGym;
 
     CourseRes(long idGym) {
@@ -30,7 +26,7 @@ public class CourseRes {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCourses(@QueryParam("name") String name) throws ServiceException {
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+        CourseService courseService = new CourseServiceImpl();
         if ( name != null ){
             return Response.ok(courseService.getCoursesByName(name)).build();
         }
@@ -42,7 +38,7 @@ public class CourseRes {
     @Path("{idCourse: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCourse(@PathParam("idCourse") long idCourse) throws ServiceException {
-        CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+        CourseService courseService = new CourseServiceImpl();
         return Response.ok(courseService.getCourse(idCourse)).build();
     }
 
@@ -51,7 +47,7 @@ public class CourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Course course) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            CourseService courseService = new CourseServiceImpl();
 
             course.setGym(idGym);
 
@@ -68,7 +64,7 @@ public class CourseRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse, Course course) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            CourseService courseService = new CourseServiceImpl();
 
             if (isUserManagerOfGym(securityContext)){
                 course.setId(idCourse);
@@ -86,7 +82,7 @@ public class CourseRes {
     @Path("{idCourse: [0-9]+}")
     public Response deleteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
-            CourseService courseService = new CourseServiceImpl(urlDB, userDB, pswDB);
+            CourseService courseService = new CourseServiceImpl();
 
             if (isUserManagerOfGym(securityContext)){
                 courseService.deleteCourse(idCourse);
@@ -107,8 +103,8 @@ public class CourseRes {
 
 
     public boolean isUserManagerOfGym(SecurityContext securityContext) throws ServiceException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+        UserService userService = new UserServiceImpl();
+        GymService gymService = new GymServiceImpl();
 
         String username = securityContext.getUserPrincipal().getName();
         User user = userService.getUserByUsername(username);

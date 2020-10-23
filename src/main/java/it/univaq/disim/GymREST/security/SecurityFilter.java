@@ -60,9 +60,7 @@ public class SecurityFilter implements ContainerRequestFilter {
                         @Override
                         public boolean isUserInRole(String role) {
                             try {
-                                UserService userService = new UserServiceImpl(
-                                    "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
-                                    "gymportal", "gymportal");
+                                UserService userService = new UserServiceImpl();
 
                                 return userService.checkRole(subject, role);
                             } catch (ServiceException e) {

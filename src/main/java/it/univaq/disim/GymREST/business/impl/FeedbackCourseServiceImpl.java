@@ -19,21 +19,9 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     private static final String DELETE_FEEDBACK_COURSE = "DELETE FROM feedbackcourse WHERE id=?";
     private static final String UPDATE_FEEDBACK_COURSE = "UPDATE feedbackcourse SET feed=?, rating=? WHERE id=?";
 
-    private String urlDB;
-    private String userDB;
-    private String pswDB;
-
-    public FeedbackCourseServiceImpl(String url, String user, String psw) {
-        super();
-        this.urlDB = url;
-        this.userDB = user;
-        this.pswDB = psw;
-    }
-
     @Override
     public long createFeedbackCourse(FeedbackCourse feedbackCourse) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - createFeedbackCourse");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(INSERT_FEEDBACK_COURSE, Statement.RETURN_GENERATED_KEYS);) {
@@ -59,7 +47,6 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     @Override
     public List<FeedbackCourse> getAllFeedbackByCourse(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - getAllFeedbackByCourse");
-        loadDriver();
 
         List<FeedbackCourse> feedbackCourses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -87,7 +74,6 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     @Override
     public FeedbackCourse getFeedback(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - getFeedbackCourse");
-        loadDriver();
 
         FeedbackCourse feedbackCourse = new FeedbackCourse() ;
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -112,7 +98,6 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     @Override
     public List<FeedbackCourse> getAllFeedbackByUser(long idUser) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - getAllFeedbackByUser");
-        loadDriver();
 
         List<FeedbackCourse> feedbackCourses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
@@ -139,7 +124,6 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     @Override
     public void deleteFeedbackCourse(long id) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - deleteFeedbackCourse");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(DELETE_FEEDBACK_COURSE);) {
@@ -155,7 +139,6 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
     @Override
     public void updateFeedbackCourse(FeedbackCourse feedbackCourse) throws ServiceException {
         System.out.println("[SERVICE] FeedbackCourse - updateFeedbackCourse");
-        loadDriver();
 
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(UPDATE_FEEDBACK_COURSE);) {

@@ -14,10 +14,6 @@ import javax.ws.rs.core.*;
 
 public class FeedbackGymRes {
 
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
-
     private final long idGym;
 
     FeedbackGymRes(long idGym){
@@ -27,7 +23,7 @@ public class FeedbackGymRes {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbacksGym() throws ServiceException {
-        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
         return Response.ok(feedbackGymService.getAllFeedbackByGym(idGym)).build();
     }
@@ -36,7 +32,7 @@ public class FeedbackGymRes {
     @Path("{idFeedback: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbackGym(@PathParam("idFeedback") long idFeedback) throws ServiceException {
-        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+        FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
         return Response.ok(feedbackGymService.getFeedback(idFeedback)).build();
     }
@@ -46,8 +42,8 @@ public class FeedbackGymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addFeedbackGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, FeedbackGym feedbackGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -68,8 +64,8 @@ public class FeedbackGymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateFeedbackGym(@Context SecurityContext securityContext, @PathParam("idFeedback") long idFeedback, FeedbackGym feedbackGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -90,8 +86,8 @@ public class FeedbackGymRes {
     @Path("{idFeedback: [0-9]+}")
     public Response deleteFeedbackGym(@Context SecurityContext securityContext,@PathParam("idFeedback") long idFeedback) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FeedbackGymService feedbackGymService = new FeedbackGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);

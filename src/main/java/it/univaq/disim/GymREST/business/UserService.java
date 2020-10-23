@@ -3,7 +3,6 @@ package it.univaq.disim.GymREST.business;
 import it.univaq.disim.GymREST.exceptions.ServiceException;
 import it.univaq.disim.GymREST.model.User;
 
-import java.sql.SQLException;
 
 public interface UserService {
 

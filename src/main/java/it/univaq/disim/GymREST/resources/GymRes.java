@@ -16,15 +16,10 @@ import it.univaq.disim.GymREST.security.Auth;
 @Path("gyms")
 public class GymRes {
 
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
-
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGyms(@QueryParam("name") String name, @QueryParam("region") String region) throws ServiceException {
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+        GymService gymService = new GymServiceImpl();
         if ( region==null && name==null ) {
             return Response.ok(gymService.getAllGyms()).build();
 
@@ -42,7 +37,7 @@ public class GymRes {
     @Path("{idGym: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGym(@PathParam("idGym") long idGym) throws ServiceException {
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+        GymService gymService = new GymServiceImpl();
         return Response.ok(gymService.getGym(idGym)).build();
     }
 
@@ -51,8 +46,8 @@ public class GymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, Gym gym) throws ServiceException {
         if (securityContext.isUserInRole("gestore")){
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            GymService gymService = new GymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -71,7 +66,7 @@ public class GymRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym, Gym gym) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            GymService gymService = new GymServiceImpl();
 
             if (isUserManagerOfGym(securityContext, idGym)){
                 gym.setId(idGym);
@@ -89,7 +84,7 @@ public class GymRes {
     @Path("{idGym: [0-9]+}")
     public Response deleteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws ServiceException {
         if (securityContext.isUserInRole("gestore")) {
-            GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+            GymService gymService = new GymServiceImpl();
 
             if (isUserManagerOfGym(securityContext, idGym)){
                 gymService.deleteGym(idGym);
@@ -116,8 +111,8 @@ public class GymRes {
 
 
     public boolean isUserManagerOfGym(SecurityContext securityContext, long idGym) throws ServiceException {
-        UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-        GymService gymService = new GymServiceImpl(urlDB, userDB, pswDB);
+        UserService userService = new UserServiceImpl();
+        GymService gymService = new GymServiceImpl();
 
         String username = securityContext.getUserPrincipal().getName();
         User user = userService.getUserByUsername(username);

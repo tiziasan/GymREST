@@ -16,9 +16,6 @@ public class User {
 	private String lastname;
 
 	@JsonIgnore
-	private Boolean active;
-
-	@JsonIgnore
 	private List<FeedbackCourse> feedbackCourse;
 	@JsonIgnore
 	private List<FavoriteGym> favoriteGym;
@@ -103,14 +100,6 @@ public class User {
 
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
 	}
 
 	public List<FeedbackCourse> getFeedbackCourse() {

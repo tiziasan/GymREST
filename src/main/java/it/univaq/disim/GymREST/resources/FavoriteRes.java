@@ -18,10 +18,6 @@ import javax.ws.rs.core.*;
 @Auth
 public class FavoriteRes {
 
-    private static final String urlDB = "jdbc:mysql://127.0.0.1:8889/gymportal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String userDB = "gymportal";
-    private static final String pswDB = "gymportal";
-
     private final long idUser;
 
     public FavoriteRes(long idUser) {
@@ -33,8 +29,8 @@ public class FavoriteRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteGym(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -58,8 +54,8 @@ public class FavoriteRes {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createFavoriteCourse(@Context SecurityContext securityContext, @Context UriInfo uriinfo, long idCourse) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -83,8 +79,8 @@ public class FavoriteRes {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllFavoritesGym(@Context SecurityContext securityContext) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -103,8 +99,8 @@ public class FavoriteRes {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllFavoritesCourse(@Context SecurityContext securityContext) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -122,8 +118,8 @@ public class FavoriteRes {
     @Path("gyms/{idGym: [0-9]+}")
     public Response deleteFavoriteGym(@Context SecurityContext securityContext, @PathParam("idGym") long idGym) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FavoriteGymService favoriteGymService = new FavoriteGymServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
@@ -142,8 +138,8 @@ public class FavoriteRes {
     @Path("courses/{idCourse: [0-9]+}")
     public Response deleteFavoriteCourse(@Context SecurityContext securityContext,@PathParam("idCourse") long idCourse) throws ServiceException {
         if (securityContext.isUserInRole("utente")) {
-            UserService userService = new UserServiceImpl(urlDB, userDB, pswDB);
-            FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl(urlDB, userDB, pswDB);
+            UserService userService = new UserServiceImpl();
+            FavoriteCourseService favoriteCourseService = new FavoriteCourseServiceImpl();
 
             String username = securityContext.getUserPrincipal().getName();
             User user = userService.getUserByUsername(username);
