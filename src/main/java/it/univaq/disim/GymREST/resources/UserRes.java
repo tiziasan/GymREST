@@ -61,6 +61,9 @@ public class UserRes {
 
         if (idUser == userService.getUserByUsername(username).getId()){
             user.setId(idUser);
+            if (user.getPassword().isEmpty() || user.getPassword().equals("")) {
+                user.setPassword(userService.getUserById(idUser).getPassword());
+            }
             userService.updateUser(user);
             return Response.noContent().build();
         }

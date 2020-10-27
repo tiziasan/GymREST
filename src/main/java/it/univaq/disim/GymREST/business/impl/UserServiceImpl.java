@@ -124,7 +124,7 @@ public class UserServiceImpl extends Service implements UserService {
                     user.setEmail(rs.getString(2));
                     user.setLastname(rs.getString(3));
                     user.setName(rs.getString(4));
-//                    user.setPassword(rs.getString(5));
+                    user.setPassword(rs.getString(5));
                     user.setUsername(rs.getString(6));
                 }
             }
