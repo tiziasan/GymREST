@@ -136,6 +136,32 @@ public class UserServiceImpl extends Service implements UserService {
     }
 
     @Override
+    public User getUserByIdWithoutPassword(long id) throws ServiceException {
+        System.out.println("[SERVICE] User - getUser (Without Password)");
+
+        User user = new User();
+        try (Connection connection = DriverManager.getConnection(urlDB,userDB,pswDB);
+             PreparedStatement st = connection.prepareStatement(GET_USER_BY_ID);) {
+            st.setLong(1,id);
+
+            try (ResultSet rs = st.executeQuery();) {
+                if (rs.next()) {
+                    user.setId(rs.getLong(1));
+                    user.setEmail(rs.getString(2));
+                    user.setLastname(rs.getString(3));
+                    user.setName(rs.getString(4));
+//                    user.setPassword(rs.getString(5));
+                    user.setUsername(rs.getString(6));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new ServiceException(e.getErrorCode());
+        }
+        return user;
+    }
+
+    @Override
     public User getUserByUsername(String username) throws ServiceException {
         System.out.println("[SERVICE] User - getUser");
 

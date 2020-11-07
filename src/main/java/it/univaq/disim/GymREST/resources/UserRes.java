@@ -17,26 +17,30 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 
-@Auth
 @Path("users")
 public class UserRes {
 
     @GET
     @Path("{idUser: [0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException{
+//    public Response getUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException{
+    public Response getUser(@PathParam("idUser") long idUser) throws ServiceException{
         UserService userService = new UserServiceImpl();
 
-        String username = securityContext.getUserPrincipal().getName();
-        User user = userService.getUserByUsername(username);
+//        String username = securityContext.getUserPrincipal().getName();
+//        User user = userService.getUserByUsername(username);
+//
+//        if (idUser == user.getId()){
+//            return Response.ok(user).build();
+//        }
+//        return Response.status(Response.Status.FORBIDDEN).build();
 
-        if (idUser == user.getId()){
-            return Response.ok(user).build();
-        }
-        return Response.status(Response.Status.FORBIDDEN).build();
+        User user = userService.getUserByIdWithoutPassword(idUser);
+        return Response.ok(user).build();
     }
 
     @DELETE
+    @Auth
     @Path("{idUser: [0-9]+}")
     public Response deleteUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException {
         UserService userService = new UserServiceImpl();
@@ -52,6 +56,7 @@ public class UserRes {
     }
 
     @PUT
+    @Auth
     @Path("{idUser: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateUser(@Context SecurityContext securityContext, @PathParam("idUser") long idUser, User user) throws ServiceException {
@@ -71,6 +76,7 @@ public class UserRes {
     }
 
     @GET
+    @Auth
     @Path("{idUser: [0-9]+}/feedbacks/gyms")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbacksGym(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException {
@@ -87,6 +93,7 @@ public class UserRes {
     }
 
     @GET
+    @Auth
     @Path("{idUser: [0-9]+}/feedbacks/courses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbacksCourse(@Context SecurityContext securityContext, @PathParam("idUser") long idUser) throws ServiceException {
