@@ -19,14 +19,14 @@ public class CourseServiceImpl extends Service implements CourseService {
     private static final String DELETE_COURSE = "DELETE FROM course WHERE id=?";
 
     @Override
-    public List<Course> getCoursesByGym(long courseId) throws ServiceException {
+    public List<Course> getCoursesByGym(long gymId) throws ServiceException {
         System.out.println("[SERVICE] Course - getCoursesByGym");
 
         List<Course> courses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_ALL_COURSES_BY_GYMS);) {
 
-            st.setLong(1,courseId);
+            st.setLong(1,gymId);
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()){
                     Course course = new Course();
@@ -34,6 +34,7 @@ public class CourseServiceImpl extends Service implements CourseService {
                     course.setCode(rs.getString(2));
                     course.setName(rs.getString(4));
                     course.setDescription(rs.getString(3));
+                    course.setGym(rs.getLong(5));
 
                     courses.add(course);
                 }
@@ -62,6 +63,7 @@ public class CourseServiceImpl extends Service implements CourseService {
                     course.setCode(rs.getString(2));
                     course.setName(rs.getString(4));
                     course.setDescription(rs.getString(3));
+                    course.setGym(rs.getLong(5));
 
                     courses.add(course);
                 }
@@ -88,6 +90,7 @@ public class CourseServiceImpl extends Service implements CourseService {
                     course.setCode(rs.getString(2));
                     course.setName(rs.getString(4));
                     course.setDescription(rs.getString(3));
+                    course.setGym(rs.getLong(5));
                 }
             }
 
