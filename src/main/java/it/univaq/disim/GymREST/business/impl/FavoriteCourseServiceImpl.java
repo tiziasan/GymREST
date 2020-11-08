@@ -53,6 +53,7 @@ public class FavoriteCourseServiceImpl extends Service implements FavoriteCourse
                     course.setCode(rs.getString(2));
                     course.setName(rs.getString(4));
                     course.setDescription(rs.getString(3));
+                    course.setGym(rs.getLong(5));
 
                     favoriteCourses.add(course);
                 }
