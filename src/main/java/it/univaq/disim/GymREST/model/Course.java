@@ -11,13 +11,12 @@ public class Course {
 	private String name;
 	private String description;
 	private String code;
+	private long gym;
 
 	@JsonIgnore
 	private List<FeedbackCourse> feedbackCourse;
 	@JsonIgnore
 	private List<FavoriteCourse> favoriteCourse;
-	@JsonIgnore
-	private long gym;
 
 	public Course() {
 		this.id = 0;
