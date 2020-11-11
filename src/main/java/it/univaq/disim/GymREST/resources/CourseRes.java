@@ -28,7 +28,7 @@ public class CourseRes {
     public Response getCourses(@QueryParam("name") String name) throws ServiceException {
         CourseService courseService = new CourseServiceImpl();
         if ( name != null ){
-            return Response.ok(courseService.getCoursesByName(name)).build();
+            return Response.ok(courseService.getCoursesByName(idGym,name)).build();
         }
 
         return Response.ok(courseService.getCoursesByGym(idGym)).build();

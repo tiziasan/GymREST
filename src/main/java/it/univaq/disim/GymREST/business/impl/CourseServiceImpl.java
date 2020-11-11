@@ -12,7 +12,7 @@ import java.util.List;
 public class CourseServiceImpl extends Service implements CourseService {
 
     private static final String GET_ALL_COURSES_BY_GYMS = "SELECT * FROM course WHERE gym_id=?";
-    private static final String GET_COURSES_BY_NAME = "SELECT * FROM course WHERE course.name LIKE ?";
+    private static final String GET_COURSES_BY_NAME = "SELECT * FROM course WHERE course.gym_id = ? AND course.name LIKE ?";
     private static final String GET_COURSE = "SELECT * FROM course WHERE course.id = ?";
     private static final String INSERT_COURSE = "INSERT INTO course (code,name,description,gym_id) VALUES (?,?,?,?)";
     private static final String UPDATE_COURSE = "UPDATE course SET code=?, name=?, description=? WHERE id=?";
@@ -48,14 +48,15 @@ public class CourseServiceImpl extends Service implements CourseService {
     }
 
     @Override
-    public List<Course> getCoursesByName(String hint) throws ServiceException {
+    public List<Course> getCoursesByName(long gymId, String hint) throws ServiceException {
         System.out.println("[SERVICE] Course - getGymsByRegion");
 
         List<Course> courses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(urlDB, userDB, pswDB);
              PreparedStatement st = connection.prepareStatement(GET_COURSES_BY_NAME);) {
 
-            st.setString(1, "%" + hint + "%");
+            st.setLong(1, gymId);
+            st.setString(2, "%" + hint + "%");
             try (ResultSet rs = st.executeQuery();) {
                 while (rs.next()){
                     Course course = new Course();
