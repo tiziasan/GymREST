@@ -14,7 +14,7 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
     private static final String INSERT_FEEDBACK_GYM = "INSERT INTO feedbackgym (feed,rating,gym_id,user_id) VALUES (?,?,?,?)";
     private static final String GET_FEEDBACK_BY_ID = "SELECT feedbackgym.id, feed, rating, feedbackgym.gym_id, gym.name, feedbackgym.user_id, user.name, user.lastname FROM feedbackgym JOIN gym ON gym.id = feedbackgym.gym_id JOIN user ON user.id = feedbackgym.user_id WHERE feedbackgym.id=?";
     private static final String GET_ALL_FEEDBACK_BY_GYM = "SELECT feedbackgym.id, feed, rating, feedbackgym.gym_id, gym.name, feedbackgym.user_id, user.name, user.lastname FROM feedbackgym JOIN gym ON gym.id = feedbackgym.gym_id JOIN user ON user.id = feedbackgym.user_id WHERE feedbackgym.gym_id=?";
-    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT feedbackgym.id, feed, rating, feedbackgym.gym_id, gym.name, feedbackgym.user_id, user.name, user.lastname FROM feedbackgym JOIN gym ON gym.id = feedbackgym.gym_id JOIN user ON user.id = feedbackgym.user_id WHERE feedbackgym.user_id?";
+    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT feedbackgym.id, feed, rating, feedbackgym.gym_id, gym.name, feedbackgym.user_id, user.name, user.lastname FROM feedbackgym JOIN gym ON gym.id = feedbackgym.gym_id JOIN user ON user.id = feedbackgym.user_id WHERE feedbackgym.user_id=?";
     private static final String DELETE_FEEDBACK__GYM = "DELETE FROM feedbackgym WHERE id=?";
     private static final String UPDATE_FEEDBACK_GYM = "UPDATE feedbackgym SET feed=?, rating=? WHERE id=?";
 
