@@ -12,9 +12,9 @@ import java.util.List;
 public class FeedbackGymServiceImpl extends Service implements FeedbackGymService {
 
     private static final String INSERT_FEEDBACK_GYM = "INSERT INTO feedbackgym (feed,rating,gym_id,user_id) VALUES (?,?,?,?)";
-    private static final String GET_FEEDBACK_BY_ID = "SELECT * FROM feedbackgym WHERE id=?";
-    private static final String GET_ALL_FEEDBACK_BY_GYM = "SELECT * FROM feedbackgym WHERE gym_id=?";
-    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackgym WHERE user_id=?";
+    private static final String GET_FEEDBACK_BY_ID = "SELECT feedbackgym.id, feed, rating, feedbackgym.gym_id, gym.name, feedbackgym.user_id, user.name, user.lastname FROM feedbackgym JOIN gym ON gym.id = feedbackgym.gym_id JOIN user ON user.id = feedbackgym.user_id WHERE feedbackgym.id=?";
+    private static final String GET_ALL_FEEDBACK_BY_GYM = "SELECT feedbackgym.id, feed, rating, feedbackgym.gym_id, gym.name, feedbackgym.user_id, user.name, user.lastname FROM feedbackgym JOIN gym ON gym.id = feedbackgym.gym_id JOIN user ON user.id = feedbackgym.user_id WHERE feedbackgym.gym_id=?";
+    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT feedbackgym.id, feed, rating, feedbackgym.gym_id, gym.name, feedbackgym.user_id, user.name, user.lastname FROM feedbackgym JOIN gym ON gym.id = feedbackgym.gym_id JOIN user ON user.id = feedbackgym.user_id WHERE feedbackgym.user_id?";
     private static final String DELETE_FEEDBACK__GYM = "DELETE FROM feedbackgym WHERE id=?";
     private static final String UPDATE_FEEDBACK_GYM = "UPDATE feedbackgym SET feed=?, rating=? WHERE id=?";
 
@@ -57,8 +57,11 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
                     feedbackGym.setId(rs.getLong(1));
                     feedbackGym.setRating(rs.getInt(3));
                     feedbackGym.setFeed(rs.getString(2));
-                    feedbackGym.setUser(rs.getLong(5));
+                    feedbackGym.setUser(rs.getLong(6));
+                    feedbackGym.setUserName(rs.getString(7));
+                    feedbackGym.setUserLastname(rs.getString(8));
                     feedbackGym.setGym(rs.getLong(4));
+                    feedbackGym.setGymName(rs.getString(5));
 
                     feedbackGyms.add(feedbackGym);
                 }
@@ -83,8 +86,11 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
                     feedbackGym.setId(rs.getLong(1));
                     feedbackGym.setRating(rs.getInt(3));
                     feedbackGym.setFeed(rs.getString(2));
-                    feedbackGym.setUser(rs.getLong(5));
+                    feedbackGym.setUser(rs.getLong(6));
+                    feedbackGym.setUserName(rs.getString(7));
+                    feedbackGym.setUserLastname(rs.getString(8));
                     feedbackGym.setGym(rs.getLong(4));
+                    feedbackGym.setGymName(rs.getString(5));
                 }
             }
         } catch (SQLException e) {
@@ -108,7 +114,11 @@ public class FeedbackGymServiceImpl extends Service implements FeedbackGymServic
                     feedbackGym.setId(rs.getLong(1));
                     feedbackGym.setRating(rs.getInt(3));
                     feedbackGym.setFeed(rs.getString(2));
+                    feedbackGym.setUser(rs.getLong(6));
+                    feedbackGym.setUserName(rs.getString(7));
+                    feedbackGym.setUserLastname(rs.getString(8));
                     feedbackGym.setGym(rs.getLong(4));
+                    feedbackGym.setGymName(rs.getString(5));
 
                     feedbackGyms.add(feedbackGym);
                 }

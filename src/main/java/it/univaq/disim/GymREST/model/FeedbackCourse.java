@@ -8,7 +8,10 @@ public class FeedbackCourse {
 	private String feed;
 	private int rating;
 	private long user;
+	private String userName;
+	private String userLastname;
 	private long course;
+	private String courseName;
 
 	public FeedbackCourse() {
 		this.id = 0;
@@ -65,6 +68,30 @@ public class FeedbackCourse {
 
 	public void setCourse(long course) {
 		this.course = course;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserLastname() {
+		return userLastname;
+	}
+
+	public void setUserLastname(String userLastname) {
+		this.userLastname = userLastname;
 	}
 
 	@Override

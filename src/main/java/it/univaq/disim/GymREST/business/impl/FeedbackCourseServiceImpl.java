@@ -13,9 +13,9 @@ import java.util.List;
 public class FeedbackCourseServiceImpl extends Service implements FeedbackCourseService {
 
     private static final String INSERT_FEEDBACK_COURSE = "INSERT INTO feedbackcourse (feed,rating,course_id,user_id) VALUES (?,?,?,?)";
-    private static final String GET_FEEDBACK_BY_ID = "SELECT * FROM feedbackcourse WHERE id=?";
-    private static final String GET_ALL_FEEDBACK_BY_COURSE = "SELECT * FROM feedbackcourse WHERE course_id=?";
-    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT * FROM feedbackcourse WHERE user_id=?";
+    private static final String GET_FEEDBACK_BY_ID = "SELECT feedbackcourse.id, feed, rating, feedbackcourse.course_id, course.name, feedbackcourse.user_id, user.name, user.lastname FROM feedbackcourse JOIN course ON course.id = feedbackcourse.course_id JOIN user ON user.id = feedbackcourse.user_id WHERE feedbackcourse.id=?";
+    private static final String GET_ALL_FEEDBACK_BY_COURSE = "SELECT feedbackcourse.id, feed, rating, feedbackcourse.course_id, course.name, feedbackcourse.user_id, user.name, user.lastname FROM feedbackcourse JOIN course ON course.id = feedbackcourse.course_id JOIN user ON user.id = feedbackcourse.user_id WHERE feedbackcourse.course_id=?";
+    private static final String GET_ALL_FEEDBACK_BY_USER = "SELECT feedbackcourse.id, feed, rating, feedbackcourse.course_id, course.name, feedbackcourse.user_id, user.name, user.lastname FROM feedbackcourse JOIN course ON course.id = feedbackcourse.course_id JOIN user ON user.id = feedbackcourse.user_id WHERE feedbackcourse.user_id=?";
     private static final String DELETE_FEEDBACK_COURSE = "DELETE FROM feedbackcourse WHERE id=?";
     private static final String UPDATE_FEEDBACK_COURSE = "UPDATE feedbackcourse SET feed=?, rating=? WHERE id=?";
 
@@ -59,8 +59,11 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                     feedbackCourse.setId(rs.getLong(1));
                     feedbackCourse.setRating(rs.getInt(3));
                     feedbackCourse.setFeed(rs.getString(2));
-                    feedbackCourse.setUser(rs.getLong(5));
+                    feedbackCourse.setUser(rs.getLong(6));
+                    feedbackCourse.setUserName(rs.getString(7));
+                    feedbackCourse.setUserLastname(rs.getString(8));
                     feedbackCourse.setCourse(rs.getLong(4));
+                    feedbackCourse.setCourseName(rs.getString(5));
 
                     feedbackCourses.add(feedbackCourse);
                 }
@@ -85,8 +88,11 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                     feedbackCourse.setId(rs.getLong(1));
                     feedbackCourse.setRating(rs.getInt(3));
                     feedbackCourse.setFeed(rs.getString(2));
-                    feedbackCourse.setUser(rs.getLong(5));
+                    feedbackCourse.setUser(rs.getLong(6));
+                    feedbackCourse.setUserName(rs.getString(7));
+                    feedbackCourse.setUserLastname(rs.getString(8));
                     feedbackCourse.setCourse(rs.getLong(4));
+                    feedbackCourse.setCourseName(rs.getString(5));
                 }
             }
         } catch (SQLException e) {
@@ -110,7 +116,11 @@ public class FeedbackCourseServiceImpl extends Service implements FeedbackCourse
                     feedbackCourse.setId(rs.getLong(1));
                     feedbackCourse.setRating(rs.getInt(3));
                     feedbackCourse.setFeed(rs.getString(2));
+                    feedbackCourse.setUser(rs.getLong(6));
+                    feedbackCourse.setUserName(rs.getString(7));
+                    feedbackCourse.setUserLastname(rs.getString(8));
                     feedbackCourse.setCourse(rs.getLong(4));
+                    feedbackCourse.setCourseName(rs.getString(5));
 
                     feedbackCourses.add(feedbackCourse);
                 }
